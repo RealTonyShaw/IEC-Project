@@ -173,8 +173,16 @@ public class CameraCtrl : MonoBehaviour
         q.w = 1f;
 
         float angleY = 2f * Mathf.Rad2Deg * Mathf.Atan(q.y);
-
-        angleY = Mathf.Clamp(angleY, MinY, MaxY);
+        //Vector3 fwd = transform.forward;
+        //fwd.y = 0f;
+        //Vector3 playerFwd = MoveCtrl.Instance.eyeTransform.forward;
+        //playerFwd.y = 0f;
+        //float angleY = Vector3.SignedAngle(playerFwd, fwd, Vector3.up);
+        float bias = angleY - MoveCtrl.Instance.eyeTransform.eulerAngles.y;
+        if (bias > 180f) bias -= 360f;
+        else if (bias < -180f) bias += 360f;
+        Debug.Log(bias);
+        angleY = Mathf.Clamp(bias, MinY, MaxY) + MoveCtrl.Instance.eyeTransform.eulerAngles.y;
 
         q.y = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleY);
 

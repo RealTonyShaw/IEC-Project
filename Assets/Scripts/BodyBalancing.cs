@@ -34,8 +34,8 @@ public class BodyBalancing : MonoBehaviour
     float sinx, cosx, x, tanf, z;
     Vector3 rot;
     Vector3 prevRot;
-    // Update is called once per frame
-    void LateUpdate()
+
+    void FixedUpdate()
     {
         prevRot = rot;
         rot = transform.eulerAngles;
@@ -57,7 +57,7 @@ public class BodyBalancing : MonoBehaviour
         tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
         x =Mathf.Atan(tanf) * Mathf.Rad2Deg;
 
-        moveCtrl.chara.localRotation = Quaternion.Slerp(moveCtrl.chara.localRotation, Quaternion.Euler(x, 0, z), APPROACHING_RATE * Time.deltaTime);
+        moveCtrl.chara.localRotation = Quaternion.Slerp(moveCtrl.chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
 
     }
 }
