@@ -17,6 +17,7 @@ public class Skill_TestBurstfireSkill : AbstractBurstfireSkill
 
     protected override void Shoot()
     {
+        Debug.Log("Burstfire Accuracy : " + Caster.RuntimeAccuracy);
         this.Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
     }
 }

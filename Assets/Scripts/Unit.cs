@@ -24,12 +24,14 @@ public partial class Unit : MonoBehaviour
     {
         get
         {
-            return skillTable.CurrentSkill.Data.RuntimeAccuracy;
+            return runtimeAccuracy;
         }
 
         set
         {
-            runtimeAccuracy = value;
+            // 实时精确度应当介于最小值 10 到最大值 accuracy 之间。
+            // accuracy 是技能数据，指技能最大的精确度。
+            runtimeAccuracy = Mathf.Clamp(value, 10f, skillTable.CurrentSkill.Data.Accuracy);
         }
     }
     // 技能表

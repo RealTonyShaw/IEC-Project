@@ -44,30 +44,36 @@ public class SkillTable : ISkillTable
                 // 如果切换前的技能还在施放，应该立即停止该技能
                 if (currentSkillNum != 1)
                 {
-                    SkillCells[currentSkillNum].ForceToStopCasting();
+                    SkillCells[currentSkillNum - 1].ForceToStopCasting();
                     flag = true;
                 } 
                 currentSkillNum = 1;
                 if(flag)
-                    SetUnitInitAccuracy(SkillCells[currentSkillNum].CurrentSkill.Data.Accuracy);
+                    SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
                 flag = false;
                 Debug.Log("切换至技能 1");
                 break;
             case KeyCode.Alpha2:
                 if (currentSkillNum != 2)
-                    SkillCells[currentSkillNum].ForceToStopCasting();
+                {
+                    SkillCells[currentSkillNum - 1].ForceToStopCasting();
+                    flag = true;
+                }
                 currentSkillNum = 2;
                 if (flag)
-                    SetUnitInitAccuracy(SkillCells[currentSkillNum].CurrentSkill.Data.Accuracy);
+                    SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
                 flag = false;
                 Debug.Log("切换至技能 2");
                 break;
             case KeyCode.Alpha3:
                 if (currentSkillNum != 3)
-                    SkillCells[currentSkillNum].ForceToStopCasting();
+                {
+                    SkillCells[currentSkillNum - 1].ForceToStopCasting();
+                    flag = true;
+                }
                 currentSkillNum = 3;
                 if (flag)
-                    SetUnitInitAccuracy(SkillCells[currentSkillNum].CurrentSkill.Data.Accuracy);
+                    SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
                 flag = false;
                 Debug.Log("切换至技能 3");
                 break;

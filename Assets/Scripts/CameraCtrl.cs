@@ -234,7 +234,7 @@ public class CameraCtrl : MonoBehaviour
                 }
             }
         } while (it.MoveNext());
-        Debug.Log("Unit Closest to Player is " + (resUnit == null ? "null" : resUnit.gameObject.name));
+        //Debug.Log("Unit Closest to Player is " + (resUnit == null ? "null" : resUnit.gameObject.name));
         return resUnit;
     }
 

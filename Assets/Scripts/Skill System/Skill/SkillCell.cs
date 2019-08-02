@@ -6,12 +6,28 @@ using UnityEngine;
 /// 这个类表示一个技能槽位。
 /// 该类需要通过Skill Table调用ISkillCell.Init()进行初始化。初始化只需要进行一次。
 /// 
-/// 该类通过实现OnMouseButtonDown和OnMouseButtonUp实现对3种类型的技能的调用（不负责技能实现），包括计算CD和开火频率等等。
+/// 该类通过实现OnMouseButtonDown和OnMouseButtonUp实现对3种类型的技能的调用（不负责技能实现），
+/// 包括计算 CD 、开火频率和 Accuracy Cooldown 等等。
 /// 同时，施法扣除法力值也由该类实现。
 /// </summary>
 public class SkillCell : ISkillCell
 {
-    ISkill skill;
+    // 技能
+    ISkill skill = null;
+    // 和skill同步，用于调用特定的抽象方法。
+    /// <summary>
+    /// Abstract Burstfire Skill
+    /// </summary>
+    AbstractBurstfireSkill abskill;
+    /// <summary>
+    /// Abstract Continuous Skill
+    /// </summary>
+    AbstractContinuousSkill acskill;
+    /// <summary>
+    /// Abstract Strafe Skill
+    /// </summary>
+    AbstractStrafeSkill asskill;
+
     bool isCasting = false;
     Unit caster;
     Transform spawnTransform;
@@ -28,19 +44,34 @@ public class SkillCell : ISkillCell
 
         set
         {
+            // 防止重复赋值
+            if (skill == value)
+            {
+                return;
+            }
+            // 改变技能槽位中的技能，并且初始化。
             this.skill = value;
+            if (skill == null)
+            {
+                Debug.LogError("Cannot Set Skill in cell to NULL");
+                return;
+            }
+
             skill.Init(caster);
             switch (skill.Data.SkillType)
             {
                 case SkillType.StrafeSkill:
+                    asskill = (AbstractStrafeSkill)skill;
                     cooldown = 60f / skill.Data.RPM;
                     break;
 
                 case SkillType.BurstfireSkill:
+                    abskill = (AbstractBurstfireSkill)skill;
                     cooldown = skill.Data.Cooldown;
                     break;
 
                 case SkillType.ContinuousSkill:
+                    acskill = (AbstractContinuousSkill)skill;
                     cooldown = skill.Data.Cooldown;
                     break;
 
@@ -163,6 +194,11 @@ public class SkillCell : ISkillCell
 
     private void Update()
     {
+        if (skill == null)
+        {
+            return;
+        }
+
         // 技能冷却
         if (!isCasting)
         {
@@ -176,6 +212,22 @@ public class SkillCell : ISkillCell
                     timer = 0f;
                 }
             }
+            // 精确度恢复
+            switch (skill.Data.SkillType)
+            {
+                case SkillType.StrafeSkill:
+                    asskill.AccuracyCooldown(Time.deltaTime);
+                    break;
+                case SkillType.BurstfireSkill:
+                    abskill.AccuracyCooldown(Time.deltaTime);
+                    break;
+                case SkillType.ContinuousSkill:
+                    // do nothing
+                    break;
+                default:
+                    break;
+            }
+
         }
         // 如果是持续型技能正在施法
         else
