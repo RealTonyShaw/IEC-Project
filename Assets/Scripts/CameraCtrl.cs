@@ -181,7 +181,7 @@ public class CameraCtrl : MonoBehaviour
         float bias = angleY - MoveCtrl.Instance.eyeTransform.eulerAngles.y;
         if (bias > 180f) bias -= 360f;
         else if (bias < -180f) bias += 360f;
-        Debug.Log(bias);
+
         angleY = Mathf.Clamp(bias, MinY, MaxY) + MoveCtrl.Instance.eyeTransform.eulerAngles.y;
 
         q.y = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleY);
