@@ -8,7 +8,7 @@ public class BodyBalancing : MonoBehaviour
 {
     //空气阻尼
     public const float AIR_DAMP = 0.5f;
-    public const float Z_ROT_CONST = 0.4f;
+    public const float Z_ROT_CONST = 2f;
     //重力加速度
     public const float GRAVITY_CONST = 9.81f;
     public const float RECI_GRAVITY_CONST = 1 / GRAVITY_CONST;
@@ -34,15 +34,16 @@ public class BodyBalancing : MonoBehaviour
     float sinx, cosx, x, tanf, z;
     Vector3 rot;
     Vector3 prevRot;
-    // Update is called once per frame
-    void LateUpdate()
+
+    void FixedUpdate()
     {
         prevRot = rot;
         rot = transform.eulerAngles;
         Vector3 av = rot - prevRot;
-        av.x = (av.x + 180f) % 360f - 180f;
-        av.y = (av.y + 180f) % 360f - 180f;
-        av.z = (av.z + 180f) % 360f - 180f;
+        av += new Vector3(av.x > 180f ? -360f : (av.x < -180f ? 360f : 0f), av.y > 180f ? -360f : (av.y < -180f ? 360f : 0f), av.z > 180f ? -360f : (av.z < -180f ? 360f : 0f));
+        av *= Mathf.Deg2Rad;
+
+
         // Z轴平衡 (绕自转轴的平衡)
         // omega * v / g
         z = -Z_ROT_CONST * av.y * rb.velocity.magnitude * RECI_GRAVITY_CONST;
@@ -57,7 +58,7 @@ public class BodyBalancing : MonoBehaviour
         tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
         x =Mathf.Atan(tanf) * Mathf.Rad2Deg;
 
-        moveCtrl.chara.localRotation = Quaternion.Slerp(moveCtrl.chara.localRotation, Quaternion.Euler(x, 0, z), APPROACHING_RATE * Time.deltaTime);
+        moveCtrl.chara.localRotation = Quaternion.Slerp(moveCtrl.chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
 
     }
 }

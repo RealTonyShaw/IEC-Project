@@ -17,8 +17,6 @@ public class SkillData : ScriptableObject
     public float Damage;
     // 每分钟发射次数（仅限连射型技能）
     public float RPM = 100f;
-    // 精确度
-    public float Accuracy = 85f;
     //效果，比如速度加成、生命恢复之类的
     public float[] Params;
     //最大射程
@@ -52,7 +50,10 @@ public class SkillData : ScriptableObject
     [Header("爆炸特性")]
     public float Force = 0;
     [Header("射击精确度")]
-    public float RuntimeAccuracy = 100;
+    //public float ExpectedAccuracy = 100;
+    // 精确度
+    public float Accuracy = 85f;
+    public float MinAccuracy = 40f;
     public float AccuracyCooldownSpeed = 5;
     public float AccuracyHeatupSpeed = 5;
 }
