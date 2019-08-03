@@ -31,7 +31,7 @@ public partial class Unit : MonoBehaviour
         {
             // 实时精确度应当介于最小值 10 到最大值 accuracy 之间。
             // accuracy 是技能数据，指技能最大的精确度。
-            runtimeAccuracy = Mathf.Clamp(value, 10f, skillTable.CurrentSkill.Data.Accuracy);
+            runtimeAccuracy = Mathf.Clamp(value, skillTable.CurrentSkill.Data.MinAccuracy, skillTable.CurrentSkill.Data.Accuracy);
         }
     }
     // 技能表

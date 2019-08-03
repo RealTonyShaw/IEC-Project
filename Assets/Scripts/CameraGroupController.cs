@@ -1,10 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(Camera))]
-public class CameraCtrl : MonoBehaviour
+
+public class CameraGroupController : MonoBehaviour
 {
     #region 参数
+    [Header("Camera Group Controller")]
+    // 用于控制位置的父物体
+    public Transform PositionParent;
+    // 用于控制镜头抖动的父物体
+    public Transform TurbulenceParent;
+    public Transform CameraGroupXAxis;
+    public Transform CameraGroupYAxis;
+    // 主摄像机
+    public Camera MainCamera;
+    // 辅助摄像机
+    public List<Camera> AssistantCameras;
     [Header("Player View Control")]
     public float XSensitivity = 2f;
     public float YSensitivity = 4f;
@@ -28,42 +39,25 @@ public class CameraCtrl : MonoBehaviour
     public AnimationCurve FovCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 1.3f);
     public float MaxVelocity = 50f;
     public float smoothTimeForFov = 3f;
-
-    Camera thisCamera;
-
+    
     #endregion
-    public static CameraCtrl Instance
+    public static CameraGroupController Instance
     {
         get; private set;
     }
-
-    Transform parent;
+    
     private void Awake()
     {
-        thisCamera = GetComponent<Camera>();
-        parent = transform.parent;
         Instance = this;
     }
 
+
+
     private void Start()
     {
-        if (parent == null)
-        {
-            GameObject obj = Resources.Load<GameObject>("EmptyObject");
-            obj = Instantiate(obj, transform.position, transform.rotation);
-            parent = obj.transform;
-            transform.SetParent(obj.transform);
-        }
         //辅助计算x轴和y轴旋转
-        GameObject emptyObj = GameDB.Instance.EmptyObject;
-        cameraX = Instantiate(emptyObj).transform;
-        if (cameraX == null)
-            Debug.Log("Null");
-        cameraX.name = "camera x axis";
-        cameraY = Instantiate(emptyObj).transform;
-        cameraY.name = "camera y axis";
-        //cameraX = transform.GetChild(0);
-        //cameraY = transform;
+        cameraX = CameraGroupXAxis;
+        cameraY = CameraGroupYAxis;
         cameraTargatXRot = cameraX.localRotation;
         cameraTargetYRot = cameraY.localRotation;
 
@@ -84,7 +78,7 @@ public class CameraCtrl : MonoBehaviour
 
     public void UpdatePosition()
     {
-        prevPos = parent.position;
+        prevPos = PositionParent.position;
     }
 
     Vector3 prevPos;
@@ -95,7 +89,7 @@ public class CameraCtrl : MonoBehaviour
         {
             return;
         }
-        parent.position = MoveCtrl.Instance.eyeTransform.position;
+        PositionParent.position = MoveCtrl.Instance.eyeTransform.position;
         UpdatePosition();
         UpdateCameraRotation(Time.fixedDeltaTime);
         SetAngleAroundZAxis(Time.fixedDeltaTime);
@@ -128,7 +122,7 @@ public class CameraCtrl : MonoBehaviour
             cameraX.localRotation = cameraTargatXRot;
             cameraY.localRotation = cameraTargetYRot;
         }
-        parent.localEulerAngles = new Vector3(cameraX.localEulerAngles.x, cameraY.localEulerAngles.y, 0f);
+        PositionParent.localEulerAngles = new Vector3(cameraX.localEulerAngles.x, cameraY.localEulerAngles.y, 0f);
         //SetAngleAroundZAxis(GameCtrl.PlayerUnit.EyeTransform.eulerAngles.z);
         //parent.rotation = GameCtrl.PlayerUnit.EyeTransform.rotation;
     }

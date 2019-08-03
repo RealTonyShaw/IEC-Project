@@ -60,7 +60,7 @@ public class MoveCtrl : MonoBehaviour
     {
         if (!InputMgr.MobileControlKeyEnable) return;
 
-        Vector3 tarFwd = CameraCtrl.Instance.transform.forward;
+        Vector3 tarFwd = CameraGroupController.Instance.transform.forward;
         Vector3 fwd = transform.forward;
         transform.forward = Vector3.Slerp(fwd, tarFwd, APPROACHING_CONST * dt);
     }
@@ -73,7 +73,7 @@ public class MoveCtrl : MonoBehaviour
     {
         rigbody.velocity += transform.forward * ac * unitAttributes.Acceleration * Time.fixedDeltaTime;
         // 令速度方向趋近镜头方向。
-        rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, CameraCtrl.Instance.transform.forward, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
+        rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, CameraGroupController.Instance.transform.forward, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
     }
     
 

@@ -17,7 +17,7 @@ public class AimController : MonoBehaviour
     {
         get
         {
-            return CameraCtrl.Instance.GetClosestUnit();
+            return CameraGroupController.Instance.GetClosestUnit();
         }
     }
 
@@ -72,7 +72,7 @@ public class AimController : MonoBehaviour
             case SkillType.BurstfireSkill:
                 if (InputMgr.AimingButtonPressed)
                 {
-                    TargetForBurstfireSkill = CameraCtrl.Instance.GetClosestUnit();
+                    TargetForBurstfireSkill = CameraGroupController.Instance.GetClosestUnit();
                 }
                 break;
             case SkillType.ContinuousSkill:
