@@ -41,6 +41,7 @@ public class CameraGroupController : MonoBehaviour
     public float smoothTimeForFov = 3f;
     
     #endregion
+
     public static CameraGroupController Instance
     {
         get; private set;
@@ -102,6 +103,7 @@ public class CameraGroupController : MonoBehaviour
         yRot = Input.GetAxis("Mouse X") * YSensitivity;
         cameraTargatXRot *= Quaternion.Euler(-xRot, 0f, 0f);
         cameraTargetYRot *= Quaternion.Euler(0f, yRot, 0f);
+        
 
         if (clampVerticalRotation)
         {
@@ -167,11 +169,6 @@ public class CameraGroupController : MonoBehaviour
         q.w = 1f;
 
         float angleY = 2f * Mathf.Rad2Deg * Mathf.Atan(q.y);
-        //Vector3 fwd = transform.forward;
-        //fwd.y = 0f;
-        //Vector3 playerFwd = MoveCtrl.Instance.eyeTransform.forward;
-        //playerFwd.y = 0f;
-        //float angleY = Vector3.SignedAngle(playerFwd, fwd, Vector3.up);
         float bias = angleY - MoveCtrl.Instance.eyeTransform.eulerAngles.y;
         if (bias > 180f) bias -= 360f;
         else if (bias < -180f) bias += 360f;
