@@ -34,9 +34,10 @@ public class AimController : MonoBehaviour
 
         private set
         {
-            if (value == target)
+            if (value != null && value == target)
             {
                 AimingTime += Time.deltaTime;
+                Debug.Log(string.Format("Aiming at {0} for {1} sec", target.gameObject.name, AimingTime));
             }
             else
             {
