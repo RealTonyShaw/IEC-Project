@@ -12,7 +12,7 @@ public class PlayerBulletSpawnControl : MonoBehaviour
     {
         if (spawnParent != null)
         {
-            spawnParent.rotation = CameraCtrl.Instance.transform.rotation;
+            spawnParent.rotation = CameraGroupController.Instance.transform.rotation;
         }
     }
 }

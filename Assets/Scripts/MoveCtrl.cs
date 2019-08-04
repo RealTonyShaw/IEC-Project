@@ -25,7 +25,7 @@ public class MoveCtrl : MonoBehaviour
     public float speed = 0f;
     public float angularSpeed = 0f;
 
-    private const float  APPROACHING_CONST = 3f;
+    private const float  APPROACHING_CONST = 5f;
 
     private void Awake()
     {
@@ -60,10 +60,9 @@ public class MoveCtrl : MonoBehaviour
     {
         if (!InputMgr.MobileControlKeyEnable) return;
 
-        Quaternion tarRot = CameraCtrl.Instance.transform.rotation;
-        Quaternion rot = transform.rotation;
-        Quaternion dRot = Quaternion.Slerp(rot, tarRot, APPROACHING_CONST * dt);
-        transform.rotation = dRot;
+        Vector3 tarFwd = CameraGroupController.Instance.transform.forward;
+        Vector3 fwd = transform.forward;
+        transform.forward = Vector3.Slerp(fwd, tarFwd, APPROACHING_CONST * dt);
     }
 
     /// <summary>
@@ -74,7 +73,7 @@ public class MoveCtrl : MonoBehaviour
     {
         rigbody.velocity += transform.forward * ac * unitAttributes.Acceleration * Time.fixedDeltaTime;
         // 令速度方向趋近镜头方向。
-        rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, CameraCtrl.Instance.transform.forward, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
+        rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, CameraGroupController.Instance.transform.forward, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
     }
     
 

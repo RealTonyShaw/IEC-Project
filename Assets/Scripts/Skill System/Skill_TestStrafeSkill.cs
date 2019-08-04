@@ -25,5 +25,7 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill
         Vector3 dir = Gamef.GenerateRandomDirection(Caster.transform.forward, Caster.RuntimeAccuracy);
         tmp = Gamef.Instantiate(fireballPrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
         tmp.GetComponent<Missile>().Init(Caster, AimController.Instance.TargetForStrafeSkill, this);
+        Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
+        Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
     }
 }
