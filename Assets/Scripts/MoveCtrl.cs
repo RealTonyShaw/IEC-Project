@@ -22,10 +22,9 @@ public class MoveCtrl : MonoBehaviour
 
     public Transform chara;
     public Transform eyeTransform;
-    public float speed = 0f;
     public float angularSpeed = 0f;
 
-    private const float  APPROACHING_CONST = 5f;
+    private const float APPROACHING_CONST = 5f;
 
     private void Awake()
     {
@@ -35,12 +34,12 @@ public class MoveCtrl : MonoBehaviour
 
     private float v;
     private float h;
-    private float ac;
+    //private float ac;
     private void Update()
     {
         v = /*Input.GetAxis("Vertical")*/InputMgr.GetVerticalAxis();
         h = /*Input.GetAxis("Horizontal")*/InputMgr.GetHorizontalAxis();
-        ac = Input.GetKey(InputMgr.AccelerationKey) ? 1f : 0f;
+        //ac = Input.GetKey(InputMgr.AccelerationKey) ? 1f : 0f;
     }
 
     private void FixedUpdate()
@@ -53,6 +52,17 @@ public class MoveCtrl : MonoBehaviour
         //speed = rigbody.velocity.magnitude;
         //angularSpeed = srb.angularVelocity.magnitude * Mathf.Rad2Deg;
     }
+
+    /// <summary>
+    /// 目标正方向，由转向Turning设定
+    /// </summary>
+    Vector3 targetFwd;
+
+    /// <summary>
+    /// 速率，由Update Velocity设置
+    /// </summary>
+    float speed = 0f;
+
     /// <summary>
     /// 转向。即更新转向速度angularVelocity
     /// </summary>
@@ -60,9 +70,17 @@ public class MoveCtrl : MonoBehaviour
     {
         if (!InputMgr.MobileControlKeyEnable) return;
 
-        Vector3 tarFwd = CameraGroupController.Instance.transform.forward;
+        targetFwd = CameraGroupController.Instance.transform.forward;
+        if (h < -GameDB.FLOAT_ZERO)
+        {
+            targetFwd = Quaternion.AngleAxis(-GameDB.MAX_HORIZONTAL_ANGLE, CameraGroupController.Instance.transform.up) * targetFwd;
+        }
+        else if (h > GameDB.FLOAT_ZERO)
+        {
+            targetFwd = Quaternion.AngleAxis(GameDB.MAX_HORIZONTAL_ANGLE, CameraGroupController.Instance.transform.up) * targetFwd;
+        }
         Vector3 fwd = transform.forward;
-        transform.forward = Vector3.Slerp(fwd, tarFwd, APPROACHING_CONST * dt);
+        transform.forward = Vector3.Slerp(fwd, targetFwd, APPROACHING_CONST * dt);
     }
 
     /// <summary>
@@ -71,11 +89,19 @@ public class MoveCtrl : MonoBehaviour
     /// <param name="dt">时间间隔</param>
     private void UpdateVelocity(float dt)
     {
-        rigbody.velocity += transform.forward * ac * unitAttributes.Acceleration * Time.fixedDeltaTime;
+        float v = this.v < -GameDB.FLOAT_ZERO ? this.v * GameDB.MAX_BACKWARD_SPEED_RATE : this.v;
+        rigbody.velocity += transform.forward * v * unitAttributes.Acceleration * Time.fixedDeltaTime;
         // 令速度方向趋近镜头方向。
-        rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, CameraGroupController.Instance.transform.forward, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
+        if (Vector3.Angle(rigbody.velocity, targetFwd) < 90f + GameDB.MAX_HORIZONTAL_ANGLE + GameDB.FLOAT_ZERO)
+        {
+            rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
+        }
+        else
+        {
+            rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, -targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
+        }
     }
-    
+
 
     private bool isInit = false;
     private void Init(EventMgr.UnitBirthEventInfo info)
