@@ -38,6 +38,9 @@ public partial class Unit : MonoBehaviour
     SkillTable skillTable = new SkillTable();
     public SkillTable SkillTable => skillTable;
 
+    // 位置同步
+    public readonly ISyncMovement SyncMovement = null;
+
     #region 生命周期
     private void Awake()
     {
@@ -60,6 +63,7 @@ public partial class Unit : MonoBehaviour
         lock (GameDB.unitPool)
             attributes.ID = Gamef.UnitBirth(this);
         attributes.Init(this);
+        SyncMovement?.Init(this);
         //if (unit.data.IsCaster)
         //{
         //    //将技能施法者设置为自己, 初始化技能
@@ -95,9 +99,16 @@ public partial class Unit : MonoBehaviour
         //触发buff效果
         BuffEvent?.Invoke();
 
+
         ////单位画布面对摄像机
         //if (unitCanvas != null)
         //    unitCanvas.transform.forward = unitCamera.position - unitCanvas.transform.position;
+    }
+
+    private void FixedUpdate()
+    {
+        // 执行位置同步
+        SyncMovement?.Update(Time.fixedDeltaTime);
     }
 
     IEnumerator DisplayProperity()
@@ -112,7 +123,7 @@ public partial class Unit : MonoBehaviour
     private void OnDisable()
     {
         //删除物体
-        Destroy(gameObject, 1f);
+        Gamef.Destroy(gameObject);
     }
 
     private void OnDestroy()
