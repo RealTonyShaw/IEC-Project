@@ -35,11 +35,15 @@ public partial class Unit : MonoBehaviour
         }
     }
     // 技能表
-    SkillTable skillTable = new SkillTable();
-    public SkillTable SkillTable => skillTable;
+    ISkillTable skillTable = new SkillTable();
+    public ISkillTable SkillTable => skillTable;
 
     // 位置同步
     public readonly ISyncMovement SyncMovement = null;
+    // 单位状态同步
+    public readonly ISyncUnitState SyncUnitState = null;
+    // 玩家施法同步
+    public readonly ISyncPlayerCastingState SyncPlayerCastingState = null;
 
     #region 生命周期
     private void Awake()
@@ -64,15 +68,6 @@ public partial class Unit : MonoBehaviour
             attributes.ID = Gamef.UnitBirth(this);
         attributes.Init(this);
         SyncMovement?.Init(this);
-        //if (unit.data.IsCaster)
-        //{
-        //    //将技能施法者设置为自己, 初始化技能
-        //    for (int i = 0; i < 4; i++)
-        //    {
-        //        skillTable.skills[i].Init(unitInfo, unit.data.skills[i]);
-        //    }
-        //    skillTable.CurrentIndex = 0;
-        //}
         //测试用
         if (attributes.name == UnitName.Player)
         {

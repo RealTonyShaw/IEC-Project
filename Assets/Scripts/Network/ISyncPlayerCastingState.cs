@@ -13,14 +13,14 @@ public interface ISyncPlayerCastingState
     /// 同步技能开始施法。
     /// </summary>
     /// <param name="instant">开始施法的时刻</param>
-    /// <param name="skillIndex">技能序号，指玩家的技能槽位的序号，取值0,1,2,3</param>
+    /// <param name="skillIndex">技能序号，指玩家的技能槽位的序号，取值1,2,3,4</param>
     void SyncStart(long instant, int skillIndex);
 
     /// <summary>
     /// 同步技能停止施法。
     /// </summary>
     /// <param name="instant">停止施法的时刻</param>
-    /// <param name="skillIndex">技能序号，指玩家的技能槽位的序号，取值0,1,2,3</param>
+    /// <param name="skillIndex">技能序号，指玩家的技能槽位的序号，取值1,2,3,4</param>
     void SyncStop(long instant, int skillIndex);
 
     /// <summary>
