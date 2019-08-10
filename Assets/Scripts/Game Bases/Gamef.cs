@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -188,6 +189,16 @@ public static partial class Gamef
         return rawDamage;
     }
 
+    /// <summary>
+    /// 延迟执行动作。
+    /// </summary>
+    /// <param name="action">动作，即延迟执行的空参数空返回值的方法</param>
+    /// <param name="time">延迟时间</param>
+    public static void DelayedExecution(Action action, float time)
+    {
+        GameCtrl.Instance.DelayedExecution(action, time);
+    }
+
     #endregion
 
     #region 游戏指令
@@ -338,8 +349,8 @@ public static partial class Gamef
 
         Vector3 axis = Vector3.right;
         float maxAngle = 100 - runtimeAccuracy;
-        float vAngle = Random.Range(-maxAngle, maxAngle);
-        float hAngle = Random.Range(0, 360f);
+        float vAngle = UnityEngine.Random.Range(-maxAngle, maxAngle);
+        float hAngle = UnityEngine.Random.Range(0, 360f);
         Vector3 res = Quaternion.AngleAxis(vAngle, axis) * Vector3.forward;
         return Quaternion.AngleAxis(hAngle, Vector3.forward) * res;
     }
@@ -354,8 +365,8 @@ public static partial class Gamef
     {
         Vector3 axis = forward == Vector3.forward ? Vector3.right : Vector3.Cross(forward, Vector3.forward).normalized;
         float maxAngle = 100 - runtimeAccuracy;
-        float vAngle = Random.Range(-maxAngle, maxAngle);
-        float hAngle = Random.Range(0, 360f);
+        float vAngle = UnityEngine.Random.Range(-maxAngle, maxAngle);
+        float hAngle = UnityEngine.Random.Range(0, 360f);
         Vector3 res = Quaternion.AngleAxis(vAngle, axis) * forward;
         return Quaternion.AngleAxis(hAngle, forward) * res;
     }
