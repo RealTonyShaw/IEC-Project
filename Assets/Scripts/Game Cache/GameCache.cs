@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum PrefabName
-{
-    EmptyObject = 0,
-    Fireball = 1,
-    黑魔爆球 = 2,
-    FireballDeathEffect,
-}
+// 游戏物体Cache问题：
+// 1.如何回收比较合理？
+//   1） 根据存放数量递减：第1-4个，180s；第5-12个，100s；第13-20个，50s；大于20个，15s。
+//   2） 存在容量上限，不超过30个同类物体。
+// 2.对可回收物体作何要求？
+//   1）	要求Prefab上挂载Reusable Object脚本并选择其对应的Prefab Name
+//   2）	要求物体在Enable后（或者Disable后）能够自行重置自身数据，以供再次使用。
 
 public class GameObjectCache
 {
