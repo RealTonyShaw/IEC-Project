@@ -143,7 +143,7 @@ public static class InputMgr
     /// 当向左键被玩家按下时返回真
     /// </summary>
     /// <returns></returns>
-    public static bool GetLeftkey()
+    public static bool GetLeftKey()
     {
         return MobileControlKeyEnable && Input.GetKey(LeftKey);
     }

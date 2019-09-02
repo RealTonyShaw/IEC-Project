@@ -12,11 +12,17 @@ public interface ISkillTable
     /// <summary>
     /// 转换到玩家所选的技能
     /// </summary>
-    /// <param name="info">键盘按下事件信息</param>
-    void SwitchCell(EventMgr.KeyDownEventInfo info);
+    /// <param name="cellIndex">技能槽位序号，可以是1,2,3</param>
+    void SwitchCell(int cellIndex);
     /// <summary>
-    /// 获得现在玩家技能的序号，可能是 1、2、3 号技能
+    /// 获得现在玩家技能，可能是 1、2、3 号技能
     /// </summary>
     /// <returns>技能，1、2 或者 3 号技能</returns>
     ISkill CurrentSkill { get; }
+
+    /// <summary>
+    /// 获得现在玩家技能槽位，可能是 1、2、3 号技能槽位
+    /// </summary>
+    /// <returns>技能槽位，1、2 或者 3 号技能槽位</returns>
+    ISkillCell CurrentCell { get; }
 }

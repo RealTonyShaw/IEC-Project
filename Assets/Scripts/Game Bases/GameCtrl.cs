@@ -41,6 +41,21 @@ public partial class GameCtrl : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// 延迟执行动作。
+    /// </summary>
+    /// <param name="action">动作，即延迟执行的空参数空返回值的方法</param>
+    /// <param name="time">延迟时间</param>
+    public void DelayedExecution(Action action, float time)
+    {
+        StartCoroutine(m_delayedExecution(action, time));
+    }
+    IEnumerator m_delayedExecution(Action action, float time)
+    {
+        yield return new WaitForSeconds(time);
+        action();
+    }
+
     public bool BuildDataPath = false;
     #region 生命周期
     private void Awake()

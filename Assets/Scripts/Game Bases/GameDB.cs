@@ -52,10 +52,14 @@ public partial class GameDB
     //拉升速度与最大转向速度比值
     public const float PULL_UP_CONST = 0.5f;
     public const float X_AXIS_BALANCING_CONST = 0.5f;
+    // 最大后退速度与最大速度的比值
+    public const float MAX_BACKWARD_SPEED_RATE = 0.75f;
     //最大俯仰角
     public const float MAX_ROT_X = 75f;
     //最大俯仰角的倒数
     public const float RECIPROCAL_MAX_ROT_X = 1 / MAX_ROT_X;
+    // 按下水平键（AD键或左右箭头）时，飞行方向与摄像机正方向的偏离角度
+    public const float MAX_HORIZONTAL_ANGLE = 45f;
     /// <summary>
     /// 单位移动阻尼
     /// </summary>
@@ -85,6 +89,8 @@ public partial class GameDB
     /// 最大精确度加成。如果点射型技能经过足够长时间的瞄准，其精确度最大加成即为该值。
     /// </summary>
     public const float MAX_ACCURACY_BONUS = 1f;
+
+    public const float FLOAT_ZERO = 1e-7f;
     #endregion
 
     #region 单位字典
