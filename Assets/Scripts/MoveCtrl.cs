@@ -25,7 +25,7 @@ public class MoveCtrl : MonoBehaviour
     public float angularSpeed = 0f;
 
     private const float APPROACHING_CONST = 5f;
-
+    private readonly float horizonConst = GameDB.HORIZONTAL_ROTATION_SPEED / GameDB.MAX_HORIZONTAL_ANGLE;
     private void Awake()
     {
         EventMgr.UnitBirthEvent.AddListener(Init);
@@ -34,6 +34,7 @@ public class MoveCtrl : MonoBehaviour
 
     private float v;
     private float h;
+    private float angleBias = 0f;
     //private float ac;
     private void Update()
     {
@@ -47,8 +48,11 @@ public class MoveCtrl : MonoBehaviour
         if (InputMgr.MobileControlKeyEnable)
         {
             Turning(Time.fixedDeltaTime);
-            UpdateVelocity(Time.fixedDeltaTime);
         }
+        UpdateVelocity(Time.fixedDeltaTime);
+
+        Vector3 fwd = transform.forward;
+        transform.forward = Vector3.Slerp(fwd, targetFwd, APPROACHING_CONST * Time.fixedDeltaTime);
         //speed = rigbody.velocity.magnitude;
         //angularSpeed = srb.angularVelocity.magnitude * Mathf.Rad2Deg;
     }
@@ -71,16 +75,43 @@ public class MoveCtrl : MonoBehaviour
         if (!InputMgr.MobileControlKeyEnable) return;
 
         targetFwd = CameraGroupController.Instance.transform.forward;
-        if (h < -GameDB.FLOAT_ZERO)
+        if (Mathf.Abs(h) > GameDB.FLOAT_ZERO)
         {
-            targetFwd = Quaternion.AngleAxis(-GameDB.MAX_HORIZONTAL_ANGLE, CameraGroupController.Instance.transform.up) * targetFwd;
+            // 更新 angle bias 的值
+            angleBias += h * GameDB.HORIZONTAL_ROTATION_SPEED * dt;
         }
-        else if (h > GameDB.FLOAT_ZERO)
-        {
-            targetFwd = Quaternion.AngleAxis(GameDB.MAX_HORIZONTAL_ANGLE, CameraGroupController.Instance.transform.up) * targetFwd;
-        }
-        Vector3 fwd = transform.forward;
-        transform.forward = Vector3.Slerp(fwd, targetFwd, APPROACHING_CONST * dt);
+        //else if (Mathf.Abs(angleBias) > GameDB.FLOAT_ZERO)
+        //{
+        //    if (angleBias < 0f)
+        //    {
+        //        angleBias += GameDB.HORIZONTAL_ROTATION_SPEED * Time.fixedDeltaTime;
+        //        if (angleBias > 0f)
+        //        {
+        //            angleBias = 0f;
+        //        }
+        //    }
+        //    else if (angleBias > 0f)
+        //    {
+        //        angleBias -= GameDB.HORIZONTAL_ROTATION_SPEED * Time.fixedDeltaTime;
+        //        if (angleBias < 0f)
+        //        {
+        //            angleBias = 0f;
+        //        }
+        //    }
+        //}
+        angleBias -= angleBias * horizonConst * Time.fixedDeltaTime;
+        // 根据 angle bias 设定前行方向
+        targetFwd = Quaternion.AngleAxis(angleBias, CameraGroupController.Instance.transform.up) * targetFwd;
+
+        // 根据 angle bias 设定前行方向
+        //if (h < -GameDB.FLOAT_ZERO)
+        //{
+        //    targetFwd = Quaternion.AngleAxis(-angleBias, CameraGroupController.Instance.transform.up) * targetFwd;
+        //}
+        //else if (h > GameDB.FLOAT_ZERO)
+        //{
+        //    targetFwd = Quaternion.AngleAxis(angleBias, CameraGroupController.Instance.transform.up) * targetFwd;
+        //}
     }
 
     /// <summary>
@@ -92,7 +123,7 @@ public class MoveCtrl : MonoBehaviour
         float v = this.v < -GameDB.FLOAT_ZERO ? this.v * GameDB.MAX_BACKWARD_SPEED_RATE : this.v;
         rigbody.velocity += transform.forward * v * unitAttributes.Acceleration * Time.fixedDeltaTime;
         // 令速度方向趋近镜头方向。
-        if (Vector3.Angle(rigbody.velocity, targetFwd) < 90f + GameDB.MAX_HORIZONTAL_ANGLE + GameDB.FLOAT_ZERO)
+        if (Vector3.Angle(rigbody.velocity, targetFwd) < 90f + Mathf.Abs(angleBias) + GameDB.FLOAT_ZERO)
         {
             rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
         }

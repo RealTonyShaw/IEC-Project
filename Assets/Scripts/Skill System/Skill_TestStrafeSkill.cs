@@ -22,7 +22,7 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill
 
     protected override void Shoot()
     {
-        Vector3 dir = Gamef.GenerateRandomDirection(Caster.transform.forward, Caster.RuntimeAccuracy);
+        Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy);
         tmp = Gamef.Instantiate(fireballPrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
         tmp.GetComponent<Missile>().Init(Caster, AimController.Instance.TargetForStrafeSkill, this);
         Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
