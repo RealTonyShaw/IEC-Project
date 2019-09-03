@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class SyncMovement : ISyncMovement
 {
+
     Unit unit;
 
     // 保存上上次 Transform 参数
@@ -56,4 +57,5 @@ public class SyncMovement : ISyncMovement
     {
         
     }
+
 }
