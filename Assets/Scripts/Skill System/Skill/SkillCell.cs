@@ -104,6 +104,14 @@ public class SkillCell : ISkillCell
     {
         StopCasting();
     }
+    private long seed;
+    private bool useSeed = false;
+    public void SetSeed(long seed)
+    {
+        useSeed = true;
+        this.seed = seed;
+        
+    }
 
     private void StartCasting()
     {

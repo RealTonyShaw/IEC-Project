@@ -20,12 +20,14 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill
             Debug.LogError("未能找到Prefab名为：Fireball");
     }
 
-    protected override void Shoot()
+    protected override Missile Shoot()
     {
-        Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy);
+        Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
         tmp = Gamef.Instantiate(fireballPrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
-        tmp.GetComponent<Missile>().Init(Caster, AimController.Instance.TargetForStrafeSkill, this);
+        Missile missile = tmp.GetComponent<Missile>();
+        missile.Init(Caster, AimController.Instance.TargetForStrafeSkill, this);
         Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
         Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
+        return missile;
     }
 }

@@ -12,11 +12,12 @@ class SyncPlayerCasting : ISyncPlayerCastingState
     {
         this.unit = unit;
     }
-
+    int skillIndex;
     public void SyncStart(long instant, int skillIndex)
     {
         // get system time. MUST make sure that the system time would not tremble.
         long sysTime = 0;
+        this.skillIndex = skillIndex;
         // 施法事件还未发生
         if (sysTime < instant)
         {
@@ -28,23 +29,32 @@ class SyncPlayerCasting : ISyncPlayerCastingState
         }
         else
         {
-
+            m_conpensate(instant);
         }
     }
 
     public void SyncStop(long instant, int skillIndex)
     {
-        throw new NotImplementedException();
+        unit.SkillTable.SwitchCell(skillIndex);
+        unit.SkillTable.CurrentCell.ForceToStopCasting();
     }
 
 
     void m_startCastingImmediately()
     {
+        unit.SkillTable.SwitchCell(skillIndex);
         unit.SkillTable.CurrentCell.OnMouseButtonDown();
     }
 
-    void m_conpensate()
+    void m_conpensate(long instant)
     {
-
+        unit.SkillTable.SwitchCell(skillIndex);
+        ISkill skill = unit.SkillTable.CurrentSkill;
+        // 设置施法时刻
+        if (skill is ISkillCastInstant castInstant)
+        {
+            castInstant.SetInstant(instant);
+        }
+        unit.SkillTable.CurrentCell.OnMouseButtonDown();
     }
 }
