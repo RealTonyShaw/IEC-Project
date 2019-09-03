@@ -19,7 +19,7 @@ public class CrosshairController : MonoBehaviour
     {
         ray = CameraGroupController.Instance.MainCamera.ScreenPointToRay(new Vector3(Screen.width / 2, Screen.height / 2, 0));
         RaycastHit hit;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
             Debug.Log("Detecting");
             if (Physics.Raycast(ray, out hit))
@@ -27,6 +27,8 @@ public class CrosshairController : MonoBehaviour
                 Debug.Log("Detected");
                 Emerging();
             }
+            else
+                Disappearing();
         }
         Disappearing();
     }
@@ -45,5 +47,10 @@ public class CrosshairController : MonoBehaviour
         tempColor.a -= 0.1f;
         aimingCrosshair.GetComponent<Image>().color = tempColor;
         Debug.Log("Disappearing");
+    }
+
+    float GetAlphaOfCrosshair()
+    {
+        return aimingCrosshair.GetComponent<Image>().color.a;
     }
 }

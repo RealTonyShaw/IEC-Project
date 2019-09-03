@@ -28,8 +28,9 @@ public interface ISyncMovement
     /// </summary>
     /// <param name="instant">时刻，即单位处于该状态时的时刻</param>
     /// <param name="acceleration">加速度，取值为-1,0,1，分别表示加速，倒退和不变</param>
+    /// <param name="angularAcceleration">角加速度，取值为-1,0,1，分别表示左转，不变和右转</param>
     /// <param name="cameraForward">摄像机正方向</param>
-    void SyncAcceleration(long instant, int acceleration, Vector3 cameraForward);
+    void SyncAcceleration(long instant, int acceleration, int angularAcceleration, Vector3 cameraForward);
 
     /// <summary>
     /// 初始化同步类。
