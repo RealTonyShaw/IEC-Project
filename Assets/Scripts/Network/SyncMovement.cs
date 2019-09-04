@@ -8,11 +8,11 @@ public class SyncMovement : ISyncMovement
     Unit unit;
 
     // 保存上上次 Transform 参数
-    long firstTransformInstant;
-    Vector3 firstPosition;
-    Quaternion firstRotation;
-    Vector3 firstVelocity;
-    Vector3 firstAngularVelocity;
+    long firstTransformInstant = 0;
+    Vector3 firstPosition = new Vector3();
+    Quaternion firstRotation = new Quaternion();
+    Vector3 firstVelocity = new Vector3();
+    Vector3 firstAngularVelocity = new Vector3();
 
     // 保存上次 Transform 参数
     long lastTransformInstant;
@@ -29,6 +29,13 @@ public class SyncMovement : ISyncMovement
 
     // 预测的参数
     long currentInstant;
+    Vector3 currentPosition;
+    Quaternion currentRotation;
+    Vector3 currentVelocity;
+    Vector3 currentAngularVelocity;
+
+    // 埃尔米特插值
+    IHermiteInterpolation interpolate = new HermiteInterpolation();
 
 
     public void Init(Unit unit)
@@ -55,7 +62,11 @@ public class SyncMovement : ISyncMovement
 
     public void Update(float dt)
     {
-        
+        this.currentPosition.x = interpolate.Hermite(firstTransformInstant, firstPosition.x, firstVelocity.x, lastTransformInstant, lastPosition.x, lastVelocity.x, this.currentInstant);
+        this.currentPosition.y = interpolate.Hermite(firstTransformInstant, firstPosition.y, firstVelocity.y, lastTransformInstant, lastPosition.y, lastVelocity.y, this.currentInstant);
+        this.currentPosition.z = interpolate.Hermite(firstTransformInstant, firstPosition.z, firstVelocity.z, lastTransformInstant, lastPosition.z, lastVelocity.z, this.currentInstant);
+        this.currentVelocity = lastVelocity;
+        this.currentAngularVelocity = lastAngularVelocity;
     }
 
 }
