@@ -10,8 +10,6 @@ public class CameraGroupController : MonoBehaviour
     public Transform PositionParent;
     // 用于控制镜头抖动的父物体
     public Transform TurbulenceParent;
-    public Transform CameraGroupXAxis;
-    public Transform CameraGroupYAxis;
     // 主摄像机
     public Camera MainCamera;
     // 辅助摄像机
@@ -28,11 +26,7 @@ public class CameraGroupController : MonoBehaviour
     public bool smooth = true;
     public float smoothTime = 15f;
     public bool lockCursor = true;
-    [SerializeField]
-    Transform cameraX;
-    Transform cameraY;
-    Quaternion cameraTargetYRot;
-    Quaternion cameraTargatXRot;
+    Quaternion xAxis = Quaternion.identity, yAxis = Quaternion.identity;
 
     [Header("牵连效果")]
     public bool enableImplicatedEffect = true;
@@ -56,12 +50,6 @@ public class CameraGroupController : MonoBehaviour
 
     private void Start()
     {
-        //辅助计算x轴和y轴旋转
-        cameraX = CameraGroupXAxis;
-        cameraY = CameraGroupYAxis;
-        cameraTargatXRot = cameraX.localRotation;
-        cameraTargetYRot = cameraY.localRotation;
-
         lockCursor = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -101,30 +89,31 @@ public class CameraGroupController : MonoBehaviour
     {
         xRot = Input.GetAxis("Mouse Y") * XSensitivity;
         yRot = Input.GetAxis("Mouse X") * YSensitivity;
-        cameraTargatXRot *= Quaternion.Euler(-xRot, 0f, 0f);
-        cameraTargetYRot *= Quaternion.Euler(0f, yRot, 0f);
+        Quaternion xAxis = this.xAxis, yAxis = this.yAxis;
+        xAxis *= Quaternion.Euler(-xRot, 0f, 0f);
+        yAxis *= Quaternion.Euler(0f, yRot, 0f);
         
 
         if (clampVerticalRotation)
         {
-            cameraTargatXRot = ClampRotationAroundXAxis(cameraTargatXRot);
+            xAxis = ClampRotationAroundXAxis(xAxis);
         }
         if (clampHorizontalRotation)
         {
-            cameraTargetYRot = ClampRotationAroundYAxis(cameraTargetYRot);
+            yAxis = ClampRotationAroundYAxis(yAxis);
         }
 
         if (smooth)
         {
-            cameraX.localRotation = Quaternion.Slerp(cameraX.localRotation, cameraTargatXRot, dt * smoothTime);
-            cameraY.localRotation = Quaternion.Slerp(cameraY.localRotation, cameraTargetYRot, dt * smoothTime);
+            this.xAxis = Quaternion.Slerp(this.xAxis, xAxis, dt * smoothTime);
+            this.yAxis = Quaternion.Slerp(this.yAxis, yAxis, dt * smoothTime);
         }
         else
         {
-            cameraX.localRotation = cameraTargatXRot;
-            cameraY.localRotation = cameraTargetYRot;
+            this.xAxis = xAxis;
+            this.yAxis = yAxis;
         }
-        PositionParent.localEulerAngles = new Vector3(cameraX.localEulerAngles.x, cameraY.localEulerAngles.y, 0f);
+        PositionParent.localEulerAngles = new Vector3(this.xAxis.eulerAngles.x, this.yAxis.eulerAngles.y, 0f);
         //SetAngleAroundZAxis(GameCtrl.PlayerUnit.EyeTransform.eulerAngles.z);
         //parent.rotation = GameCtrl.PlayerUnit.EyeTransform.rotation;
     }
