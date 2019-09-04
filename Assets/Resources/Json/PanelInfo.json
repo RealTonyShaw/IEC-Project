@@ -1,0 +1,12 @@
+{
+  "panelInfo": [
+    {
+      "panelTypeString": "MainMenu",
+      "panelPath": "UIPrefabs/MainMenuPanel"
+    },
+    {
+      "panelTypeString": "Start",
+      "panelPath": "UIPrefabs/StartPanel"
+    }
+  ]
+}
