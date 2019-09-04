@@ -37,7 +37,7 @@ namespace ClientBase
             }
         }
 
-        public Client Instance
+        public static Client Instance
         {
             get
             {
@@ -62,6 +62,10 @@ namespace ClientBase
             {
                 Console.WriteLine("There is a connection");
             }
+            if (client.Connected)
+            {
+                Console.WriteLine("Already connect");
+            }
             if (port < 0)
                 return;
             try
@@ -84,7 +88,7 @@ namespace ClientBase
         /// Invoke this when accept message from client.
         /// </summary>
         /// <param name="ar"></param>
-        public void ReceiveCallback(IAsyncResult ar)
+        private void ReceiveCallback(IAsyncResult ar)
         {
             try
             {
@@ -149,6 +153,26 @@ namespace ClientBase
             if (isConnect)
             {
                 return;
+            }
+            if (client == null)
+            {
+                return;
+            }
+        }
+
+        public void Disconnect()
+        {
+            if (!isConnect)
+            {
+                return;
+            }
+            try
+            {
+                client.Disconnect(true);
+                isConnect = false;
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
             }
         }
 
