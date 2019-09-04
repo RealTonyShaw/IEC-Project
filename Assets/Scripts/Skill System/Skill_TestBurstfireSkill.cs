@@ -15,9 +15,10 @@ public class Skill_TestBurstfireSkill : AbstractBurstfireSkill
         Data = Gamef.LoadSkillData(SkillName.TestBurstfireSkill);
     }
 
-    protected override void Shoot()
+    protected override Missile Shoot()
     {
         Debug.Log("Burstfire Accuracy : " + Caster.RuntimeAccuracy);
         this.Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
+        return null;
     }
 }

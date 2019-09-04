@@ -90,7 +90,7 @@ public class CameraGroupController : MonoBehaviour
         {
             return;
         }
-        PositionParent.position = MoveCtrl.Instance.eyeTransform.position;
+        PositionParent.position = MoveController.Instance.EyePosition;
         UpdatePosition();
         UpdateCameraRotation(Time.fixedDeltaTime);
         SetAngleAroundZAxis(Time.fixedDeltaTime);
@@ -169,11 +169,11 @@ public class CameraGroupController : MonoBehaviour
         q.w = 1f;
 
         float angleY = 2f * Mathf.Rad2Deg * Mathf.Atan(q.y);
-        float bias = angleY - MoveCtrl.Instance.eyeTransform.eulerAngles.y;
+        float bias = angleY - MoveController.Instance.EyeEulerAngles.y;
         if (bias > 180f) bias -= 360f;
         else if (bias < -180f) bias += 360f;
 
-        angleY = Mathf.Clamp(bias, MinY, MaxY) + MoveCtrl.Instance.eyeTransform.eulerAngles.y;
+        angleY = Mathf.Clamp(bias, MinY, MaxY) + MoveController.Instance.EyeEulerAngles.y;
 
         q.y = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleY);
 
@@ -186,7 +186,7 @@ public class CameraGroupController : MonoBehaviour
     /// <param name="angle">角度</param>
     private void SetAngleAroundZAxis(float dt)
     {
-        float angle = MoveCtrl.Instance.chara.localEulerAngles.z;
+        float angle = MoveController.Instance.CharaLocalEulerAngles.z;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(0f, 0f, angle), 10f * dt);
     }
 

@@ -60,6 +60,8 @@ public partial class GameDB
     public const float RECIPROCAL_MAX_ROT_X = 1 / MAX_ROT_X;
     // 按下水平键（AD键或左右箭头）时，飞行方向与摄像机正方向的偏离角度
     public const float MAX_HORIZONTAL_ANGLE = 45f;
+    // 按下水平键（AD键或左右箭头）时, 前进方向的旋转速度
+    public const float HORIZONTAL_ROTATION_SPEED = 135f;
     /// <summary>
     /// 单位移动阻尼
     /// </summary>
