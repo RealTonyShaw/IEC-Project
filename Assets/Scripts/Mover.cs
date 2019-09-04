@@ -7,10 +7,10 @@ using UnityEngine;
 /// </summary>
 [RequireComponent(typeof(Unit))]
 [RequireComponent(typeof(Rigidbody))]
-public class MoveCtrl : MonoBehaviour
+public class Mover : MonoBehaviour
 {
     //public GameObject CastPrefab;
-    public static MoveCtrl Instance
+    public static Mover Instance
     {
         get; set;
     }
@@ -18,37 +18,39 @@ public class MoveCtrl : MonoBehaviour
     private Unit unit;
     private UnitAttributes unitAttributes;
     private Rigidbody rigbody;
-    public Vector3 charaUp = Vector3.up;
-
-    public Transform chara;
-    public Transform eyeTransform;
-    public float angularSpeed = 0f;
+    [SerializeField]
+    private Vector3 charaUp = Vector3.up;
+    [SerializeField]
+    private Transform chara;
+    public Transform Chara => chara;
+    [SerializeField]
+    private Transform eyeTransform;
+    public Transform EyeTransform => eyeTransform;
 
     private const float APPROACHING_CONST = 5f;
-
+    private readonly float horizonConst = GameDB.HORIZONTAL_ROTATION_SPEED / GameDB.MAX_HORIZONTAL_ANGLE;
     private void Awake()
     {
         EventMgr.UnitBirthEvent.AddListener(Init);
         Instance = this;
     }
+    
+    public float V;
+    public float H;
+    public Vector3 CameraForward;
 
-    private float v;
-    private float h;
-    //private float ac;
-    private void Update()
-    {
-        v = /*Input.GetAxis("Vertical")*/InputMgr.GetVerticalAxis();
-        h = /*Input.GetAxis("Horizontal")*/InputMgr.GetHorizontalAxis();
-        //ac = Input.GetKey(InputMgr.AccelerationKey) ? 1f : 0f;
-    }
+    private float angleBias = 0f;
 
     private void FixedUpdate()
     {
         if (InputMgr.MobileControlKeyEnable)
         {
             Turning(Time.fixedDeltaTime);
-            UpdateVelocity(Time.fixedDeltaTime);
         }
+        UpdateVelocity(Time.fixedDeltaTime);
+
+        Vector3 fwd = transform.forward;
+        transform.forward = Vector3.Slerp(fwd, targetFwd, APPROACHING_CONST * Time.fixedDeltaTime);
         //speed = rigbody.velocity.magnitude;
         //angularSpeed = srb.angularVelocity.magnitude * Mathf.Rad2Deg;
     }
@@ -70,17 +72,15 @@ public class MoveCtrl : MonoBehaviour
     {
         if (!InputMgr.MobileControlKeyEnable) return;
 
-        targetFwd = CameraGroupController.Instance.transform.forward;
-        if (h < -GameDB.FLOAT_ZERO)
+        targetFwd = CameraForward;
+        if (Mathf.Abs(H) > GameDB.FLOAT_ZERO)
         {
-            targetFwd = Quaternion.AngleAxis(-GameDB.MAX_HORIZONTAL_ANGLE, CameraGroupController.Instance.transform.up) * targetFwd;
+            // 更新 angle bias 的值
+            angleBias += H * GameDB.HORIZONTAL_ROTATION_SPEED * dt;
         }
-        else if (h > GameDB.FLOAT_ZERO)
-        {
-            targetFwd = Quaternion.AngleAxis(GameDB.MAX_HORIZONTAL_ANGLE, CameraGroupController.Instance.transform.up) * targetFwd;
-        }
-        Vector3 fwd = transform.forward;
-        transform.forward = Vector3.Slerp(fwd, targetFwd, APPROACHING_CONST * dt);
+        angleBias -= angleBias * horizonConst * Time.fixedDeltaTime;
+        // 根据 angle bias 设定前行方向
+        targetFwd = Quaternion.AngleAxis(angleBias, CameraGroupController.Instance.transform.up) * targetFwd;
     }
 
     /// <summary>
@@ -89,10 +89,10 @@ public class MoveCtrl : MonoBehaviour
     /// <param name="dt">时间间隔</param>
     private void UpdateVelocity(float dt)
     {
-        float v = this.v < -GameDB.FLOAT_ZERO ? this.v * GameDB.MAX_BACKWARD_SPEED_RATE : this.v;
+        float v = this.V < -GameDB.FLOAT_ZERO ? this.V * GameDB.MAX_BACKWARD_SPEED_RATE : this.V;
         rigbody.velocity += transform.forward * v * unitAttributes.Acceleration * Time.fixedDeltaTime;
         // 令速度方向趋近镜头方向。
-        if (Vector3.Angle(rigbody.velocity, targetFwd) < 90f + GameDB.MAX_HORIZONTAL_ANGLE + GameDB.FLOAT_ZERO)
+        if (Vector3.Angle(rigbody.velocity, targetFwd) < 90f + Mathf.Abs(angleBias) + GameDB.FLOAT_ZERO)
         {
             rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
         }

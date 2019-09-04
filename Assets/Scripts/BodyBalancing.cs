@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MoveCtrl))]
+[RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(Rigidbody))]
 public class BodyBalancing : MonoBehaviour
 {
@@ -18,11 +18,11 @@ public class BodyBalancing : MonoBehaviour
     public const float APPROACHING_RATE = 5f;
 
     Rigidbody rb;
-    private MoveCtrl moveCtrl;
+    private Mover mover;
 
     void Awake()
     {
-        moveCtrl = GetComponent<MoveCtrl>();
+        mover = GetComponent<Mover>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -58,7 +58,7 @@ public class BodyBalancing : MonoBehaviour
         tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
         x =Mathf.Atan(tanf) * Mathf.Rad2Deg;
 
-        moveCtrl.chara.localRotation = Quaternion.Slerp(moveCtrl.chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
+        mover.Chara.localRotation = Quaternion.Slerp(mover.Chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
 
     }
 }
