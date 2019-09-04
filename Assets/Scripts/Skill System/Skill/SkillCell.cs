@@ -102,6 +102,8 @@ public class SkillCell : ISkillCell
     
     public void ForceToStopCasting()
     {
+        if (!isCasting)
+            Debug.Log(caster.gameObject.name + " isn't casting.");
         StopCasting();
     }
     private long seed;

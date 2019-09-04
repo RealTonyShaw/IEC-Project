@@ -12,24 +12,24 @@ class SyncPlayerCasting : ISyncPlayerCastingState
     {
         this.unit = unit;
     }
-    int skillIndex;
+
     public void SyncStart(long instant, int skillIndex)
     {
         // get system time. MUST make sure that the system time would not tremble.
         long sysTime = 0;
-        this.skillIndex = skillIndex;
+        StartCasting cast = new StartCasting(unit, skillIndex, instant);
         // 施法事件还未发生
         if (sysTime < instant)
         {
-            Gamef.DelayedExecution(m_startCastingImmediately, (instant - sysTime) / 1000f);
+            Gamef.DelayedExecution(cast.Start, (instant - sysTime) / 1000f);
         }
         else if (sysTime == instant)
         {
-            m_startCastingImmediately();
+            cast.Start();
         }
         else
         {
-            m_conpensate(instant);
+            cast.Start();
         }
     }
 
@@ -39,22 +39,28 @@ class SyncPlayerCasting : ISyncPlayerCastingState
         unit.SkillTable.CurrentCell.ForceToStopCasting();
     }
 
-
-    void m_startCastingImmediately()
+    private class StartCasting
     {
-        unit.SkillTable.SwitchCell(skillIndex);
-        unit.SkillTable.CurrentCell.OnMouseButtonDown();
-    }
-
-    void m_conpensate(long instant)
-    {
-        unit.SkillTable.SwitchCell(skillIndex);
-        ISkill skill = unit.SkillTable.CurrentSkill;
-        // 设置施法时刻
-        if (skill is ISkillCastInstant castInstant)
+        readonly Unit unit;
+        readonly int skillIndex;
+        readonly long instant;
+        public StartCasting(Unit unit, int skillIndex, long instant)
         {
-            castInstant.SetInstant(instant);
+            this.unit = unit;
+            this.skillIndex = skillIndex;
+            this.instant = instant;
         }
-        unit.SkillTable.CurrentCell.OnMouseButtonDown();
+
+        public void Start()
+        {
+            unit.SkillTable.SwitchCell(skillIndex);
+            ISkill skill = unit.SkillTable.CurrentSkill;
+            // 设置施法时刻
+            if (skill is ISkillCastInstant castInstant)
+            {
+                castInstant.SetInstant(instant);
+            }
+            unit.SkillTable.CurrentCell.OnMouseButtonDown();
+        }
     }
 }
