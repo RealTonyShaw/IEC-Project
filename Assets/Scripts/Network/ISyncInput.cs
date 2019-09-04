@@ -7,17 +7,12 @@ using System.Threading.Tasks;
 public interface ISyncPlayerInput
 {
     /// <summary>
-    /// 同步 Horizontal Axis 的值。
+    /// 同步移动控制轴的值。即水平轴和垂直轴的值。
     /// </summary>
     /// <param name="instant">发生时刻</param>
-    /// <param name="hAxis">值</param>
-    void SyncHorizontalAxis(long instant, int hAxis);
-    /// <summary>
-    /// 同步 Vertical Axis 的值。
-    /// </summary>
-    /// <param name="instant">发生时刻</param>
-    /// <param name="vAxis">值</param>
-    void SyncVerticalAxis(long instant, int vAxis);
+    /// <param name="h">水平轴的值 Horizontal Axis</param>
+    /// <param name="v">垂直轴的值 Vertical Axis</param>
+    void SyncMobileControlAxes(long instant, int h, int v);
     /// <summary>
     /// 同步切换到的技能栏的序号。
     /// </summary>

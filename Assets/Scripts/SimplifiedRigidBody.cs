@@ -6,7 +6,7 @@ using UnityEngine;
 /// <summary>
 /// 简化刚体，Simplified Rigid Body
 /// </summary>
-public class SRB : MonoBehaviour
+public class SimplifiedRigidBody : MonoBehaviour
 {
     /// <summary>
     /// 刚体速度
@@ -42,35 +42,19 @@ public class SRB : MonoBehaviour
     public Vector3 MI = Vector3.one;
 
     public Transform targetTransform;
-    /// <summary>
-    /// X轴旋转，次层
-    /// </summary>
-    private Transform _XRot;
-    public Transform XRot
-    {
-        get { return _XRot; }
-    }
-    /// <summary>
-    /// Y轴旋转，顶层
-    /// </summary>
-    private Transform _YRot;
-    public Transform YRot
-    {
-        get { return _YRot; }
-    }
-    /// <summary>
-    /// Z轴旋转，底层
-    /// </summary>
-    private Transform _ZRot;
-    public Transform ZRot
-    {
-        get { return _ZRot; }
-    }
+
+    public Quaternion XRot => xRot;
+
+    public Quaternion YRot => yRot;
+
+    public Quaternion ZRot => zRot;
+
     private bool isInit = false;
 
     private Rigidbody rb;
 
     public bool castVelocity2Rigidbody = true;
+    Quaternion xRot, yRot, zRot;
 
     private List<Vector3> accelerations = new List<Vector3>();
     private List<Vector3> angularAccelerations = new List<Vector3>();
@@ -175,10 +159,10 @@ public class SRB : MonoBehaviour
             transform.localPosition += _velocity * Time.fixedDeltaTime;
 
         Vector3 angularVelocity = this.angularVelocity * Mathf.Rad2Deg;
-        _YRot.localRotation *= Quaternion.Euler(0f, angularVelocity.y * Time.fixedDeltaTime, 0f);
-        _XRot.localRotation *= Quaternion.Euler(angularVelocity.x * Time.fixedDeltaTime, 0f, 0f);
-        _ZRot.localRotation *= Quaternion.Euler(0f, 0f, angularVelocity.z * Time.fixedDeltaTime);
-        targetTransform.rotation = Quaternion.Euler(_XRot.localEulerAngles.x, _YRot.localEulerAngles.y, _ZRot.localEulerAngles.z);
+        yRot*= Quaternion.Euler(0f, angularVelocity.y * Time.fixedDeltaTime, 0f);
+        xRot *= Quaternion.Euler(angularVelocity.x * Time.fixedDeltaTime, 0f, 0f);
+        zRot *= Quaternion.Euler(0f, 0f, angularVelocity.z * Time.fixedDeltaTime);
+        targetTransform.rotation = Quaternion.Euler(xRot.eulerAngles.x, yRot.eulerAngles.y, zRot.eulerAngles.z);
     }
 
     private void Awake()
@@ -191,9 +175,6 @@ public class SRB : MonoBehaviour
         //如果未设置SRB目标，默认当前挂载的物体为目标
         if (targetTransform == null)
             targetTransform = transform;
-        _YRot = Instantiate(GameDB.Instance.EmptyObject).transform;
-        _XRot = Instantiate(GameDB.Instance.EmptyObject, _YRot).transform;
-        _ZRot = Instantiate(GameDB.Instance.EmptyObject, _XRot).transform;
         rb.useGravity = false;
         rb.freezeRotation = true;
 
