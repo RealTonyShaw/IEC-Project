@@ -261,6 +261,10 @@ MonoBehaviour:
       OriginalValue: 10
   unitCanvas: {fileID: 8572677813792802299}
   unitCamera: {fileID: 0}
+  RecvSyncMovement: 1
+  RecvSyncUnitState: 1
+  RecvSyncPlayerCastingState: 1
+  RecvSyncPlayerInput: 1
   eyeTransform: {fileID: 0}
 --- !u!114 &8572677812863099395
 MonoBehaviour:

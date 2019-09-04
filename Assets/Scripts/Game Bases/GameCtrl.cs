@@ -34,6 +34,7 @@ public partial class GameCtrl : MonoBehaviour
             PlayerUnit = value;
         }
     }
+    public static bool IsOnlineGame = false;
 
     public Transform PlayerCamera
     {
