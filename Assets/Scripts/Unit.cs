@@ -12,6 +12,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public partial class Unit : MonoBehaviour
 {
+    [HideInInspector]
     public Rigidbody rigbody;
     public Transform SpawnTransform;
     public UnitName unitName;
@@ -38,12 +39,20 @@ public partial class Unit : MonoBehaviour
     ISkillTable skillTable = new SkillTable();
     public ISkillTable SkillTable => skillTable;
 
+    [Header("Network Synchronization")]
+    public bool RecvSyncMovement = true;
+    public bool RecvSyncUnitState = true;
+    public bool RecvSyncPlayerCastingState = false;
+    public bool RecvSyncPlayerInput = false;
+
     // 位置同步
-    public readonly ISyncMovement SyncMovement = null;
+    public ISyncMovement SyncMovement { get; private set; }
     // 单位状态同步
-    public readonly ISyncUnitState SyncUnitState = null;
+    public ISyncUnitState SyncUnitState { get; private set; }
     // 玩家施法同步
-    public readonly ISyncPlayerCastingState SyncPlayerCastingState = null;
+    public ISyncPlayerCastingState SyncPlayerCastingState { get; private set; }
+    // 玩家输入同步
+    public ISyncPlayerInput SyncPlayerInput { get; private set; }
 
     #region 生命周期
     private void Awake()
@@ -55,6 +64,31 @@ public partial class Unit : MonoBehaviour
         }
         //加入监听SP变化事件
         EventMgr.SPChangeEvent.AddListener(SPEvent);
+
+        if (GameCtrl.IsOnlineGame)
+        {
+            if (RecvSyncMovement)
+            {
+                SyncMovement = new SyncMovement();
+                SyncMovement.Init(this);
+            }
+            if (RecvSyncUnitState)
+            {
+                SyncUnitState = new SyncUnitState();
+                SyncUnitState.Init(this);
+            }
+            if (RecvSyncPlayerCastingState)
+            {
+                SyncPlayerCastingState = new SyncPlayerCasting();
+                SyncPlayerCastingState.Init(this);
+            }
+            if (RecvSyncPlayerInput)
+            {
+                SyncPlayerInput = new SyncPlayerInput();
+                SyncPlayerInput.Init(this);
+            }
+        }
+
     }
 
     private void Start()
@@ -128,74 +162,7 @@ public partial class Unit : MonoBehaviour
             Gamef.UnitClear(this);
     }
     #endregion
-
-    #region 技能
-    //[System.Serializable]
-    //public class SkillTable
-    //{
-    //    //技能数组
-    //    public Skill[] skills = new Skill[4];
-    //    private int _currentIndex = 0;
-    //    //当前技能序号
-    //    public int CurrentIndex
-    //    {
-    //        get { return _currentIndex; }
-    //        set
-    //        {
-    //            //施法中禁止切换主动技能
-    //            if (CurrentSkill.IsCasting && !CurrentSkill.data.IsPassive)
-    //            {
-    //                Debug.Log("Skill is casting !");
-    //                return;
-    //            }
-    //            if (skills[value & 0x3].Name == SkillName.unset)
-    //            {
-    //                Debug.Log("空技能");
-    //                return;
-    //            }
-    //            _currentIndex = value & 0x3;
-    //            //
-    //            if (CurrentSkill.caster.UnitCtrl.attributes.name == UnitName.Player)
-    //                DisplaySkillName.Instance.SetText(CurrentSkill.Name.ToString());
-    //            Debug.Log("Shift to Skill " + (_currentIndex + 1));
-    //        }
-    //    }
-    //    //当前技能
-    //    public Skill CurrentSkill
-    //    {
-    //        get { return skills[_currentIndex]; }
-    //    }
-    //    //上一个技能
-    //    public void PrevSkill()
-    //    {
-    //        CurrentIndex--;
-    //    }
-    //    //下一个技能
-    //    public void NextSkill()
-    //    {
-    //        CurrentIndex++;
-    //    }
-    //}
-    //public SkillTable skillTable = new SkillTable();
-    ///// <summary>
-    ///// 玩家施法, 一般点击施法
-    ///// </summary>
-    //public void Spell(params object[] Params)
-    //{
-    //    if (skillTable.CurrentSkill.data == null)
-    //    {
-    //        Debug.LogWarning("No Data");
-    //    }
-    //    if (skillTable.CurrentSkill == null || skillTable.CurrentSkill.data.IsPassive)
-    //    {
-    //        Debug.Log("该技能栏为空 或 该技能为被动技能，不可主动释放");
-    //        return;
-    //    }
-    //    skillTable.CurrentSkill.Spell(Params);
-    //}
-
-    #endregion
-
+    
     #region 生命值
     /// <summary>
     /// 单位受伤
@@ -254,17 +221,4 @@ public partial class Unit : MonoBehaviour
         gameObject.SetActive(false);
     }
     #endregion
-}
-
-public partial class Unit
-{
-    [SerializeField]
-    Transform eyeTransform;
-    public Transform EyeTransform
-    {
-        get
-        {
-            return eyeTransform ?? transform;
-        }
-    }
 }
