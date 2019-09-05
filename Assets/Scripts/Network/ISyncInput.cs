@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 public interface ISyncPlayerInput
 {
@@ -14,7 +15,13 @@ public interface ISyncPlayerInput
     /// <param name="v">垂直轴的值 Vertical Axis</param>
     void SyncMobileControlAxes(long instant, int h, int v);
     /// <summary>
-    /// 同步切换到的技能栏的序号。
+    /// 同步玩家摄像机正方向。
+    /// </summary>
+    /// <param name="instant">时刻</param>
+    /// <param name="forward">正方向</param>
+    void SyncCameraFoward(long instant, Vector3 forward);
+    /// <summary>
+    /// 同步切换到的技能栏的序号。取值为 1，2，3。
     /// </summary>
     /// <param name="instant">发生时刻</param>
     /// <param name="skillIndex">技能栏序号</param>
