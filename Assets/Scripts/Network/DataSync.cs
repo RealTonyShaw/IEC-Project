@@ -92,6 +92,84 @@ public static class DataSync
     }
     #endregion
 
+    #region Player Casting State
+    /// <summary>
+    /// 同步技能开始施法。
+    /// </summary>
+    /// <param name="instant">开始施法的时刻</param>
+    /// <param name="skillIndex">技能序号，指玩家的技能槽位的序号，取值1,2,3,4</param>
+    public static void SyncStart(Unit unit, long instant, int skillIndex)
+    {
+        //8 bits
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncStart);
+        //32 bits
+        protocol.AddInt((int)instant);
+        //8 bits
+        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte((byte)skillIndex);
+
+        AppendCRC8AndSend(protocol);
+    }
+
+    /// <summary>
+    /// 同步技能停止施法。
+    /// </summary>
+    /// <param name="instant">停止施法的时刻</param>
+    /// <param name="skillIndex">技能序号，指玩家的技能槽位的序号，取值1,2,3,4</param>
+    public static void SyncStop(Unit unit, long instant, int skillIndex)
+    {
+        //8 bits
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncStart);
+        //32 bits
+        protocol.AddInt((int)instant);
+        //8 bits
+        protocol.AddByte((byte)unit.GetInstanceID());
+        //8 bits
+        protocol.AddByte((byte)skillIndex);
+
+        AppendCRC8AndSend(protocol);
+    }
+    #endregion
+
+    #region Unit state
+
+    /// <summary>
+    /// 同步单位的生命值。
+    /// </summary>
+    /// <param name="instant">时刻，即单位处于该生命值的时刻</param>
+    /// <param name="HP">单位的生命值</param>
+    public static void SyncHP(Unit unit, long instant, float HP)
+    {
+        //8 bits
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncHP);
+        //32 bits
+        protocol.AddInt((int)instant);
+        //8 bits
+        protocol.AddByte((byte)unit.GetInstanceID());
+        //32 bits
+        protocol.AddFloat(HP);
+        AppendCRC8AndSend(protocol);
+    }
+
+    /// <summary>
+    /// 同步单位的魔法值。
+    /// </summary>
+    /// <param name="instant">时刻，即单位处于该魔法值的时刻</param>
+    /// <param name="MP">单位的魔法值</param>
+    public static void SyncMP(Unit unit, long instant, float MP)
+    {
+        //8 bits
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMP);
+        //32 bits
+        protocol.AddInt((int)instant);
+        //8 bits
+        protocol.AddByte((byte)unit.GetInstanceID());
+        //32 bits
+        protocol.AddFloat(MP);
+        AppendCRC8AndSend(protocol);
+    }
+    #endregion
+
     #region Data Handler
     public static void AppendVector3(ProtocolBytes protocol, Vector3 vector)
     {

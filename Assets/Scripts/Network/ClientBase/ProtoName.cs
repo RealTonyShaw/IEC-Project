@@ -9,9 +9,13 @@
 
         SyncMobileControlAxes = 3,
 
-        SyncSwitchSkill = 5,
-        SyncMouseButton0Down = 6,
-        SyncMouseButton0Up = 7,
+        SyncSwitchSkill = 4,
+        SyncMouseButton0Down = 5,
+        SyncMouseButton0Up = 6,
+        SyncStart = 7,
+        SyncStop = 8,
+        SyncHP = 9,
+        SyncMP = 10,
         //SyncAcceleration = 3,
         //SyncUpgradeInfo = 4,
         //UpgradeUnitInfo = 5,
