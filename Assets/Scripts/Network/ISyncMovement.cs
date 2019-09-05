@@ -14,14 +14,14 @@ using UnityEngine;
 public interface ISyncMovement
 {
     /// <summary>
-    /// 位置大同步，用于同步单位的位置、转向、速度和角速度。
+    /// 位置大同步，用于同步单位的位置、转向和速度。
     /// </summary>
     /// <param name="instant">时刻（毫秒），即单位处于该状态的时刻</param>
     /// <param name="position">位置</param>
-    /// <param name="rotation">旋转，以四元数形式表示</param>
-    /// <param name="velocity">速度</param>
-    /// <param name="angularVelocity">角速度</param>
-    void SyncTransform(long instant, Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity);
+    /// <param name="forward">单位的正方向</param>
+    /// <param name="up">单位的上方向</param>
+    /// <param name="speed">速率</param>
+    void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed);
 
     /// <summary>
     /// 位置小同步，用于同步单位的加速度和摄像机方向。
