@@ -9,16 +9,19 @@ public static class DataSync
     #region Sync Movement
     public static void SyncTransform(Unit unit, long instant, Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity)
     {
-        ProtocolBytes protocol = new ProtocolBytes();
-        //4
-        protocol.AddInt((int)ProtoName.SyncTransform);
-        //8
-        protocol.AddLong(instant);
-        //
-        protocol.AddShort((short)unit.GetInstanceID());
+        //8 bits
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncTransform);
+        //32 bits
+        protocol.AddInt((int)instant);
+        //8 bits
+        protocol.AddByte((byte)unit.GetInstanceID());
+        //96 bits
         AppendVector3(protocol, position);
+        //128 bits
         AppendQuaternion(protocol, rotation);
+        //96 bits
         AppendVector3(protocol, velocity);
+        //96 bits
         AppendVector3(protocol, angularVelocity);
 
         AppendCRC16AndSend(protocol);
@@ -36,32 +39,20 @@ public static class DataSync
 
     #region SyncInput
     /// <summary>
-    /// 同步 Horizontal Axis 的值。
+    /// 同步移动控制轴的值。即水平轴和垂直轴的值。
     /// </summary>
     /// <param name="instant">发生时刻</param>
-    /// <param name="hAxis">值</param>
-    public static void SyncHorizontalAxis(Unit unit, long instant, int hAxis)
+    /// <param name="h">水平轴的值 Horizontal Axis</param>
+    /// <param name="v">垂直轴的值 Vertical Axis</param>
+    public static void SyncMobileControlAxes(Unit unit, long instant, int h, int v)
     {
-        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncHorizontalAxis);//16 bits
-        protocol.AddInt((int)instant);//32 bits
-        protocol.AddShort((short)unit.GetInstanceID());//16 bits 
-        protocol.AddInt(hAxis);//32 bits
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMobileControlAxes);
+        protocol.AddInt((int)instant);
+        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte(PackHaV(h, v));
         AppendCRC8AndSend(protocol);
     }
 
-    /// <summary>
-    /// 同步 Vertical Axis 的值。
-    /// </summary>
-    /// <param name="instant">发生时刻</param>
-    /// <param name="vAxis">值</param>
-    public static void SyncVerticalAxis(Unit unit, long instant, int vAxis)
-    {
-        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncVerticalAxis);//16 bits
-        protocol.AddInt((int)instant);//32 bits
-        protocol.AddShort((short)unit.GetInstanceID());//16 bits 
-        protocol.AddInt(vAxis);//32 bits
-        AppendCRC8AndSend(protocol);
-    }
 
     /// <summary>
     /// 同步切换到的技能栏的序号。
@@ -72,8 +63,8 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncSwitchSkill);//16 bits
         protocol.AddInt((int)instant);//32 bits
-        protocol.AddShort((short)unit.GetInstanceID());//16 bits 
-        protocol.AddShort((short)skillIndex);//32 bits
+        protocol.AddByte((byte)unit.GetInstanceID());//16 bits 
+        protocol.AddByte((byte)skillIndex);//32 bits
         AppendCRC8AndSend(protocol);
     }
     /// <summary>
@@ -84,7 +75,7 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Down);//16 bits
         protocol.AddInt((int)instant);//32 bits
-        protocol.AddShort((short)unit.GetInstanceID());//16 bits 
+        protocol.AddByte((byte)unit.GetInstanceID());//16 bits 
         AppendCRC8AndSend(protocol);
     }
 
@@ -96,7 +87,7 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Up);//16 bits
         protocol.AddInt((int)instant);//32 bits
-        protocol.AddShort((short)unit.GetInstanceID());//16 bits 
+        protocol.AddByte((byte)unit.GetInstanceID());//16 bits 
         AppendCRC8AndSend(protocol);
     }
     #endregion
@@ -174,6 +165,29 @@ public static class DataSync
             Console.WriteLine(e);
         }
         return Quaternion.identity;
+    }
+
+    public static byte PackHaV(int h, int v)
+    {
+        int a = h;
+        a = a << 2;
+        Console.WriteLine("a = " + Convert.ToString(a, 2));
+        a = a | (v & 3);
+        Console.WriteLine("a = " + Convert.ToString(a, 2));
+        return (byte)a;
+    }
+
+    public static int[] ParseHaV(byte data)
+    {
+        int[] res = new int[2];
+        res[1] = ParseBitResult(3 & data);
+        res[0] = ParseBitResult((12 & data) >> 2);
+        return res;
+    }
+
+    public static int ParseBitResult(int n)
+    {
+        return n == 3 ? -1 : n;
     }
     #endregion
 

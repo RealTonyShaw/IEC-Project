@@ -6,8 +6,9 @@
         SyncUnitProp = 0,
         FeedbackUnitProp = 1,
         SyncTransform = 2,
-        SyncHorizontalAxis = 3,
-        SyncVerticalAxis = 4,
+
+        SyncMobileControlAxes = 3,
+
         SyncSwitchSkill = 5,
         SyncMouseButton0Down = 6,
         SyncMouseButton0Up = 7,
