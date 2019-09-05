@@ -20,6 +20,7 @@ public class SyncMovement : ISyncMovement
     Vector3 lastForward = new Vector3();
     Vector3 lastUp = new Vector3();
     float lastSpeed = 0;
+    Vector3 lastVelocity = new Vector3();
 
     // 保存上次 Acceleration 参数
     long lastAccelerationInstant = 0;
@@ -72,7 +73,7 @@ public class SyncMovement : ISyncMovement
     {
         this.lastTransformInstant = instant;
         this.lastPosition = position;
-
+        this.lastVelocity = speed * forward;
         this.lastForward = forward;
         this.lastUp = up;
         this.lastSpeed = speed;
