@@ -15,17 +15,17 @@ public class SyncMovement : ISyncMovement
     Vector3 firstAngularVelocity = new Vector3();
 
     // 保存上次 Transform 参数
-    long lastTransformInstant;
-    Vector3 lastPosition;
-    Vector3 lastForward;
-    Vector3 lastUp;
-    float lastSpeed;
+    long lastTransformInstant = 0;
+    Vector3 lastPosition = new Vector3();
+    Vector3 lastForward = new Vector3();
+    Vector3 lastUp = new Vector3();
+    float lastSpeed = 0;
 
     // 保存上次 Acceleration 参数
-    long lastAccelerationInstant;
-    int lastAcceleration;
-    int lastAngularAcceleration;
-    Vector3 lastCameraForward;
+    long lastAccelerationInstant = 0;
+    int lastAcceleration = 0;
+    int lastAngularAcceleration = 0;
+    Vector3 lastCameraForward = new Vector3();
 
     // 预测的参数
     long currentInstant;
