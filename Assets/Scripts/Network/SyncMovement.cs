@@ -53,21 +53,12 @@ public class SyncMovement : ISyncMovement
     public void SyncAcceleration(long instant, int acceleration, int angularAcceleration, Vector3 cameraForward)
     {
         this.lastAccelerationInstant = instant;
-        this.lastAcceleration = acceleration;
-        this.lastAngularAcceleration = angularAcceleration;
         this.lastCameraForward = cameraForward;
+        // 直接同步角加速度和加速度
+        mover.H = angularAcceleration;
+        mover.V = acceleration;
+        
     }
-
-    /*
-    public void SyncTransform(long instant, Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity)
-    {
-        this.lastTransformInstant = instant;
-        this.lastPosition = position;
-        this.lastRotation = rotation;
-        this.lastVelocity = velocity;
-        this.lastAngularVelocity = angularVelocity;
-    }
-    */
 
     public void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
     {
@@ -77,6 +68,8 @@ public class SyncMovement : ISyncMovement
         this.lastForward = forward;
         this.lastUp = up;
         this.lastSpeed = speed;
+        // 直接同步速度
+        rb.velocity = unit.transform.forward * Mathf.Lerp(rb.velocity.magnitude, lastSpeed, 0.5f);
     }
 
     public void Update(float dt)
@@ -87,16 +80,11 @@ public class SyncMovement : ISyncMovement
         this.currentPosition.z = interpolate.Hermite(firstTransformInstant, firstPosition.z, firstVelocity.z, lastTransformInstant, lastPosition.z, lastVelocity.z, Gamef.SystemTimeInMillisecond);
         // 修改 unit 的位置
         unit.transform.position = Vector3.Lerp(unit.transform.position, this.currentPosition, 5f * dt);
-        // 直接同步角加速度和加速度
-        mover.H = this.lastAngularAcceleration;
-        mover.V = this.lastAcceleration;
-        // cameraForward
-        mover.CameraForward = Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
         // rotation
         unit.transform.forward = Vector3.Slerp(this.lastForward, unit.transform.forward, 5f * dt);
         unit.transform.up = Vector3.Slerp(this.lastUp, unit.transform.up, 5f * dt);
-        // 直接同步速度
-        rb.velocity = unit.transform.forward * this.lastSpeed;
+        // cameraForward
+        mover.CameraForward = Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
     }
 
 }
