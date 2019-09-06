@@ -7,6 +7,34 @@
     {
       "panelTypeString": "Start",
       "panelPath": "UIPrefabs/StartPanel"
+    },
+    {
+      "panelTypeString": "Blank",
+      "panelPath": "UIPrefabs/BlankPanel"
+    },
+    {
+      "panelTypeString": "SingleGame",
+      "panelPath": "UIPrefabs/SingleGamePanel"
+    },
+    {
+      "panelTypeString": "MultiGame",
+      "panelPath": "UIPrefabs/MultiGamePanel"
+    },
+    {
+      "panelTypeString": "SetUpGame",
+      "panelPath": "UIPrefabs/SetUpGamePanel"
+    },
+    {
+      "panelTypeString": "AboutUs",
+      "panelPath": "UIPrefabs/AboutUsPanel"
+    },
+    {
+      "panelTypeString": "PlayerInfo",
+      "panelPath": "UIPrefabs/PlayerInfoPanel"
+    },
+    {
+      "panelTypeString": "ComplaintToUs",
+      "panelPath": "UIPrefabs/ComplaintToUsPanel"
     }
   ]
 }
