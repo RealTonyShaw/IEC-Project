@@ -15,15 +15,14 @@ MonoBehaviour:
   Description: "\u8FD9\u91CC\u53EF\u4EE5\u8F93\u5165\u8BF4\u660E"
   SkillName: 3
   SkillType: 0
-  Damage: 5
-  RPM: 300
-  Accuracy: 85
+  Damage: 4
+  RPM: 500
   Params: []
   Range: 50
-  Speed: 45
+  Speed: 50
   LifeSpan: 4
   Cooldown: 0.2
-  ManaCost: 4
+  ManaCost: 3.2
   ManaCostPerSec: 0
   MissileHP: 5
   IsAOE: 0
@@ -33,12 +32,13 @@ MonoBehaviour:
   InnerDamageCoefficient: 1
   MiddleDamageCoefficient: 0.5
   OuterDamageCoefficient: 0.2
-  IsTracking: 0
-  TrackingConst: 3
+  IsTracking: 1
+  TrackingConst: 1
   AimingTime: 2
   IsPassive: 0
   Buffs: 
-  Force: 10
-  RuntimeAccuracy: 85
-  AccuracyCooldownSpeed: 5
-  AccuracyHeatupSpeed: 5
+  Force: 6
+  Accuracy: 98
+  MinAccuracy: 90
+  AccuracyCooldownSpeed: 10
+  AccuracyHeatupSpeed: 3.5

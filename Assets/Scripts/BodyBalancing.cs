@@ -8,7 +8,7 @@ public class BodyBalancing : MonoBehaviour
 {
     //空气阻尼
     public const float AIR_DAMP = 0.5f;
-    public const float Z_ROT_CONST = 2f;
+    public const float Z_ROT_CONST = 4f;
     //重力加速度
     public const float GRAVITY_CONST = 9.81f;
     public const float RECI_GRAVITY_CONST = 1 / GRAVITY_CONST;
@@ -58,7 +58,7 @@ public class BodyBalancing : MonoBehaviour
         tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
         x =Mathf.Atan(tanf) * Mathf.Rad2Deg;
 
-        mover.Chara.localRotation = Quaternion.Slerp(mover.Chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
+        mover.Chara.localRotation = Quaternion.Slerp(mover.Chara.localRotation, Quaternion.Euler(x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
 
     }
 }

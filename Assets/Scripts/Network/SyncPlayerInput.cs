@@ -29,7 +29,7 @@ public class SyncPlayerInput : ISyncPlayerInput
             {
                 lastSyncAc = instant;
             }
-            unit.SyncMovement.SyncAcceleration(instant, h, v, cameraForward);
+            unit.SyncMovement.SyncAcceleration(lastSyncAc, h, v, cameraForward);
         }
     }
 
@@ -42,7 +42,7 @@ public class SyncPlayerInput : ISyncPlayerInput
             {
                 lastSyncAc = instant;
             }
-            unit.SyncMovement.SyncAcceleration(instant, h, v, forward);
+            unit.SyncMovement.SyncAcceleration(lastSyncAc, h, v, forward);
         }
     }
 

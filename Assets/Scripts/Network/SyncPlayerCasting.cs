@@ -16,7 +16,7 @@ class SyncPlayerCasting : ISyncPlayerCastingState
     public void SyncStart(long instant, int skillIndex)
     {
         // get system time. MUST make sure that the system time would not tremble.
-        long sysTime = 0;
+        long sysTime = Gamef.SystemTimeInMillisecond;
         StartCasting cast = new StartCasting(unit, skillIndex, instant);
         // 施法事件还未发生
         if (sysTime < instant)
@@ -36,7 +36,13 @@ class SyncPlayerCasting : ISyncPlayerCastingState
     public void SyncStop(long instant, int skillIndex)
     {
         unit.SkillTable.SwitchCell(skillIndex);
+        unit.SkillTable.CurrentCell.SetInstant(instant);
         unit.SkillTable.CurrentCell.ForceToStopCasting();
+    }
+
+    public void SyncTarget(Unit target)
+    {
+        
     }
 
     private class StartCasting
@@ -54,12 +60,8 @@ class SyncPlayerCasting : ISyncPlayerCastingState
         public void Start()
         {
             unit.SkillTable.SwitchCell(skillIndex);
-            ISkill skill = unit.SkillTable.CurrentSkill;
             // 设置施法时刻
-            if (skill is ISkillCastInstant castInstant)
-            {
-                castInstant.SetInstant(instant);
-            }
+            unit.SkillTable.CurrentCell.SetInstant(instant);
             unit.SkillTable.CurrentCell.OnMouseButtonDown();
         }
     }

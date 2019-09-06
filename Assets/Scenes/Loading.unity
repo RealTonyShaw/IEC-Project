@@ -712,6 +712,8 @@ GameObject:
   - component: {fileID: 1716618295}
   - component: {fileID: 1716618297}
   - component: {fileID: 1716618298}
+  - component: {fileID: 1716618300}
+  - component: {fileID: 1716618299}
   m_Layer: 8
   m_Name: Controller
   m_TagString: GameController
@@ -791,3 +793,27 @@ MonoBehaviour:
   InputColor: {r: 0, g: 1, b: 1, a: 1}
   WarningColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
   ErrorColor: {r: 1, g: 0, b: 0, a: 1}
+--- !u!114 &1716618299
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716618294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 127873e07c640724c8e1665d1f873513, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1716618300
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716618294}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a9fbc7c0fd485b04e8bc813d557c218a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

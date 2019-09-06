@@ -5,7 +5,7 @@ using UnityEngine;
 /// <summary>
 /// 技能槽位
 /// </summary>
-public interface ISkillCell
+public interface ISkillCell : ISkillCastInstant
 {
     /// <summary>
     /// 初始化技能槽位。
