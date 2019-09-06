@@ -18,6 +18,7 @@ public class GameCacheBlock
         public float deathTime;
     }
 
+    readonly object cacheMutex = new object();
     /// <summary>
     /// 将物体存入缓存块。此方法不会取消激活(Disable)物体。
     /// </summary>
@@ -57,7 +58,15 @@ public class GameCacheBlock
                 lifeSpan = 15f;
             }
             cell.deathTime = Time.time + lifeSpan;
-            list.Add(cell.deathTime, cell);
+            // 防止 key 冲突
+            lock (cacheMutex)
+            {
+                while (list.ContainsKey(cell.deathTime))
+                {
+                    cell.deathTime += 1e-5f;
+                }
+                list.Add(cell.deathTime, cell);
+            }
         }
     }
 

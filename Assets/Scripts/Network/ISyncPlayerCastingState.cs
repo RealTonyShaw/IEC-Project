@@ -24,6 +24,12 @@ public interface ISyncPlayerCastingState
     void SyncStop(long instant, int skillIndex);
 
     /// <summary>
+    /// 同步瞄准目标。
+    /// </summary>
+    /// <param name="target">目标</param>
+    void SyncTarget(Unit target);
+
+    /// <summary>
     /// 初始化同步类。
     /// </summary>
     /// <param name="unit">接受同步的单位</param>

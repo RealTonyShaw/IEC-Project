@@ -22,16 +22,16 @@ public partial class GameCtrl : MonoBehaviour
 
     #region 实时公有信息
     //private UnitInfo _mainChara;
-    public static Unit PlayerUnit;
-    public Unit PlayerChara
+    private static Unit _playerUnit = null;
+    public static Unit PlayerUnit
     {
         get
         {
-            return PlayerUnit;
-        }
-        set
-        {
-            PlayerUnit = value;
+            if (_playerUnit == null)
+            {
+                _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
+            }
+            return _playerUnit;
         }
     }
     public static bool IsOnlineGame = false;
