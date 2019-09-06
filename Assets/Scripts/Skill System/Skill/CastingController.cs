@@ -1,34 +1,41 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(Unit))]
+
 /// <summary>
-/// 施法控制器。仅挂载在玩家单位上。用于将玩家的硬件输入转化为对SkillTable的指令。
+/// 施法控制器。用于将玩家的硬件输入转化为对SkillTable的指令。
 /// </summary>
 public class CastingController : MonoBehaviour
 {
-    public Unit player;
+    Unit player = null;
     ISkillTable skillTable;
-
-    private void Awake()
-    {
-        if (player == null)
-        {
-            player = GetComponent<Unit>();
-        }
-    }
 
     private void Start()
     {
-        skillTable = player.SkillTable;
-        
+        if (player == null && GameCtrl.PlayerUnit != null)
+        {
+            player = GameCtrl.PlayerUnit;
+            skillTable = player.SkillTable;
+        }
+
         EventMgr.KeyDownEvent.AddListener(SwitchCellListener);
         EventMgr.MouseButtonDownEvent.AddListener(CellMouseBTNDown);
         EventMgr.MouseButtonUpEvent.AddListener(CellMouseBTNUp);
     }
 
+    private void Update()
+    {
+        if (player == null && GameCtrl.PlayerUnit != null)
+        {
+            player = GameCtrl.PlayerUnit;
+            skillTable = player.SkillTable;
+        }
+    }
+
     private void SwitchCellListener(EventMgr.KeyDownEventInfo info)
     {
+        if (player == null)
+            return;
         switch (info.keyCode)
         {
             case KeyCode.Alpha1:
@@ -45,11 +52,15 @@ public class CastingController : MonoBehaviour
 
     private void CellMouseBTNDown(EventMgr.MouseButtonDownEventInfo info)
     {
+        if (player == null)
+            return;
         skillTable.CurrentCell.OnMouseButtonDown();
     }
 
     private void CellMouseBTNUp(EventMgr.MouseButtonUpEventInfo info)
     {
+        if (player == null)
+            return;
         skillTable.CurrentCell.OnMouseButtonUp();
     }
 }

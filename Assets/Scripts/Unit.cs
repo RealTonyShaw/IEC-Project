@@ -105,7 +105,6 @@ public partial class Unit : MonoBehaviour
         //测试用
         if (attributes.name == UnitName.Player)
         {
-            GameCtrl.Instance.PlayerChara = this;
             StartCoroutine(DisplayProperity());
         }
         // 如果该单位是施法单位，则初始化技能表

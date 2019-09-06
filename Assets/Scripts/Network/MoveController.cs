@@ -12,16 +12,22 @@ public class MoveController : MonoBehaviour
     public Vector3 EyeEulerAngles => mover.EyeTransform.eulerAngles;
     public Vector3 CharaUp => mover.Chara.up;
     public Vector3 CharaLocalEulerAngles => mover.Chara.localEulerAngles;
+    public Mover PlayerMover => mover;
 
-    private Mover mover;
+    private Mover mover = null;
     private void Awake()
     {
-        mover = GetComponent<Mover>();
         Instance = this;
     }
 
     private void Start()
     {
+        if (mover == null && GameCtrl.PlayerUnit != null)
+        {
+            mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
+        }
+        if (mover == null)
+            return;
         mover.V = InputMgr.GetVerticalAxis();
         mover.H = InputMgr.GetHorizontalAxis();
         mover.CameraForward = CameraGroupController.Instance.transform.forward;
@@ -29,6 +35,13 @@ public class MoveController : MonoBehaviour
 
     private void Update()
     {
+        if (mover == null && GameCtrl.PlayerUnit != null)
+        {
+            mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
+        }
+        if (mover == null)
+            return;
+
         mover.V = InputMgr.GetVerticalAxis();
         mover.H = InputMgr.GetHorizontalAxis();
         mover.CameraForward = CameraGroupController.Instance.transform.forward;

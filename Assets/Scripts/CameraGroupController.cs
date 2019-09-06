@@ -74,7 +74,7 @@ public class CameraGroupController : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (GameCtrl.PlayerUnit == null)
+        if (MoveController.Instance.PlayerMover == null)
         {
             return;
         }
