@@ -10,6 +10,20 @@ namespace ClientBase
     public class MsgHandler
     {
         #region Server&Client
+        public void SyncTimeCheck(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            int milliseconds = proto.GetInt(start, ref start);
+            int ticks = proto.GetInt(start, ref start);
+            ClientLauncher.Instant.TimeCheck(milliseconds, ticks);
+        }
+        public void Ping()
+        {
+            ClientLauncher.Instant.PingBack();
+        }
+
         #endregion
 
         #region Movement

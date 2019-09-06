@@ -16,6 +16,8 @@
         SyncStop = 8,
         SyncHP = 9,
         SyncMP = 10,
+        SyncTimeCheck = 11,
+        Ping = 12,
         //SyncAcceleration = 3,
         //SyncUpgradeInfo = 4,
         //UpgradeUnitInfo = 5,

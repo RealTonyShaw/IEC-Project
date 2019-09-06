@@ -6,6 +6,24 @@ using System;
 
 public static class DataSync
 {
+    #region Server & Client
+    /// <summary>
+    /// Heart beat, 5 or more seconds per
+    /// </summary>
+    public static void SyncTimeCheck()
+    {        
+        AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.SyncTimeCheck));
+    }
+
+    /// <summary>
+    /// More frequent than time check
+    /// </summary>
+    public static void Ping()
+    {
+        AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.Ping));
+    }
+    #endregion
+
     #region Sync Movement
     public static void SyncTransform(Unit unit, long instant, Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity)
     {
@@ -269,6 +287,7 @@ public static class DataSync
     }
     #endregion
 
+    #region CRC
     public static void AppendCRC16AndSend(ProtocolBase protocol)
     {
         CRC16 crc = new CRC16(protocol.Encode(), false);
@@ -284,4 +303,5 @@ public static class DataSync
         crc.AppendCRC();
         Client.Instance.Send(protocol);
     }
+    #endregion
 }
