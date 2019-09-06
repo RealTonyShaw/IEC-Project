@@ -36,6 +36,7 @@ class SyncPlayerCasting : ISyncPlayerCastingState
     public void SyncStop(long instant, int skillIndex)
     {
         unit.SkillTable.SwitchCell(skillIndex);
+        unit.SkillTable.CurrentCell.SetInstant(instant);
         unit.SkillTable.CurrentCell.ForceToStopCasting();
     }
 
@@ -59,12 +60,8 @@ class SyncPlayerCasting : ISyncPlayerCastingState
         public void Start()
         {
             unit.SkillTable.SwitchCell(skillIndex);
-            ISkill skill = unit.SkillTable.CurrentSkill;
             // 设置施法时刻
-            if (skill is ISkillCastInstant castInstant)
-            {
-                castInstant.SetInstant(instant);
-            }
+            unit.SkillTable.CurrentCell.SetInstant(instant);
             unit.SkillTable.CurrentCell.OnMouseButtonDown();
         }
     }

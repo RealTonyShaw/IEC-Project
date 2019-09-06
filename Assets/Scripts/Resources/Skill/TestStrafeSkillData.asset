@@ -15,14 +15,14 @@ MonoBehaviour:
   Description: "\u8FD9\u91CC\u53EF\u4EE5\u8F93\u5165\u8BF4\u660E"
   SkillName: 3
   SkillType: 0
-  Damage: 5
+  Damage: 4
   RPM: 500
   Params: []
   Range: 50
-  Speed: 45
+  Speed: 50
   LifeSpan: 4
   Cooldown: 0.2
-  ManaCost: 4
+  ManaCost: 3.2
   ManaCostPerSec: 0
   MissileHP: 5
   IsAOE: 0
@@ -39,6 +39,6 @@ MonoBehaviour:
   Buffs: 
   Force: 6
   Accuracy: 98
-  MinAccuracy: 92
+  MinAccuracy: 90
   AccuracyCooldownSpeed: 10
   AccuracyHeatupSpeed: 3.5
