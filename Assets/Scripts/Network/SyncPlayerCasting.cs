@@ -41,7 +41,7 @@ class SyncPlayerCasting : ISyncPlayerCastingState
 
     public void SyncTarget(Unit target)
     {
-
+        
     }
 
     private class StartCasting

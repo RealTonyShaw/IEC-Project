@@ -54,6 +54,16 @@ public class CastingController : MonoBehaviour
     {
         if (player == null)
             return;
+        // 为技能设置施法时刻
+        if (skillTable.CurrentSkill is ISkillCastInstant sci)
+        {
+            sci.SetInstant(Gamef.SystemTimeInMillisecond);
+        }
+        // 为技能设置目标
+        if (skillTable.CurrentSkill.Data.IsTracking && skillTable.CurrentSkill is ITracking it)
+        {
+            it.Target = AimController.Instance.TargetForStrafeSkill;
+        }
         skillTable.CurrentCell.OnMouseButtonDown();
     }
 
@@ -61,6 +71,10 @@ public class CastingController : MonoBehaviour
     {
         if (player == null)
             return;
+        if (skillTable.CurrentSkill is ISkillCastInstant sci)
+        {
+            sci.SetInstant(Gamef.SystemTimeInMillisecond);
+        }
         skillTable.CurrentCell.OnMouseButtonUp();
     }
 }
