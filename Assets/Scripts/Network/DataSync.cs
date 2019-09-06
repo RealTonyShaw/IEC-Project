@@ -25,22 +25,22 @@ public static class DataSync
     #endregion
 
     #region Sync Movement
-    public static void SyncTransform(Unit unit, long instant, Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity)
+    public static void SyncTransform(Unit unit, long instant, Vector3 position, Vector3 rotation, Vector3 velocity, float speed)
     {
         //8 bits
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncTransform);
         //32 bits
         protocol.AddInt((int)instant);
         //8 bits
-        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte((byte)unit.attributes.ID);
         //96 bits
         AppendVector3(protocol, position);
-        //128 bits
-        AppendQuaternion(protocol, rotation);
+        //96 bits
+        AppendVector3(protocol, rotation);
         //96 bits
         AppendVector3(protocol, velocity);
-        //96 bits
-        AppendVector3(protocol, angularVelocity);
+        //32 bits
+        protocol.AddFloat(speed);
 
         AppendCRC16AndSend(protocol);
     }
@@ -66,7 +66,7 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMobileControlAxes);
         protocol.AddInt((int)instant);
-        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte((byte)unit.attributes.ID);
         protocol.AddByte(PackHaV(h, v));
         AppendCRC8AndSend(protocol);
     }
@@ -81,7 +81,7 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncSwitchSkill);//16 bits
         protocol.AddInt((int)instant);//32 bits
-        protocol.AddByte((byte)unit.GetInstanceID());//16 bits 
+        protocol.AddByte((byte)unit.attributes.ID);//8 bits 
         protocol.AddByte((byte)skillIndex);//32 bits
         AppendCRC8AndSend(protocol);
     }
@@ -93,7 +93,7 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Down);//16 bits
         protocol.AddInt((int)instant);//32 bits
-        protocol.AddByte((byte)unit.GetInstanceID());//16 bits 
+        protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 
         AppendCRC8AndSend(protocol);
     }
 
@@ -105,7 +105,7 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Up);//16 bits
         protocol.AddInt((int)instant);//32 bits
-        protocol.AddByte((byte)unit.GetInstanceID());//16 bits 
+        protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 
         AppendCRC8AndSend(protocol);
     }
     #endregion
@@ -123,7 +123,7 @@ public static class DataSync
         //32 bits
         protocol.AddInt((int)instant);
         //8 bits
-        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte((byte)unit.attributes.ID);
         protocol.AddByte((byte)skillIndex);
 
         AppendCRC8AndSend(protocol);
@@ -141,7 +141,7 @@ public static class DataSync
         //32 bits
         protocol.AddInt((int)instant);
         //8 bits
-        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte((byte)unit.attributes.ID);
         //8 bits
         protocol.AddByte((byte)skillIndex);
 
@@ -163,7 +163,7 @@ public static class DataSync
         //32 bits
         protocol.AddInt((int)instant);
         //8 bits
-        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte((byte)unit.attributes.ID);
         //32 bits
         protocol.AddFloat(HP);
         AppendCRC8AndSend(protocol);
@@ -181,7 +181,7 @@ public static class DataSync
         //32 bits
         protocol.AddInt((int)instant);
         //8 bits
-        protocol.AddByte((byte)unit.GetInstanceID());
+        protocol.AddByte((byte)unit.attributes.ID);
         //32 bits
         protocol.AddFloat(MP);
         AppendCRC8AndSend(protocol);

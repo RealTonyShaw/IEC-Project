@@ -69,9 +69,9 @@ public class ClientLauncher : MonoBehaviour
     /// </summary>
     /// <param name="milliseconds"></param>
     /// <param name="ticks"></param>
-    public void TimeCheck(long milliseconds, long ticks)
+    public void TimeCheck(long delta)
     {
-        timeMgr.TimeCheck(milliseconds, ticks);
+        timeMgr.TimeCheck(delta);
     }
 
     /// <summary>
@@ -108,15 +108,19 @@ public class ClientLauncher : MonoBehaviour
         }
 
         private long DTO = ((new DateTime(1970, 1, 1, 0, 0, 0, 0)).Ticks) / 10000;
-        public void TimeCheck(long milliseconds, long timetick)
+        
+        /// <summary>
+        /// To check the timer.
+        /// </summary>
+        /// <param name="delta">server timer ticks - ticks, must a negetive number</param>
+        public void TimeCheck(long delta)
         {
             if (!isStart)
             {
                 return;
             }
             long tick = DateTime.UtcNow.Ticks / 10000 - DTO;
-            long timeElaspe = tick - timetick;
-            bias = milliseconds + timeElaspe - stopwatch.ElapsedMilliseconds;
+            bias = tick + delta - stopwatch.ElapsedMilliseconds;
         }
     }
 }

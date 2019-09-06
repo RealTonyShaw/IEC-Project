@@ -15,9 +15,8 @@ namespace ClientBase
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
-            int milliseconds = proto.GetInt(start, ref start);
-            int ticks = proto.GetInt(start, ref start);
-            ClientLauncher.Instant.TimeCheck(milliseconds, ticks);
+            long delta = proto.GetLong(start, ref start);
+            ClientLauncher.Instant.TimeCheck(delta);
         }
         public void Ping()
         {
@@ -36,10 +35,10 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             Vector3 position = ParseVector3(proto, ref start);
-            Quaternion rotation = ParseQuaternion(proto, ref start);
+            Vector3 rotation = ParseVector3(proto, ref start);
             Vector3 velocity = ParseVector3(proto, ref start);
-            Vector3 angularVelocity = ParseVector3(proto, ref start);
-            unit.SyncMovement.SyncTransform(instant, position, rotation, velocity, angularVelocity);
+            float speed = proto.GetFloat(start, ref start);
+            unit.SyncMovement.SyncTransform(instant, position, rotation, velocity, speed);
         }
         #endregion
 
