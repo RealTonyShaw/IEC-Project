@@ -27,7 +27,7 @@ public interface ISyncPlayerCastingState
     /// 同步瞄准目标。
     /// </summary>
     /// <param name="target">目标</param>
-    void SyncTarget(Unit target);
+    void SyncTarget(long instant, Unit target);
 
     /// <summary>
     /// 初始化同步类。

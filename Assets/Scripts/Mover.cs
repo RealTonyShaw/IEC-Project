@@ -61,11 +61,6 @@ public class Mover : MonoBehaviour
     Vector3 targetFwd;
 
     /// <summary>
-    /// 速率，由Update Velocity设置
-    /// </summary>
-    float speed = 0f;
-
-    /// <summary>
     /// 转向。即更新转向速度angularVelocity
     /// </summary>
     private void Turning(float dt)

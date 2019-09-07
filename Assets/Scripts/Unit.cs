@@ -40,11 +40,13 @@ public partial class Unit : MonoBehaviour
     public ISkillTable SkillTable => skillTable;
 
     [Header("Network Synchronization")]
+    public bool IsLocal = true;
     public bool RecvSyncMovement = true;
     public bool RecvSyncUnitState = true;
     public bool RecvSyncPlayerCastingState = false;
     public bool RecvSyncPlayerInput = false;
 
+    public long lastSyncUnitStateInstant = 0;
     // 位置同步
     public ISyncMovement SyncMovement { get; private set; }
     // 单位状态同步
@@ -127,6 +129,15 @@ public partial class Unit : MonoBehaviour
         //触发buff效果
         BuffEvent?.Invoke();
 
+        if (GameCtrl.IsOnlineGame && IsLocal)
+        {
+            if (Gamef.SystemTimeInMillisecond - lastSyncUnitStateInstant >= GameDB.SYNC_TRANSFORM_INTERVAL)
+            {
+                lastSyncUnitStateInstant = Gamef.SystemTimeInMillisecond;
+                DataSync.SyncHP(this, lastSyncUnitStateInstant, attributes.SheildPoint);
+                DataSync.SyncMP(this, lastSyncUnitStateInstant, attributes.ManaPoint.Value);
+            }
+        }
 
         ////单位画布面对摄像机
         //if (unitCanvas != null)
@@ -169,6 +180,8 @@ public partial class Unit : MonoBehaviour
     /// <param name="amount">伤害值</param>
     public void TakeDamage(float amount)
     {
+        if (!IsLocal)
+            return;
         if (amount < 0)
         {
             Debug.Log("这已经不是挠痒痒的伤害了");
@@ -183,6 +196,8 @@ public partial class Unit : MonoBehaviour
     /// <param name="amount">回复量</param>
     public void BeHealed(float amount)
     {
+        if (!IsLocal)
+            return;
         if (amount < 0)
         {
             Debug.Log("你真是口毒奶");
@@ -203,6 +218,8 @@ public partial class Unit : MonoBehaviour
         {
             return;
         }
+        if (!IsLocal)
+            return;
         //SP过低，死亡
         if (info.CurrentValue <= 0)
             SimpleDeath();

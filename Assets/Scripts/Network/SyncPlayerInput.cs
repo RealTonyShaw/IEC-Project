@@ -13,37 +13,15 @@ public class SyncPlayerInput : ISyncPlayerInput
     {
         this.unit = unit;
     }
-    int h = 0;
-    int v = 0;
-    Vector3 cameraForward = Vector3.forward;
-    readonly object mutex = new object();
-    long lastSyncAc = 0;
+
     public void SyncMobileControlAxes(long instant, int h, int v)
     {
-        // instant 暂时没用到，以后考虑用于误差预判
-        lock (mutex)
-        {
-            this.h = h;
-            this.v = v;
-            if (instant > lastSyncAc)
-            {
-                lastSyncAc = instant;
-            }
-            unit.SyncMovement.SyncAcceleration(lastSyncAc, h, v, cameraForward);
-        }
+        unit.SyncMovement.SyncAcceleration(instant, h, v);
     }
 
     public void SyncCameraFoward(long instant, Vector3 forward)
     {
-        lock (mutex)
-        {
-            cameraForward = forward;
-            if (instant > lastSyncAc)
-            {
-                lastSyncAc = instant;
-            }
-            unit.SyncMovement.SyncAcceleration(lastSyncAc, h, v, forward);
-        }
+        unit.SyncMovement.SyncCameraForward(instant, forward);
     }
 
     public void SyncMouseButton0Down(long instant)

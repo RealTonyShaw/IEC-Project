@@ -36,17 +36,29 @@ public class CastingController : MonoBehaviour
     {
         if (player == null)
             return;
+
+        int index = -1;
         switch (info.keyCode)
         {
             case KeyCode.Alpha1:
-                skillTable.SwitchCell(1);
+                index = 1;
                 break;
             case KeyCode.Alpha2:
-                skillTable.SwitchCell(2);
+                index = 2;
                 break;
             case KeyCode.Alpha3:
-                skillTable.SwitchCell(3);
+                index = 3;
                 break;
+        }
+        if (GameCtrl.IsOnlineGame)
+        {
+            if (index != -1)
+                DataSync.SyncSwitchSkill(player, Gamef.SystemTimeInMillisecond, index);
+        }
+        else
+        {
+            if (index != -1)
+                skillTable.SwitchCell(index);
         }
     }
 
@@ -54,22 +66,36 @@ public class CastingController : MonoBehaviour
     {
         if (player == null)
             return;
-        // 为技能设置施法时刻
-        skillTable.CurrentCell.SetInstant(Gamef.SystemTimeInMillisecond);
-        // 为技能设置目标
-        if (skillTable.CurrentSkill.Data.IsTracking && skillTable.CurrentSkill is ITracking it)
+        if (GameCtrl.IsOnlineGame)
         {
-            it.Target = AimController.Instance.TargetForStrafeSkill;
+            DataSync.SyncMouseButton0Down(player, Gamef.SystemTimeInMillisecond);
         }
-        skillTable.CurrentCell.OnMouseButtonDown();
+        else
+        {
+            // 为技能设置施法时刻
+            skillTable.CurrentCell.SetInstant(Gamef.SystemTimeInMillisecond);
+            // 为技能设置目标
+            if (skillTable.CurrentSkill.Data.IsTracking && skillTable.CurrentSkill is ITracking it)
+            {
+                it.Target = AimController.Instance.TargetForStrafeSkill;
+            }
+            skillTable.CurrentCell.Start();
+        }
     }
 
     private void CellMouseBTNUp(EventMgr.MouseButtonUpEventInfo info)
     {
         if (player == null)
             return;
-        skillTable.CurrentCell.SetInstant(Gamef.SystemTimeInMillisecond);
-        skillTable.CurrentCell.OnMouseButtonUp();
+        if (GameCtrl.IsOnlineGame)
+        {
+            DataSync.SyncMouseButton0Up(player, Gamef.SystemTimeInMillisecond);
+        }
+        else
+        {
+            skillTable.CurrentCell.SetInstant(Gamef.SystemTimeInMillisecond);
+            skillTable.CurrentCell.Stop();
+        }
     }
 }
 
