@@ -37,7 +37,7 @@ namespace ClientBase
             }
         }
 
-        public Client Instance
+        public static Client Instance
         {
             get
             {
@@ -62,6 +62,10 @@ namespace ClientBase
             {
                 Console.WriteLine("There is a connection");
             }
+            if (client.Connected)
+            {
+                Console.WriteLine("Already connect");
+            }
             if (port < 0)
                 return;
             try
@@ -84,7 +88,7 @@ namespace ClientBase
         /// Invoke this when accept message from client.
         /// </summary>
         /// <param name="ar"></param>
-        public void ReceiveCallback(IAsyncResult ar)
+        private void ReceiveCallback(IAsyncResult ar)
         {
             try
             {
@@ -106,13 +110,13 @@ namespace ClientBase
         private void DataProcessor()
         {
             //如果小于存储长度的数据长度，则返回
-            if (start < sizeof(int))
+            if (start < sizeof(short))
                 return;
             length = BitConverter.ToInt32(buffer, 0);
             //如果没接收完毕返回
-            if (start < SF.INT_SIZE + length)
+            if (start < SF.SHORT_SIZE + length)
                 return;
-            ProtocolBase protocol = proto.Decode(buffer, SF.INT_SIZE, length);
+            ProtocolBase protocol = proto.Decode(buffer, SF.SHORT_SIZE, length);
             //todo this is to deal with protocol
             bool cor = false;
             if (length > 144)
@@ -133,7 +137,7 @@ namespace ClientBase
             }
 
             //Operations for protocol
-            int count = start - SF.INT_SIZE - length;
+            int count = start - SF.SHORT_SIZE - length;
             Array.Copy(buffer, start, buffer, 0, count);
             if (count > 0)
                 DataProcessor();
@@ -150,6 +154,26 @@ namespace ClientBase
             {
                 return;
             }
+            if (client == null)
+            {
+                return;
+            }
+        }
+
+        public void Disconnect()
+        {
+            if (!isConnect)
+            {
+                return;
+            }
+            try
+            {
+                client.Disconnect(true);
+                isConnect = false;
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
         }
 
         /// <summary>
@@ -159,8 +183,13 @@ namespace ClientBase
         {
             if (!isConnect)
                 return;
-            byte[] sendBuffer = protocol.Encode();
-            client.Send(sendBuffer);
+            //把传输的信息转化为字节数组A
+            byte[] bytes = protocol.Encode();
+            //把信息长度大小转换成字节数组
+            byte[] length = BitConverter.GetBytes((short)bytes.Length);
+            //这段话表示连接length和bytes数组，并且length在前
+            byte[] sendBuff = length.Concat(bytes).ToArray();
+            client.Send(sendBuff);
         }
     }
 }
