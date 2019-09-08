@@ -58,7 +58,7 @@ public class BodyBalancing : MonoBehaviour
         tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
         x =Mathf.Atan(tanf) * Mathf.Rad2Deg;
 
-        mover.Chara.localRotation = Quaternion.Slerp(mover.Chara.localRotation, Quaternion.Euler(x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
+        mover.Chara.localRotation = Quaternion.Slerp(mover.Chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
 
     }
 }
