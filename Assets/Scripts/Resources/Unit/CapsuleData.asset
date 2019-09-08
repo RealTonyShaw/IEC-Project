@@ -12,6 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19b6c30d9725507468caec4f3eb7b315, type: 3}
   m_Name: CapsuleData
   m_EditorClassIdentifier: 
+  LocalPrefab: {fileID: 8800927540003769637, guid: 6b4285e696bdce944bb9206f44d7995d,
+    type: 3}
+  NetPrefab: {fileID: 8800927540003769637, guid: 6b4285e696bdce944bb9206f44d7995d,
+    type: 3}
   tags:
     player: 0
     elf: 0

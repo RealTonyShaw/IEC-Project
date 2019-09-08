@@ -13,6 +13,9 @@ public enum UnitName
 [CreateAssetMenu(menuName = "My Data/Unit Data")]
 public class UnitData : ScriptableObject
 {
+    [Header("Unit Prefab")]
+    public GameObject LocalPrefab;
+    public GameObject NetPrefab;
     [Header("Basic Info")]
     /// <summary>
     /// 单位复数标签
