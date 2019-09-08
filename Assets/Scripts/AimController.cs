@@ -5,14 +5,27 @@ using UnityEngine;
 public class AimController : MonoBehaviour
 {
     public static AimController Instance { get; private set; }
+    Unit targetForStrafeSkill = null;
     /// <summary>
     /// 连射型技能的追踪目标
     /// </summary>
     public Unit TargetForStrafeSkill
     {
+        set
+        {
+            if (targetForStrafeSkill != value)
+            {
+                targetForStrafeSkill = value;
+                if (GameCtrl.IsOnlineGame)
+                {
+                    // sync target
+                }
+            }
+        }
+
         get
         {
-            return CameraGroupController.Instance.GetClosestUnit();
+            return targetForStrafeSkill;
         }
     }
 
@@ -59,9 +72,11 @@ public class AimController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        Unit tmp = CameraGroupController.Instance.GetClosestUnit();
         if (InputMgr.AimingButtonPressed)
         {
-            TargetForBurstfireSkill = CameraGroupController.Instance.GetClosestUnit();
+            TargetForBurstfireSkill = tmp;
         }
+        targetForStrafeSkill = tmp;
     }
 }

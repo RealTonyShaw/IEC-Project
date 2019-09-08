@@ -221,6 +221,36 @@ namespace ClientBase
         #endregion
 
         #region
+        public void AddByte(byte num)
+        {
+            byte[] numBytes = { num };
+            if (bytes == null)
+            {
+                bytes = numBytes;
+            }
+            else
+            {
+                bytes = bytes.Concat(numBytes).ToArray();
+            }
+            return;
+        }
+
+        public byte GetByte(int start, ref int end)
+        {
+            if (bytes == null) return 0;
+            if (bytes.Length < start + sizeof(byte)) return 0;
+            end = start + sizeof(byte);
+            return bytes[start];
+        }
+
+        public byte GetByte(int start)
+        {
+            int end = 0;
+            return GetByte(start, ref end);
+        }
+        #endregion
+
+        #region
         public void AddChar(char num)
         {
             byte[] numBytes = BitConverter.GetBytes(num);
@@ -243,7 +273,7 @@ namespace ClientBase
             return BitConverter.ToChar(bytes, start);
         }
 
-        public char GetByte(int start)
+        public char GetChar(int start)
         {
             int end = 0;
             return GetChar(start, ref end);
@@ -263,7 +293,7 @@ namespace ClientBase
 
         public string GetProtoName(int start, ref int end)
         {
-            int protoEnum = GetInt(start, ref end);
+            int protoEnum = GetByte(start, ref end);
             ProtoName protoName;
             try
             {
@@ -279,7 +309,7 @@ namespace ClientBase
 
         public string GetProtoName()
         {
-            int protoEnum = GetInt(0);
+            int protoEnum = GetByte(0);
             ProtoName protoName;
             try
             {

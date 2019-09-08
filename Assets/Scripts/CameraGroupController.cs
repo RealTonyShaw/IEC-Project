@@ -26,7 +26,11 @@ public class CameraGroupController : MonoBehaviour
     public bool smooth = true;
     public float smoothTime = 15f;
     public bool lockCursor = true;
-    Quaternion xAxis = Quaternion.identity, yAxis = Quaternion.identity;
+    //Quaternion xAxis = Quaternion.identity, yAxis = Quaternion.identity;
+    Quaternion cameraXRot = Quaternion.identity;
+    Quaternion cameraYRot = Quaternion.identity;
+    Quaternion targetXRot = Quaternion.identity;
+    Quaternion targetYRot = Quaternion.identity;
 
     [Header("牵连效果")]
     public bool enableImplicatedEffect = true;
@@ -89,31 +93,40 @@ public class CameraGroupController : MonoBehaviour
     {
         xRot = Input.GetAxis("Mouse Y") * XSensitivity;
         yRot = Input.GetAxis("Mouse X") * YSensitivity;
-        Quaternion xAxis = this.xAxis, yAxis = this.yAxis;
-        xAxis *= Quaternion.Euler(-xRot, 0f, 0f);
-        yAxis *= Quaternion.Euler(0f, yRot, 0f);
+        targetXRot *= Quaternion.Euler(-xRot, 0f, 0f);
+        targetYRot *= Quaternion.Euler(0f, yRot, 0f);
+        //Quaternion xAxis = this.xAxis, yAxis = this.yAxis;
+        //xAxis *= Quaternion.Euler(-xRot, 0f, 0f);
+        //yAxis *= Quaternion.Euler(0f, yRot, 0f);
         
 
         if (clampVerticalRotation)
         {
-            xAxis = ClampRotationAroundXAxis(xAxis);
+            targetXRot = ClampRotationAroundXAxis(targetXRot);
+            //xAxis = ClampRotationAroundXAxis(xAxis);
         }
         if (clampHorizontalRotation)
         {
-            yAxis = ClampRotationAroundYAxis(yAxis);
+            targetYRot = ClampRotationAroundYAxis(targetYRot);
+            //yAxis = ClampRotationAroundYAxis(yAxis);
         }
 
         if (smooth)
         {
-            this.xAxis = Quaternion.Slerp(this.xAxis, xAxis, dt * smoothTime);
-            this.yAxis = Quaternion.Slerp(this.yAxis, yAxis, dt * smoothTime);
+            cameraXRot = Quaternion.Slerp(cameraXRot, targetXRot, dt * smoothTime);
+            cameraYRot = Quaternion.Slerp(cameraYRot, targetYRot, dt * smoothTime);
+            //this.xAxis = Quaternion.Slerp(this.xAxis, xAxis, dt * smoothTime);
+            //this.yAxis = Quaternion.Slerp(this.yAxis, yAxis, dt * smoothTime);
         }
         else
         {
-            this.xAxis = xAxis;
-            this.yAxis = yAxis;
+            cameraXRot = targetXRot;
+            cameraYRot = targetYRot;
+            //this.xAxis = xAxis;
+            //this.yAxis = yAxis;
         }
-        PositionParent.localEulerAngles = new Vector3(this.xAxis.eulerAngles.x, this.yAxis.eulerAngles.y, 0f);
+        PositionParent.localEulerAngles = new Vector3(cameraXRot.eulerAngles.x, cameraYRot.eulerAngles.y, 0f);
+        //PositionParent.localEulerAngles = new Vector3(this.xAxis.eulerAngles.x, this.yAxis.eulerAngles.y, 0f);
         //SetAngleAroundZAxis(GameCtrl.PlayerUnit.EyeTransform.eulerAngles.z);
         //parent.rotation = GameCtrl.PlayerUnit.EyeTransform.rotation;
     }
@@ -144,6 +157,7 @@ public class CameraGroupController : MonoBehaviour
         float angleX = 2f * Mathf.Rad2Deg * Mathf.Atan(q.x);
 
         angleX = Mathf.Clamp(angleX, MinX, MaxX);
+        Debug.Log("Angle X = " + angleX);
 
         q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
 

@@ -26,7 +26,10 @@ public class SyncMovement : ISyncMovement
     long lastAccelerationInstant = 0;
     int lastAcceleration = 0;
     int lastAngularAcceleration = 0;
-    Vector3 lastCameraForward = new Vector3();
+
+    // 保存上次 CameraForward 参数
+    long lastCameraForwardInstant = 0;
+    Vector3 lastCameraForward = Vector3.forward;
 
     // 预测的参数
     long currentInstant;
@@ -50,14 +53,19 @@ public class SyncMovement : ISyncMovement
         rb = unit.GetComponent<Rigidbody>();
     }
 
-    public void SyncAcceleration(long instant, int acceleration, int angularAcceleration, Vector3 cameraForward)
+    public void SyncAcceleration(long instant, int acceleration, int angularAcceleration)
     {
         this.lastAccelerationInstant = instant;
-        this.lastCameraForward = cameraForward;
         // 直接同步角加速度和加速度
         mover.H = angularAcceleration;
         mover.V = acceleration;
         
+    }
+
+    public void SyncCameraForward(long instant, Vector3 cameraForward)
+    {
+        this.lastCameraForwardInstant = instant;
+        this.lastCameraForward = cameraForward;
     }
 
     public void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)

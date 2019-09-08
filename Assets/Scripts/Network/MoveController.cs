@@ -14,6 +14,7 @@ public class MoveController : MonoBehaviour
     public Vector3 CharaLocalEulerAngles => mover.Chara.localEulerAngles;
     public Mover PlayerMover => mover;
 
+    private Rigidbody rb;
     private Mover mover = null;
     private void Awake()
     {
@@ -22,28 +23,52 @@ public class MoveController : MonoBehaviour
 
     private void Start()
     {
-        if (mover == null && GameCtrl.PlayerUnit != null)
+        if ((mover == null && GameCtrl.PlayerUnit != null) || (mover != null && mover.gameObject != GameCtrl.PlayerUnit.gameObject))
         {
             mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
+            rb = mover.GetComponent<Rigidbody>();
         }
         if (mover == null)
             return;
-        mover.V = InputMgr.GetVerticalAxis();
-        mover.H = InputMgr.GetHorizontalAxis();
-        mover.CameraForward = CameraGroupController.Instance.transform.forward;
+        if (GameCtrl.IsOnlineGame)
+        {
+            Unit unit = GameCtrl.PlayerUnit;
+            long instant = Gamef.SystemTimeInMillisecond;
+            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()));
+            // sync cam fwd
+            DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
+        }
+        else
+        {
+            mover.V = InputMgr.GetVerticalAxis();
+            mover.H = InputMgr.GetHorizontalAxis();
+            mover.CameraForward = CameraGroupController.Instance.transform.forward;
+        }
     }
 
     private void Update()
     {
-        if (mover == null && GameCtrl.PlayerUnit != null)
+        if ((mover == null && GameCtrl.PlayerUnit != null) || (mover != null && mover.gameObject != GameCtrl.PlayerUnit.gameObject))
         {
             mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
+            rb = mover.GetComponent<Rigidbody>();
         }
         if (mover == null)
             return;
 
-        mover.V = InputMgr.GetVerticalAxis();
-        mover.H = InputMgr.GetHorizontalAxis();
-        mover.CameraForward = CameraGroupController.Instance.transform.forward;
+        if (GameCtrl.IsOnlineGame)
+        {
+            Unit unit = GameCtrl.PlayerUnit;
+            long instant = Gamef.SystemTimeInMillisecond;
+            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()));
+            // sync cam fwd
+            DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
+        }
+        else
+        {
+            mover.V = InputMgr.GetVerticalAxis();
+            mover.H = InputMgr.GetHorizontalAxis();
+            mover.CameraForward = CameraGroupController.Instance.transform.forward;
+        }
     }
 }
