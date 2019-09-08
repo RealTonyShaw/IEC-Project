@@ -25,7 +25,7 @@ public static class DataSync
     #endregion
 
     #region Sync Movement
-    public static void SyncTransform(Unit unit, long instant, Vector3 position, Vector3 rotation, Vector3 velocity, float speed)
+    public static void SyncTransform(Unit unit, long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
     {
         //8 bits
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncTransform);
@@ -36,9 +36,9 @@ public static class DataSync
         //96 bits
         AppendVector3(protocol, position);
         //96 bits
-        AppendVector3(protocol, rotation);
+        AppendVector3(protocol, forward);
         //96 bits
-        AppendVector3(protocol, velocity);
+        AppendVector3(protocol, up);
         //32 bits
         protocol.AddFloat(speed);
 

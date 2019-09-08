@@ -35,10 +35,10 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             Vector3 position = ParseVector3(proto, ref start);
-            Vector3 rotation = ParseVector3(proto, ref start);
-            Vector3 velocity = ParseVector3(proto, ref start);
+            Vector3 forward = ParseVector3(proto, ref start);
+            Vector3 up = ParseVector3(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
-            unit.SyncMovement.SyncTransform(instant, position, rotation, velocity, speed);
+            unit.SyncMovement.SyncTransform(instant, position, forward, up, speed);
         }
         #endregion
 
