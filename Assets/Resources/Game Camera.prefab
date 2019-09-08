@@ -111,8 +111,8 @@ MonoBehaviour:
   TurbulenceParent: {fileID: 3261278174981582821}
   MainCamera: {fileID: 2863709059387656040}
   AssistantCameras: []
-  XSensitivity: 2
-  YSensitivity: 4
+  XSensitivity: 1
+  YSensitivity: 1.5
   clampVerticalRotation: 1
   clampHorizontalRotation: 1
   MinX: -60
