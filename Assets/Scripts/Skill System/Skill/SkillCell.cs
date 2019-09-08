@@ -93,12 +93,12 @@ public class SkillCell : ISkillCell
 
     float timer = 0f;
     float cooldown;
-    public void OnMouseButtonDown()
+    public void Start()
     {
         StartCasting();
     }
 
-    public void OnMouseButtonUp()
+    public void Stop()
     {
         StopCasting();
     }
@@ -114,7 +114,6 @@ public class SkillCell : ISkillCell
             Debug.Log(caster.gameObject.name + " isn't casting.");
         StopCasting();
     }
-    bool isProcessing = false;
     private void StartCasting()
     {
         float deltaT = (Gamef.SystemTimeInMillisecond - startOrStopInstant) * 1e-3f;

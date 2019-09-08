@@ -13,19 +13,15 @@ public interface ISkillCell : ISkillCastInstant
     /// <param name="caster">施法者，即技能槽位的拥有者</param>
     void Init(Unit caster);
     /// <summary>
-    /// 当鼠标左键被按下。
+    /// 当鼠标左键被按下，开始施法。
     /// </summary>
-    void OnMouseButtonDown();
+    void Start();
     /// <summary>
-    /// 当鼠标左键被松开。
+    /// 当鼠标左键被松开，结束施法。
     /// </summary>
-    void OnMouseButtonUp();
+    void Stop();
     /// <summary>
     /// 当前技能槽位中的技能。
     /// </summary>
     ISkill CurrentSkill { get; set; }
-    /// <summary>
-    /// 强制停止施法。
-    /// </summary>
-    void ForceToStopCasting();
 }

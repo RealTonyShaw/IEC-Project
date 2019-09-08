@@ -33,7 +33,6 @@ public class ObjectPoolEnumerator<T> : IEnumerator<T>
             if (pool.CheckID(i))
             {
                 currentID = i;
-                //UnityEngine.Debug.Log("Move Iterator to " + i);
                 return true;
             }
         }
@@ -49,10 +48,8 @@ public class ObjectPoolEnumerator<T> : IEnumerator<T>
             if (pool.CheckID(i))
             {
                 currentID = i;
-                //UnityEngine.Debug.Log("Reset Iterator to " + i);
                 break;
             }
         }
-        //UnityEngine.Debug.Log("No Unit");
     }
 }
