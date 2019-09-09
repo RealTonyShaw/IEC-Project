@@ -19,7 +19,7 @@ public partial class GameCtrl : MonoBehaviour
     /// </summary>
     public static bool isInit = false;
     #endregion
-
+    
     #region 实时公有信息
     //private UnitInfo _mainChara;
     private static Unit _playerUnit = null;
@@ -103,7 +103,9 @@ public partial class GameCtrl : MonoBehaviour
         }
 
         //加载游戏场景
-        SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+        //SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+
+        SceneManager.LoadSceneAsync("Demo_Exterior");
     }
 
     private void Update()

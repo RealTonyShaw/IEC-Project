@@ -8,6 +8,7 @@ public class Missile : MonoBehaviour
     public float HP { get; private set; }
     public float Damage { get; private set; }
     public bool IsAlive { get; private set; } = true;
+    public float CollidCollisionCrossSectionRadius = 0.5f;
     public LayerMask collidesWith = ~(1 << 10);
     public GameObject spawnEffect;
     public GameObject deathEffect;
@@ -22,6 +23,8 @@ public class Missile : MonoBehaviour
     IPhysicalEffectHandler physicalEffectHandler = new PhysicalEffectHandler();
     ISpecialEffectHandler specialEffectHandler;
     TrackSystem trackSystem;
+
+    Rigidbody rb;
 
     bool isInit = false;
 
@@ -117,6 +120,7 @@ public class Missile : MonoBehaviour
     #region Life Periods
     private void Awake()
     {
+        rb = GetComponent<Rigidbody>();
         trackSystem = GetComponent<TrackSystem>();
     }
 
@@ -239,9 +243,39 @@ public class Missile : MonoBehaviour
     {
 
     }
+
+    Vector3 prevPos;
+
     void Move(float dt)
     {
-        transform.Translate(Vector3.forward * Skill.Data.Speed * dt);
+        prevPos = transform.position;
+        float ds = Skill.Data.Speed * dt;
+        transform.Translate(Vector3.forward * ds);
+        // 前方有障碍
+        if (Physics.Raycast(new Ray(transform.position, transform.forward), out RaycastHit hit, ds, collidesWith))
+        {
+            // 障碍为施法者，忽略该障碍
+            if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.gameObject == Caster.gameObject)
+            {
+                transform.Translate(Vector3.forward * ds);
+            }
+            // 否则，可能撞上该障碍物
+            else
+            {
+                transform.position = hit.point;
+                Debug.Log("Obstacle Detected");
+            }
+        }
+        // 前方没有障碍
+        else
+        {
+            transform.Translate(Vector3.forward * ds);
+        }
+    }
+
+    private void CheckCollision()
+    {
+
     }
 
     #region AOE爆炸
