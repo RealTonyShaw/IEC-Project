@@ -18,6 +18,13 @@
         SyncMP = 10,
         SyncTimeCheck = 11,
         Ping = 12,
+        Login = 13,
+        Logout = 14,
+        Ready = 15,
+        ReadyCancel = 16,
+        Register = 17,
+        CreateObject = 18,
+        DestroyObj = 19,
         //SyncAcceleration = 3,
         //SyncUpgradeInfo = 4,
         //UpgradeUnitInfo = 5,
@@ -33,11 +40,13 @@
         ////player interaction
         //RoomChat = 200,
         //HallChat = 201,
+
         ////server detection
         //TimeTest = 300,
         //TimeRecv = 301,
         //TimeSet = 302,
         //HeatBeat = 303,
+
         ////rooms
         //PlayerDataInit = 400,
         //SetSelectShipType = 401,

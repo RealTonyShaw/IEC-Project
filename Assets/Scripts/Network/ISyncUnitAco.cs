@@ -2,17 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ISyncUnitAco : MonoBehaviour
+public interface ISyncUnitAco 
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    void UnitOnDestroy();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    /// <summary>
+    /// To blind a unit.
+    /// </summary>
+    /// <param name="unit">The unit blinded</param>
+    void init(Unit unit);
 }

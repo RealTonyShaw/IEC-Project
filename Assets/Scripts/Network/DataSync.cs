@@ -3,15 +3,67 @@ using System.Collections.Generic;
 using UnityEngine;
 using ClientBase;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 public static class DataSync
 {
     #region Server & Client
+
+    #region Login
+    public static void Login(string username, string password)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Login);
+        MD5 md5p = MD5.Create(password);
+        protocol.AddString(username);
+        protocol.AddString(GetMd5(password));
+        AppendCRC16AndSend(protocol);
+    }
+
+    public static void Logout()
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
+        AppendCRC8AndSend(protocol);
+    }
+
+    public static void Ready()
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
+        AppendCRC8AndSend(protocol);
+    }
+
+    public static void ReadyCancel()
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
+        AppendCRC8AndSend(protocol);
+    }
+
+    /// <summary>
+    /// To apply for register.
+    /// </summary>
+    /// <param name="username">At least 8 bits</param>
+    /// <param name="password">At least 8 bits</param>
+    public static void Register(string username, string password)
+    {
+        if (username == null || password == null)
+        {
+            return;
+        }
+        if (username.Length < 8 || password.Length < 8)
+        {
+            return;
+        }
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Register);
+        AppendCRC16AndSend(protocol);
+    }
+    #endregion
+
+    #region Base
     /// <summary>
     /// Heart beat, 5 or more seconds per
     /// </summary>
     public static void SyncTimeCheck()
-    {        
+    {
         AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.SyncTimeCheck));
     }
 
@@ -22,6 +74,36 @@ public static class DataSync
     {
         AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.Ping));
     }
+    #endregion
+
+    #region Net Object
+    /// <summary>
+    /// Send a message to server, which includes the message of unit and applies for permission.
+    /// </summary>
+    /// <param name="unit">The unit type enum</param>
+    /// <param name="isLocal">Is this object local</param>
+    /// <param name="position">The position of the unit that would be created at</param>
+    /// <param name="rotation">The rotation of the unit</param>
+    public static void CreateObject(UnitName unit, Vector3 position, Quaternion rotation)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.CreateObject);
+        protocol.AddByte((byte)unit);
+        AppendVector3(protocol, position);
+        AppendQuaternion(protocol, rotation);
+        AppendCRC16AndSend(protocol);
+    }
+
+    /// <summary>
+    /// Destroy a object.
+    /// </summary>
+    /// <param name="id">The id of the unit that being destroyed</param>
+    public static void DestroyObj(byte id)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.DestroyObj);
+        protocol.AddByte(id);
+        AppendCRC8AndSend(protocol);
+    }
+    #endregion
     #endregion
 
     #region Sync Movement
@@ -284,6 +366,18 @@ public static class DataSync
     public static int ParseBitResult(int n)
     {
         return n == 3 ? -1 : n;
+    }
+
+    public static string GetMd5(string password)
+    {
+        MD5 md5p = new MD5CryptoServiceProvider();
+        byte[] bs = md5p.ComputeHash(Encoding.Default.GetBytes(password));
+        string pw = "";
+        for (int i = 0; i < bs.Length; i++)
+        {
+            pw += string.Format("{0:x}", bs[i]);
+        }
+        return pw;
     }
     #endregion
 

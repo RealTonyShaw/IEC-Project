@@ -10,6 +10,7 @@ namespace ClientBase
     public class MsgHandler
     {
         #region Server&Client
+        #region Base
         public void SyncTimeCheck(ProtocolBase protocol)
         {
             int start = 0;
@@ -22,6 +23,42 @@ namespace ClientBase
         {
             ClientLauncher.Instant.PingBack();
         }
+        #endregion
+
+        #region Login
+        #endregion
+
+        #region Net Object
+        //UnitName unit, Vector3 position, Quaternion rotation
+        public void CreateObject(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            UnitName unitName = (UnitName)proto.GetByte(start, ref start);
+            Vector3 pos = ParseVector3(proto, ref start);
+            Quaternion rot = ParseQuaternion(proto, ref start);
+            int unitId = proto.GetByte(start, ref start);
+            bool isLocal = proto.GetByte(start, ref start) == 1;
+            UnitData unitData = Gamef.LoadUnitData(unitName);
+            GameObject prefab = isLocal ? unitData.NetPrefab : unitData.NetPrefab;
+            GameObject gameObject = Gamef.Instantiate(prefab, pos, rot);
+            //set id
+        }
+
+        public void DestroyObj(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            long instant = proto.GetInt(start, ref start);
+            int id = proto.GetByte(start, ref start);
+            Unit unit = Gamef.GetUnit(id);
+            //Destroy the object.
+            //Gamef.Destroy(unit.gameObject);
+        }
+        #endregion
+
 
         #endregion
 
