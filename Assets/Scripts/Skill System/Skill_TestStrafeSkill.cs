@@ -28,7 +28,7 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
         tmp = Gamef.Instantiate(fireballPrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
         Missile missile = tmp.GetComponent<Missile>();
         missile.Init(Caster, Target, this);
-        Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
+        //Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
         Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
         return missile;
     }

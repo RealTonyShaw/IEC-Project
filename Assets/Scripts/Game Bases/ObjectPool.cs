@@ -52,6 +52,46 @@ public class ObjectPool<T> : IEnumerable<T>
             return res;
         }
     }
+
+    /// <summary>
+    /// 给对象分配ID
+    /// </summary>
+    /// <param name="obj">目标对象</param>
+    /// <param name="id">想申请的ID</param>
+    /// <returns>对象ID。如果申请失败，则返回-1</returns>
+    public int IDAlloc(T obj, int id)
+    {
+        lock (blkList)
+        {
+            // 
+            if (id < MaxLength)
+            {
+                if (CheckID(id))
+                    return -1;
+            }
+            else
+            {
+                int prevLen = MaxLength;
+                MaxLength = id + 1;
+                while ((id & BLK_MASK) >= blkList.Count)
+                {
+                    ExtendPool();
+                }
+                for (int i = prevLen; i < MaxLength - 1; i++)
+                {
+                    idQueue.Enqueue(i);
+                }
+            }
+            blkList[id & BLK_MASK][id & OFFSET_MASK] = new Cell()
+            {
+                isValid = true,
+                content = obj,
+            };
+            Debug.Log("Add " + typeof(T).ToString() + " to blk " + (id & BLK_MASK) + ", cell " + (id & OFFSET_MASK));
+            return id;
+        }
+    }
+
     /// <summary>
     /// 获取ID对应对象
     /// </summary>
@@ -65,7 +105,7 @@ public class ObjectPool<T> : IEnumerable<T>
     /// 检查ID是否被占用
     /// </summary>
     /// <param name="id">对象ID</param>
-    /// <returns>是否被占用</returns>
+    /// <returns>是否被占用。True，表示被占用；false，表示不被占用</returns>
     public bool CheckID(int id)
     {
         return blkList[id & BLK_MASK][id & OFFSET_MASK].isValid;
@@ -78,7 +118,7 @@ public class ObjectPool<T> : IEnumerable<T>
     {
         lock (blkList)
         {
-            blkList[id & ~0xff][id & 0xff].isValid = false;
+            blkList[id & BLK_MASK][id & OFFSET_MASK].isValid = false;
             idQueue.Enqueue(id);
         }
     }

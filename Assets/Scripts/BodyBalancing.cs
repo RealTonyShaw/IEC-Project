@@ -50,13 +50,14 @@ public class BodyBalancing : MonoBehaviour
         z = Mathf.Atan(z) * Mathf.Rad2Deg;
 
         // X轴平衡 (俯仰平衡)
-        Vector3 projection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
-        x = Vector3.SignedAngle(transform.forward, projection, transform.right) * Mathf.Deg2Rad;
-        //x = srb.XRot.eulerAngles.x * Mathf.Deg2Rad;
-        sinx = Mathf.Sin(x);
-        cosx = Mathf.Cos(x);
-        tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
-        x =Mathf.Atan(tanf) * Mathf.Rad2Deg;
+        //Vector3 projection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        //x = Vector3.SignedAngle(transform.forward, projection, transform.right) * Mathf.Deg2Rad;
+        ////x = srb.XRot.eulerAngles.x * Mathf.Deg2Rad;
+        //sinx = Mathf.Sin(x);
+        //cosx = Mathf.Cos(x);
+        //tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
+        //x = Mathf.Atan(tanf) * Mathf.Rad2Deg;
+        x = 0f;
 
         mover.Chara.localRotation = Quaternion.Slerp(mover.Chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
 
