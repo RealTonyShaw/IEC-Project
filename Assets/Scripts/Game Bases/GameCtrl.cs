@@ -103,9 +103,9 @@ public partial class GameCtrl : MonoBehaviour
         }
 
         //加载游戏场景
-        //SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+        SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
 
-        SceneManager.LoadSceneAsync("Demo_Exterior");
+        //SceneManager.LoadSceneAsync("Demo_Exterior");
     }
 
     private void Update()
