@@ -25,6 +25,7 @@
         Register = 17,
         CreateObject = 18,
         DestroyObj = 19,
+        StartGame = 20,
         //SyncAcceleration = 3,
         //SyncUpgradeInfo = 4,
         //UpgradeUnitInfo = 5,

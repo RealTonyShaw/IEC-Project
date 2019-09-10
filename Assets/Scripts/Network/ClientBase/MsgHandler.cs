@@ -44,6 +44,7 @@ namespace ClientBase
             GameObject prefab = isLocal ? unitData.NetPrefab : unitData.NetPrefab;
             GameObject gameObject = Gamef.Instantiate(prefab, pos, rot);
             //set id
+            
         }
 
         public void DestroyObj(ProtocolBase protocol)
@@ -55,7 +56,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             //Destroy the object.
-            //Gamef.Destroy(unit.gameObject);
+            unit.Death();
         }
         #endregion
 
