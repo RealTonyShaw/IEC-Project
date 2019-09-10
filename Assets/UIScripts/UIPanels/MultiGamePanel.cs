@@ -10,7 +10,8 @@ public class MultiGamePanel : BasePanel
     public override void OnEnter()
     {
         canvasGroup.DOFade(1, 2f);
-        trans.DORotate(new Vector3(0, 0, 0), 2f, RotateMode.FastBeyond360);
+        //trans.DORotate(new Vector3(0, 0, 0), 2f, RotateMode.FastBeyond360);
+        trans.DOScale(new Vector3(1, 1, 1), 2f);
         StartCoroutine(DelayEnable());
     }
 
@@ -26,7 +27,8 @@ public class MultiGamePanel : BasePanel
         canvasGroup.DOFade(0, 2);
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
-        trans.DORotate(new Vector3(0, 180, 0), 2, RotateMode.FastBeyond360);
+        //trans.DORotate(new Vector3(0, 180, 0), 2, RotateMode.FastBeyond360);
+        trans.DOScale(new Vector3(0, 0, 0), 2f);
     }
 
     public void OnExitClick()
