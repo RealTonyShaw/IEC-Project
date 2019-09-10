@@ -206,25 +206,6 @@ public partial class Unit : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        //删除物体
-        Gamef.Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        if (!GameCtrl.IsOnlineGame)
-        {
-
-        }
-        else
-        {
-            //注销单位
-            lock (GameDB.unitPool)
-                Gamef.UnitClear(this);
-        }
-    }
     #endregion
 
     #region 生命值
@@ -310,6 +291,9 @@ public partial class Unit : MonoBehaviour
             LogOffBuff(buffs[0]);
         Debug.Log(gameObject.name + " has died.");
         gameObject.SetActive(false);
+        //注销单位
+        lock (GameDB.unitPool)
+            Gamef.UnitClear(this);
     }
     #endregion
 }
