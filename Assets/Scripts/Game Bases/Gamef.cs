@@ -89,9 +89,26 @@ public static partial class Gamef
     /// 将单位加入单位池
     /// </summary>
     /// <param name="unit">单位的UnitCtrl组件</param>
+    /// <returns>单位ID。如果出生失败，返回-1</returns>
     public static int UnitBirth(Unit unit)
     {
         int id = GameDB.Instance.UnitBirth(unit);
+        //构造并触发事件
+        EventMgr.UnitBirthEventInfo info = new EventMgr.UnitBirthEventInfo(unit);
+        EventMgr.UnitBirthEvent.OnTrigger(info);
+        return id;
+    }
+
+
+    /// <summary>
+    /// 将单位以指定的ID加入单位池。
+    /// </summary>
+    /// <param name="unit">单位控制组件</param>
+    /// <param name="ID">指定的ID</param>
+    /// <returns>单位ID。如果出生失败，返回-1</returns>
+    public static int UnitBirth(Unit unit, int ID)
+    {
+        int id = GameDB.Instance.UnitBirth(unit, ID);
         //构造并触发事件
         EventMgr.UnitBirthEventInfo info = new EventMgr.UnitBirthEventInfo(unit);
         EventMgr.UnitBirthEvent.OnTrigger(info);

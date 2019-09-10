@@ -117,6 +117,21 @@ public partial class GameDB
             return -1;
         return unitPool.IDAlloc(unit);
     }
+
+    /// <summary>
+    /// 将单位以指定的ID加入单位池(请勿调用，该方法不会触发单位出生事件，请使用Gamef.UnitBirth()方法)
+    /// </summary>
+    /// <param name="unit">单位控制组件</param>
+    /// <param name="ID">指定的ID</param>
+    /// <returns>单位ID。如果出生失败，返回-1</returns>
+    public int UnitBirth(Unit unit, int ID)
+    {
+        //如果单位已经设置过了，那么不执行
+        if (unit.attributes.ID != -1)
+            return -1;
+        return unitPool.IDAlloc(unit, ID);
+    }
+
     /// <summary>
     /// 将投掷物加入池（请调用Gamef.MissileBirth）
     /// </summary>
