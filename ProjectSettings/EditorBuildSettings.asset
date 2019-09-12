@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Game.unity
     guid: 42cfebb05f69c6a4ba8117aa3e7a0809
+  - enabled: 1
+    path: Assets/Map/Space/Scenes/Demo_Exterior.unity
+    guid: 7dc0f3408c08040458ba7cc777331949
   m_configObjects: {}

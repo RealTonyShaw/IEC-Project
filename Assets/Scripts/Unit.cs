@@ -99,15 +99,62 @@ public partial class Unit : MonoBehaviour
         {
             Debug.LogError(string.Format("Unit {0} is not in Unit layer.", gameObject.name));
         }
+        if (GameCtrl.IsOnlineGame)
+        {
+            // do nothing
+            if (!isInitAttr)
+            {
+                Debug.LogError("Init Error: " + gameObject.name + " initialization failed");
+            }
+        }
+        else
+        {
+            InitAttributes();
+        }
+    }
+
+    private bool isInitAttr = false;
+    public void InitAttributes()
+    {
+        if (isInitAttr)
+            return;
+        isInitAttr = true;
         //注册单位
         lock (GameDB.unitPool)
             attributes.ID = Gamef.UnitBirth(this);
+
         attributes.Init(this);
         SyncMovement?.Init(this);
         //测试用
         if (attributes.name == UnitName.Player)
         {
-            StartCoroutine(DisplayProperity());
+            if (DisplayPlayerProperity.Instance != null)
+                StartCoroutine(DisplayProperity());
+        }
+        // 如果该单位是施法单位，则初始化技能表
+        if (attributes.data.IsCaster)
+            skillTable.Init(this);
+    }
+    /// <summary>
+    /// 外部可以通过该接口对单位进行初始化。
+    /// </summary>
+    /// <param name="ID">单位ID</param>
+    public void InitAttributes(int ID)
+    {
+        if (isInitAttr)
+            return;
+        isInitAttr = true;
+        //注册单位
+        lock (GameDB.unitPool)
+            attributes.ID = Gamef.UnitBirth(this, ID);
+
+        attributes.Init(this);
+        SyncMovement?.Init(this);
+        //测试用
+        if (attributes.name == UnitName.Player)
+        {
+            if (DisplayPlayerProperity.Instance != null)
+                StartCoroutine(DisplayProperity());
         }
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
@@ -159,20 +206,8 @@ public partial class Unit : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        //删除物体
-        Gamef.Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        //注销单位
-        lock (GameDB.unitPool)
-            Gamef.UnitClear(this);
-    }
     #endregion
-    
+
     #region 生命值
     /// <summary>
     /// 单位受伤
@@ -206,6 +241,8 @@ public partial class Unit : MonoBehaviour
         attributes.SheildPoint += amount;
     }
 
+    bool sendDeathRequest = false;
+    object deathRequestMutex = new object();
     /// <summary>
     /// 护盾值事件，包括因为护盾损失和恢复在内的一切效果的显现等。
     /// 考虑以后加入Death类，作为静态函数，统一处理。
@@ -218,23 +255,45 @@ public partial class Unit : MonoBehaviour
         {
             return;
         }
-        if (!IsLocal)
-            return;
-        //SP过低，死亡
-        if (info.CurrentValue <= 0)
-            SimpleDeath();
+
+        if (GameCtrl.IsOnlineGame)
+        {
+            lock (deathRequestMutex)
+            {
+                if (!sendDeathRequest)
+                    if (IsLocal && info.CurrentValue <= 0)
+                    {
+                        sendDeathRequest = true;
+                        // send death request
+                    }
+            }
+        }
+        else
+        {
+            //SP过低，死亡
+            if (info.CurrentValue <= 0)
+                Death();
+        }
+
     }
 
-    private void SimpleDeath()
+    public void Death()
     {
         if (!attributes.isAlive)
             return;
         attributes.isAlive = false;
+        if (attributes.SheildPoint > 0f)
+        {
+            attributes.SheildPoint = 0f;
+        }
         //清空所有buff
         while (buffs.Count > 0)
             LogOffBuff(buffs[0]);
         Debug.Log(gameObject.name + " has died.");
         gameObject.SetActive(false);
+        //注销单位
+        lock (GameDB.unitPool)
+            Gamef.UnitClear(this);
     }
     #endregion
 }

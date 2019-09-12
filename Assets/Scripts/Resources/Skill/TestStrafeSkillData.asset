@@ -19,8 +19,8 @@ MonoBehaviour:
   RPM: 500
   Params: []
   Range: 50
-  Speed: 50
-  LifeSpan: 4
+  Speed: 70
+  LifeSpan: 3
   Cooldown: 0.2
   ManaCost: 3.2
   ManaCostPerSec: 0
@@ -42,3 +42,5 @@ MonoBehaviour:
   MinAccuracy: 90
   AccuracyCooldownSpeed: 10
   AccuracyHeatupSpeed: 3.5
+  Prefabs:
+  - {fileID: 5374365597475199403, guid: 597199358daa24c4d9397647318fb58d, type: 3}

@@ -25,6 +25,7 @@ public class CameraGroupController : MonoBehaviour
     public float MaxY = 90f;
     public bool smooth = true;
     public float smoothTime = 15f;
+    //public bool prescribePos = true;
     public bool lockCursor = true;
     //Quaternion xAxis = Quaternion.identity, yAxis = Quaternion.identity;
     Quaternion cameraXRot = Quaternion.identity;
@@ -71,10 +72,14 @@ public class CameraGroupController : MonoBehaviour
 
     public void UpdatePosition()
     {
-        prevPos = PositionParent.position;
+        Vector3 pos = MoveController.Instance.EyePosition;
+        PositionParent.position = pos;
     }
 
-    Vector3 prevPos;
+    private void LateUpdate()
+    {
+        UpdatePosition();
+    }
 
     private void FixedUpdate()
     {
@@ -82,8 +87,6 @@ public class CameraGroupController : MonoBehaviour
         {
             return;
         }
-        PositionParent.position = MoveController.Instance.EyePosition;
-        UpdatePosition();
         UpdateCameraRotation(Time.fixedDeltaTime);
         SetAngleAroundZAxis(Time.fixedDeltaTime);
     }
@@ -157,7 +160,6 @@ public class CameraGroupController : MonoBehaviour
         float angleX = 2f * Mathf.Rad2Deg * Mathf.Atan(q.x);
 
         angleX = Mathf.Clamp(angleX, MinX, MaxX);
-        Debug.Log("Angle X = " + angleX);
 
         q.x = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleX);
 
