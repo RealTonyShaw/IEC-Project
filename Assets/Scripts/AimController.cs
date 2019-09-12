@@ -5,6 +5,10 @@ using UnityEngine;
 public class AimController : MonoBehaviour
 {
     public static AimController Instance { get; private set; }
+    public long CurrentTargetInstance
+    {
+        get; private set;
+    }
     Unit targetForStrafeSkill = null;
     /// <summary>
     /// 连射型技能的追踪目标
@@ -19,6 +23,7 @@ public class AimController : MonoBehaviour
                 if (GameCtrl.IsOnlineGame)
                 {
                     // sync target
+                    
                 }
             }
         }
@@ -76,6 +81,10 @@ public class AimController : MonoBehaviour
         if (InputMgr.AimingButtonPressed)
         {
             TargetForBurstfireSkill = tmp;
+        }
+        else
+        {
+            TargetForBurstfireSkill = null;
         }
         targetForStrafeSkill = tmp;
     }

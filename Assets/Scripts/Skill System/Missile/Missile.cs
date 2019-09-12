@@ -8,7 +8,7 @@ public class Missile : MonoBehaviour
     public float HP { get; private set; }
     public float Damage { get; private set; }
     public bool IsAlive { get; private set; } = true;
-    public float CollidCollisionCrossSectionRadius = 0.5f;
+    public float CollisionCrossSectionRadius = 0.25f;
     public LayerMask collidesWith = ~(1 << 10);
     public GameObject spawnEffect;
     public GameObject deathEffect;
@@ -213,6 +213,11 @@ public class Missile : MonoBehaviour
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        Debug.Log("Miss!");
+    }
+
     object mutex = new object();
     public void TakeDamage(float damage)
     {
@@ -250,9 +255,8 @@ public class Missile : MonoBehaviour
     {
         prevPos = transform.position;
         float ds = Skill.Data.Speed * dt;
-        transform.Translate(Vector3.forward * ds);
         // 前方有障碍
-        if (Physics.Raycast(new Ray(transform.position, transform.forward), out RaycastHit hit, ds, collidesWith))
+        if (Physics.Raycast(new Ray(transform.position, transform.forward), out RaycastHit hit, ds + CollisionCrossSectionRadius, 0x1))// 只检测 Terrain，即 Default 层
         {
             // 障碍为施法者，忽略该障碍
             if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.gameObject == Caster.gameObject)

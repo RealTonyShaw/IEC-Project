@@ -22,7 +22,7 @@ MonoBehaviour:
     devil: 0
   MaxVelocity: 0
   MaxTurningVelocity: 0
-  MaxSheildPoint: 50
+  MaxSheildPoint: 120
   ShieldPointRegenerationRate: 0
   ArmorType: 0
   MaxManaPoint: 0
