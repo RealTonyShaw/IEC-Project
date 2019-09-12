@@ -119,6 +119,7 @@ namespace ClientBase
             ProtocolBase protocol = proto.Decode(buffer, SF.SHORT_SIZE, length);
             //todo this is to deal with protocol
             bool cor = false;
+            //length
             if (length > 144)
             {
                 CRC16 crc16 = new CRC16(protocol.Encode());
@@ -183,6 +184,7 @@ namespace ClientBase
         {
             if (!isConnect)
                 return;
+            protocol.AppendCrc();
             //把传输的信息转化为字节数组A
             byte[] bytes = protocol.Encode();
             //把信息长度大小转换成字节数组

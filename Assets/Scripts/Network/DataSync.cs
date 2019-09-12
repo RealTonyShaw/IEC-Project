@@ -17,25 +17,25 @@ public static class DataSync
         MD5 md5p = MD5.Create(password);
         protocol.AddString(username);
         protocol.AddString(GetMd5(password));
-        AppendCRC16AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     public static void Logout()
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     public static void Ready()
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     public static void ReadyCancel()
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -54,7 +54,7 @@ public static class DataSync
             return;
         }
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Register);
-        AppendCRC16AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
@@ -64,7 +64,7 @@ public static class DataSync
     /// </summary>
     public static void SyncTimeCheck()
     {
-        AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.SyncTimeCheck));
+        Client.Instance.Send(SF.GetProtocolHead(ProtoName.SyncTimeCheck));
     }
 
     /// <summary>
@@ -72,7 +72,7 @@ public static class DataSync
     /// </summary>
     public static void Ping()
     {
-        AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.Ping));
+        Client.Instance.Send(SF.GetProtocolHead(ProtoName.Ping));
     }
     #endregion
 
@@ -90,7 +90,7 @@ public static class DataSync
         protocol.AddByte((byte)unit);
         AppendVector3(protocol, position);
         AppendQuaternion(protocol, rotation);
-        AppendCRC16AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -101,7 +101,7 @@ public static class DataSync
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.DestroyObj);
         protocol.AddByte(id);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
     #endregion
@@ -124,7 +124,7 @@ public static class DataSync
         //32 bits
         protocol.AddFloat(speed);
 
-        AppendCRC16AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
 
@@ -150,7 +150,7 @@ public static class DataSync
         protocol.AddInt((int)instant);
         protocol.AddByte((byte)unit.attributes.ID);
         protocol.AddByte(PackHaV(h, v));
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
 
@@ -165,7 +165,7 @@ public static class DataSync
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID);//8 bits 
         protocol.AddByte((byte)skillIndex);//32 bits
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     /// <summary>
     /// 同步鼠标左键按下事件。
@@ -176,7 +176,7 @@ public static class DataSync
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Down);//16 bits
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -188,7 +188,7 @@ public static class DataSync
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Up);//16 bits
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
@@ -208,7 +208,7 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);
         protocol.AddByte((byte)skillIndex);
 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -227,7 +227,7 @@ public static class DataSync
         //8 bits
         protocol.AddByte((byte)skillIndex);
 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
@@ -248,7 +248,7 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);
         //32 bits
         protocol.AddFloat(HP);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -266,7 +266,7 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);
         //32 bits
         protocol.AddFloat(MP);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
@@ -381,21 +381,33 @@ public static class DataSync
     }
     #endregion
 
-    #region CRC
-    public static void AppendCRC16AndSend(ProtocolBase protocol)
-    {
-        CRC16 crc = new CRC16(protocol.Encode(), false);
-        crc.CRC_16();
-        crc.AppendCRC();
-        Client.Instance.Send(protocol);
-    }
+    //#region CRC
+    //public static void AppendCrcAndSend(ProtocolBase protocol)
+    //{
+    //    if (protocol.Encode().Length > 128)
+    //    {
+    //        AppendCRC16AndSend(protocol);
+    //    }
+    //    else
+    //    {
+    //        AppendCRC8AndSend(protocol);
+    //    }
+    //}
 
-    public static void AppendCRC8AndSend(ProtocolBase protocol)
-    {
-        CRC8 crc = new CRC8(protocol.Encode(), false);
-        crc.CRC_8();
-        crc.AppendCRC();
-        Client.Instance.Send(protocol);
-    }
-    #endregion
+    //public static void AppendCRC16AndSend(ProtocolBase protocol)
+    //{
+    //    CRC16 crc = new CRC16(protocol.Encode(), false);
+    //    crc.CRC_16();
+    //    crc.AppendCRC();
+    //    Client.Instance.Send(protocol);
+    //}
+
+    //public static void AppendCRC8AndSend(ProtocolBase protocol)
+    //{
+    //    CRC8 crc = new CRC8(protocol.Encode(), false);
+    //    crc.CRC_8();
+    //    crc.AppendCRC();
+    //    Client.Instance.Send(protocol);
+    //}
+    //#endregion
 }

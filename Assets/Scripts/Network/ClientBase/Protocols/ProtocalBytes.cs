@@ -323,5 +323,24 @@ namespace ClientBase
             return "";
         }
         #endregion
+
+        /// <summary>
+        /// Append crc code. If length > 144 use crc-16 else use crc-8.
+        /// </summary>
+        public override void AppendCrc()
+        {
+            if (bytes.Length > 144)
+            {
+                CRC16 crc = new CRC16(bytes, false);
+                crc.CRC_16();
+                bytes = crc.AppendCRC();
+            }
+            else
+            {
+                CRC8 crc = new CRC8(bytes, false);
+                crc.CRC_8();
+                bytes = crc.AppendCRC();
+            }
+        }
     }
 }
