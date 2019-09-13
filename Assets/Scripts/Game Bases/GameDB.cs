@@ -25,7 +25,7 @@ public partial class GameDB
         unitDataPath = Resources.Load<DataPathIndex>("Unit/A_DataPath");
         skillDataPath = Resources.Load<DataPathIndex>("Skill/A_DataPath");
         buffDataPath = Resources.Load<DataPathIndex>("Buff/A_DataPath");
-        prefabPath = Resources.Load<DataPathIndex>("A_DataPath");
+        //prefabPath = Resources.Load<DataPathIndex>("A_DataPath");
     }
     #endregion
 

@@ -23,7 +23,7 @@ public class SkillTable : ISkillTable
             SkillCells[i] = new SkillCell();
             SkillCells[i].Init(caster);
             // 设置初始技能
-            ISkill tmpSkill = ConcreteSkillFactory.CreateSkill(caster.attributes.data.skills[i]);
+            ISkill tmpSkill = SkillFactory.CreateSkill(caster.attributes.data.skills[i]);
             if (tmpSkill != null)
             {
                 SkillCells[i].CurrentSkill = tmpSkill;
