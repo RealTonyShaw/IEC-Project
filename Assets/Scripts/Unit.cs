@@ -16,6 +16,7 @@ public partial class Unit : MonoBehaviour
     public Rigidbody rigbody;
     public Transform SpawnTransform;
     public UnitName unitName;
+    public AnimatorController animatorController;
     public UnitAttributes attributes;
     public Canvas unitCanvas;
     public Transform unitCamera;
@@ -38,6 +39,12 @@ public partial class Unit : MonoBehaviour
     // 技能表
     ISkillTable skillTable = new SkillTable();
     public ISkillTable SkillTable => skillTable;
+
+    // 单位私有事件
+    public readonly MyActionEvent StartCastingEvnt = new MyActionEvent();
+    public readonly MyActionEvent StopCastingEvnt = new MyActionEvent();
+    public readonly MyActionEvent DeathEvnt = new MyActionEvent();
+    public readonly MyActionEvent TakeDmgEvnt = new MyActionEvent();
 
     [Header("Network Synchronization")]
     public bool IsLocal = true;
@@ -223,6 +230,7 @@ public partial class Unit : MonoBehaviour
         }
         //减少护盾值
         attributes.SheildPoint -= amount;
+        TakeDmgEvnt.Trigger();
     }
 
     /// <summary>
@@ -281,6 +289,8 @@ public partial class Unit : MonoBehaviour
     {
         if (!attributes.isAlive)
             return;
+        if (attributes.data.IsCaster)
+            skillTable.CurrentCell.Stop();
         attributes.isAlive = false;
         if (attributes.SheildPoint > 0f)
         {
@@ -290,10 +300,16 @@ public partial class Unit : MonoBehaviour
         while (buffs.Count > 0)
             LogOffBuff(buffs[0]);
         Debug.Log(gameObject.name + " has died.");
-        gameObject.SetActive(false);
+        DeathEvnt.Trigger();
         //注销单位
         lock (GameDB.unitPool)
             Gamef.UnitClear(this);
+    }
+
+    IEnumerator DelayedDisable()
+    {
+        yield return new WaitForSeconds(10f);
+        gameObject.SetActive(false);
     }
     #endregion
 }

@@ -65,7 +65,8 @@ public partial class GameDB
     /// <summary>
     /// 单位移动阻尼
     /// </summary>
-    public const float DAMPED_CONST = 2;
+    public const float DAMPED_CONST = 5f;
+    public const float DAMPED_HORIZON_CONST = 18f;
     /// <summary>
     /// 单位转向阻尼
     /// </summary>
