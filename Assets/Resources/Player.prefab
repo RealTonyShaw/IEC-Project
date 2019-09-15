@@ -660,6 +660,7 @@ MonoBehaviour:
   animator: {fileID: 8032513080825558060}
   mover: {fileID: 8572677812863099396}
   unit: {fileID: 8572677812863099393}
+  YParent: {fileID: 8032513080835364958}
   flyMode: -1
 --- !u!1 &8032513080834988344
 GameObject:
