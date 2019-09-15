@@ -34,23 +34,39 @@ public class Mover : MonoBehaviour
         EventMgr.UnitBirthEvent.AddListener(Init);
         Instance = this;
     }
-    
+
     public float V;
     public float H;
     public Vector3 CameraForward;
 
     private float angleBias = 0f;
 
+    public Vector3 TargetVelocityDir { get; private set; }
+    private float reducedRate = 1f;
+    // 根号下 1 / 2，用在计算速度上。
+    const float param = 0.707106781f;
+    private void Update()
+    {
+        int h = Mathf.RoundToInt(H);
+        int v = Mathf.RoundToInt(V);
+        // 左右只能 0.5 倍速
+        Vector3 dir = GameDB.MAX_HORIZON_SPEED_RATE * h * transform.right;
+        // 往后 0.9 倍速
+        dir += (v < 0 ? -GameDB.MAX_BACKWARD_SPEED_RATE : v) * transform.forward;
+        // 方均根
+        reducedRate = dir.magnitude * param;
+        TargetVelocityDir = dir.normalized;
+    }
+
     private void FixedUpdate()
     {
-        if (InputMgr.MobileControlKeyEnable)
-        {
-            Turning(Time.fixedDeltaTime);
-        }
+        //if (InputMgr.MobileControlKeyEnable)
+        //{
+        //    Turning(Time.fixedDeltaTime);
+        //}
         UpdateVelocity(Time.fixedDeltaTime);
 
-        Vector3 fwd = transform.forward;
-        transform.forward = Vector3.Slerp(fwd, targetFwd, APPROACHING_CONST * Time.fixedDeltaTime);
+        transform.forward = Vector3.Slerp(transform.forward, CameraForward, APPROACHING_CONST * Time.fixedDeltaTime);
         //speed = rigbody.velocity.magnitude;
         //angularSpeed = srb.angularVelocity.magnitude * Mathf.Rad2Deg;
     }
@@ -59,7 +75,6 @@ public class Mover : MonoBehaviour
     /// 目标正方向，由转向Turning设定
     /// </summary>
     Vector3 targetFwd;
-
     /// <summary>
     /// 转向。即更新转向速度angularVelocity
     /// </summary>
@@ -84,17 +99,19 @@ public class Mover : MonoBehaviour
     /// <param name="dt">时间间隔</param>
     private void UpdateVelocity(float dt)
     {
-        float v = this.V < -GameDB.FLOAT_ZERO ? this.V * GameDB.MAX_BACKWARD_SPEED_RATE : this.V;
-        rigbody.velocity += transform.forward * v * unitAttributes.Acceleration * Time.fixedDeltaTime;
-        // 令速度方向趋近镜头方向。
-        if (Vector3.Angle(rigbody.velocity, targetFwd) < 90f + Mathf.Abs(angleBias) + GameDB.FLOAT_ZERO)
-        {
-            rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
-        }
-        else
-        {
-            rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, -targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
-        }
+        rigbody.velocity += TargetVelocityDir * reducedRate * unitAttributes.Acceleration * dt;
+
+        //float v = this.V < -GameDB.FLOAT_ZERO ? this.V * GameDB.MAX_BACKWARD_SPEED_RATE : this.V;
+        //rigbody.velocity += transform.forward * v * unitAttributes.Acceleration * Time.fixedDeltaTime;
+        //// 令速度方向趋近镜头方向。
+        //if (Vector3.Angle(rigbody.velocity, targetFwd) < 90f + Mathf.Abs(angleBias) + GameDB.FLOAT_ZERO)
+        //{
+        //    rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
+        //}
+        //else
+        //{
+        //    rigbody.velocity = Vector3.Lerp(rigbody.velocity.normalized, -targetFwd, APPROACHING_CONST * dt).normalized * rigbody.velocity.magnitude;
+        //}
     }
 
 

@@ -234,7 +234,7 @@ public class Missile : MonoBehaviour
         }
     }
 
-    void Death()
+    protected virtual void Death()
     {
         IsAlive = false;
         specialEffectHandler.CreateDestroyEffect(Caster, this, deathEffect);
