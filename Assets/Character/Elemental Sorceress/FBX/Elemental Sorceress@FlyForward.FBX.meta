@@ -1,0 +1,614 @@
+fileFormatVersion: 2
+guid: ca3355250dd306f489eac24e5b7ea432
+timeCreated: 1456564669
+licenseType: Store
+ModelImporter:
+  serializedVersion: 21
+  fileIDToRecycleName:
+    100000: Elemental Sorceress
+    100002: //RootNode
+    100004: Rig
+    100006: RigCape1
+    100008: RigCape1Gizmo
+    100010: RigCape2
+    100012: RigCape2Gizmo
+    100014: RigCape3
+    100016: RigCape3Gizmo
+    100018: RigCape4
+    100020: RigCape4Gizmo
+    100022: RigCape5
+    100024: RigCape5Gizmo
+    100026: RigCape6
+    100028: RigCape6Gizmo
+    100030: RigCape7
+    100032: RigCape7Gizmo
+    100034: RigCape8
+    100036: RigCape8Gizmo
+    100038: RigFlap01
+    100040: RigFlap01Gizmo
+    100042: RigFlap02
+    100044: RigFlap02Gizmo
+    100046: RigFlap03
+    100048: RigFlap03Gizmo
+    100050: RigFlap04
+    100052: RigFlap04Gizmo
+    100054: RigHead
+    100056: RigHeadGizmo
+    100058: RigLArm1
+    100060: RigLArm1Gizmo
+    100062: RigLArm2
+    100064: RigLArm2Gizmo
+    100066: RigLArmIndex1
+    100068: RigLArmIndex2
+    100070: RigLArmIndex3
+    100072: RigLArmMiddle1
+    100074: RigLArmMiddle2
+    100076: RigLArmMiddle3
+    100078: RigLArmPalm
+    100080: RigLArmPalmGizmo
+    100082: RigLArmPinky1
+    100084: RigLArmPinky2
+    100086: RigLArmPinky3
+    100088: RigLArmRing1
+    100090: RigLArmRing2
+    100092: RigLArmRing3
+    100094: RigLArmThumb1
+    100096: RigLArmThumb2
+    100098: RigLArmThumb3
+    100100: RigLEar
+    100102: RigLEarGizmo
+    100104: RigLSleeves01
+    100106: RigLSleeves01Gizmo
+    100108: RigLSleeves02
+    100110: RigLSleeves02Gizmo
+    100112: RigLSleeves03
+    100114: RigLSleeves03Gizmo
+    100116: RigLSleeves04
+    100118: RigLSleeves04Gizmo
+    100120: RigLSleeves05
+    100122: RigLSleeves05Gizmo
+    100124: RigLSleeves06
+    100126: RigLSleeves06Gizmo
+    100128: RigLSleeves07
+    100130: RigLSleeves07Gizmo
+    100132: RigLSleeves08
+    100134: RigLSleeves08Gizmo
+    100136: RigNeck1
+    100138: RigNeck2
+    100140: RigPelvis
+    100142: RigPelvisGizmo
+    100144: RigRArm1
+    100146: RigRArm1Gizmo
+    100148: RigRArm2
+    100150: RigRArm2Gizmo
+    100152: RigRArmIndex1
+    100154: RigRArmIndex2
+    100156: RigRArmIndex3
+    100158: RigRArmMiddle1
+    100160: RigRArmMiddle2
+    100162: RigRArmMiddle3
+    100164: RigRArmPalm
+    100166: RigRArmPalmGizmo
+    100168: RigRArmPinky1
+    100170: RigRArmPinky2
+    100172: RigRArmPinky3
+    100174: RigRArmRing1
+    100176: RigRArmRing2
+    100178: RigRArmRing3
+    100180: RigRArmThumb1
+    100182: RigRArmThumb2
+    100184: RigRArmThumb3
+    100186: RigREar
+    100188: RigREarGizmo
+    100190: RigRibcage
+    100192: RigRibcageGizmo
+    100194: RigRSleeves01
+    100196: RigRSleeves01Gizmo
+    100198: RigRSleeves02
+    100200: RigRSleeves02Gizmo
+    100202: RigRSleeves03
+    100204: RigRSleeves03Gizmo
+    100206: RigRSleeves04
+    100208: RigRSleeves04Gizmo
+    100210: RigRSleeves05
+    100212: RigRSleeves05Gizmo
+    100214: RigRSleeves06
+    100216: RigRSleeves06Gizmo
+    100218: RigRSleeves07
+    100220: RigRSleeves07Gizmo
+    100222: RigRSleeves08
+    100224: RigRSleeves08Gizmo
+    100226: RigSkirt1
+    100228: RigSkirt1Gizmo
+    100230: RigSkirt2
+    100232: RigSkirt2Gizmo
+    100234: RigSkirt3
+    100236: RigSkirt3Gizmo
+    100238: RigSkirt4
+    100240: RigSkirt4Gizmo
+    100242: RigSkirt5
+    100244: RigSkirt5Gizmo
+    100246: RigSpine1
+    100248: RigSpine2
+    400000: Elemental Sorceress
+    400002: //RootNode
+    400004: Rig
+    400006: RigCape1
+    400008: RigCape1Gizmo
+    400010: RigCape2
+    400012: RigCape2Gizmo
+    400014: RigCape3
+    400016: RigCape3Gizmo
+    400018: RigCape4
+    400020: RigCape4Gizmo
+    400022: RigCape5
+    400024: RigCape5Gizmo
+    400026: RigCape6
+    400028: RigCape6Gizmo
+    400030: RigCape7
+    400032: RigCape7Gizmo
+    400034: RigCape8
+    400036: RigCape8Gizmo
+    400038: RigFlap01
+    400040: RigFlap01Gizmo
+    400042: RigFlap02
+    400044: RigFlap02Gizmo
+    400046: RigFlap03
+    400048: RigFlap03Gizmo
+    400050: RigFlap04
+    400052: RigFlap04Gizmo
+    400054: RigHead
+    400056: RigHeadGizmo
+    400058: RigLArm1
+    400060: RigLArm1Gizmo
+    400062: RigLArm2
+    400064: RigLArm2Gizmo
+    400066: RigLArmIndex1
+    400068: RigLArmIndex2
+    400070: RigLArmIndex3
+    400072: RigLArmMiddle1
+    400074: RigLArmMiddle2
+    400076: RigLArmMiddle3
+    400078: RigLArmPalm
+    400080: RigLArmPalmGizmo
+    400082: RigLArmPinky1
+    400084: RigLArmPinky2
+    400086: RigLArmPinky3
+    400088: RigLArmRing1
+    400090: RigLArmRing2
+    400092: RigLArmRing3
+    400094: RigLArmThumb1
+    400096: RigLArmThumb2
+    400098: RigLArmThumb3
+    400100: RigLEar
+    400102: RigLEarGizmo
+    400104: RigLSleeves01
+    400106: RigLSleeves01Gizmo
+    400108: RigLSleeves02
+    400110: RigLSleeves02Gizmo
+    400112: RigLSleeves03
+    400114: RigLSleeves03Gizmo
+    400116: RigLSleeves04
+    400118: RigLSleeves04Gizmo
+    400120: RigLSleeves05
+    400122: RigLSleeves05Gizmo
+    400124: RigLSleeves06
+    400126: RigLSleeves06Gizmo
+    400128: RigLSleeves07
+    400130: RigLSleeves07Gizmo
+    400132: RigLSleeves08
+    400134: RigLSleeves08Gizmo
+    400136: RigNeck1
+    400138: RigNeck2
+    400140: RigPelvis
+    400142: RigPelvisGizmo
+    400144: RigRArm1
+    400146: RigRArm1Gizmo
+    400148: RigRArm2
+    400150: RigRArm2Gizmo
+    400152: RigRArmIndex1
+    400154: RigRArmIndex2
+    400156: RigRArmIndex3
+    400158: RigRArmMiddle1
+    400160: RigRArmMiddle2
+    400162: RigRArmMiddle3
+    400164: RigRArmPalm
+    400166: RigRArmPalmGizmo
+    400168: RigRArmPinky1
+    400170: RigRArmPinky2
+    400172: RigRArmPinky3
+    400174: RigRArmRing1
+    400176: RigRArmRing2
+    400178: RigRArmRing3
+    400180: RigRArmThumb1
+    400182: RigRArmThumb2
+    400184: RigRArmThumb3
+    400186: RigREar
+    400188: RigREarGizmo
+    400190: RigRibcage
+    400192: RigRibcageGizmo
+    400194: RigRSleeves01
+    400196: RigRSleeves01Gizmo
+    400198: RigRSleeves02
+    400200: RigRSleeves02Gizmo
+    400202: RigRSleeves03
+    400204: RigRSleeves03Gizmo
+    400206: RigRSleeves04
+    400208: RigRSleeves04Gizmo
+    400210: RigRSleeves05
+    400212: RigRSleeves05Gizmo
+    400214: RigRSleeves06
+    400216: RigRSleeves06Gizmo
+    400218: RigRSleeves07
+    400220: RigRSleeves07Gizmo
+    400222: RigRSleeves08
+    400224: RigRSleeves08Gizmo
+    400226: RigSkirt1
+    400228: RigSkirt1Gizmo
+    400230: RigSkirt2
+    400232: RigSkirt2Gizmo
+    400234: RigSkirt3
+    400236: RigSkirt3Gizmo
+    400238: RigSkirt4
+    400240: RigSkirt4Gizmo
+    400242: RigSkirt5
+    400244: RigSkirt5Gizmo
+    400246: RigSpine1
+    400248: RigSpine2
+    4300000: Elemental Sorceress
+    7400000: FlyForward
+    9500000: //RootNode
+    13700000: Elemental Sorceress
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: FlyForward
+      takeName: Take 001
+      firstFrame: 0
+      lastFrame: 30
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 1
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Elemental Sorceress
+        weight: 1
+      - path: Rig
+        weight: 1
+      - path: RigCape1Gizmo
+        weight: 1
+      - path: RigCape2Gizmo
+        weight: 1
+      - path: RigCape3Gizmo
+        weight: 1
+      - path: RigCape4Gizmo
+        weight: 1
+      - path: RigCape5Gizmo
+        weight: 1
+      - path: RigCape6Gizmo
+        weight: 1
+      - path: RigCape7Gizmo
+        weight: 1
+      - path: RigCape8Gizmo
+        weight: 1
+      - path: RigFlap01Gizmo
+        weight: 1
+      - path: RigFlap02Gizmo
+        weight: 1
+      - path: RigFlap03Gizmo
+        weight: 1
+      - path: RigFlap04Gizmo
+        weight: 1
+      - path: RigHeadGizmo
+        weight: 1
+      - path: RigLArm1Gizmo
+        weight: 1
+      - path: RigLArm2Gizmo
+        weight: 1
+      - path: RigLArmPalmGizmo
+        weight: 1
+      - path: RigLEarGizmo
+        weight: 1
+      - path: RigLSleeves01Gizmo
+        weight: 1
+      - path: RigLSleeves02Gizmo
+        weight: 1
+      - path: RigLSleeves03Gizmo
+        weight: 1
+      - path: RigLSleeves04Gizmo
+        weight: 1
+      - path: RigLSleeves05Gizmo
+        weight: 1
+      - path: RigLSleeves06Gizmo
+        weight: 1
+      - path: RigLSleeves07Gizmo
+        weight: 1
+      - path: RigLSleeves08Gizmo
+        weight: 1
+      - path: RigPelvis
+        weight: 1
+      - path: RigPelvis/RigSkirt1
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2/RigFlap01
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2/RigFlap01/RigFlap02
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2/RigFlap01/RigFlap02/RigFlap03
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2/RigFlap01/RigFlap02/RigFlap03/RigFlap04
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2/RigSkirt3
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2/RigSkirt3/RigSkirt4
+        weight: 1
+      - path: RigPelvis/RigSkirt1/RigSkirt2/RigSkirt3/RigSkirt4/RigSkirt5
+        weight: 1
+      - path: RigPelvis/RigSpine1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1/RigCape2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1/RigCape2/RigCape3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1/RigCape2/RigCape3/RigCape4
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1/RigCape2/RigCape3/RigCape4/RigCape5
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1/RigCape2/RigCape3/RigCape4/RigCape5/RigCape6
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1/RigCape2/RigCape3/RigCape4/RigCape5/RigCape6/RigCape7
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigCape1/RigCape2/RigCape3/RigCape4/RigCape5/RigCape6/RigCape7/RigCape8
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmIndex1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmIndex1/RigLArmIndex2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmIndex1/RigLArmIndex2/RigLArmIndex3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmMiddle1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmMiddle1/RigLArmMiddle2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmMiddle1/RigLArmMiddle2/RigLArmMiddle3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmPinky1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmPinky1/RigLArmPinky2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmPinky1/RigLArmPinky2/RigLArmPinky3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmRing1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmRing1/RigLArmRing2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmRing1/RigLArmRing2/RigLArmRing3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmThumb1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmThumb1/RigLArmThumb2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLArmPalm/RigLArmThumb1/RigLArmThumb2/RigLArmThumb3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01/RigLSleeves02
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01/RigLSleeves02/RigLSleeves03
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01/RigLSleeves02/RigLSleeves03/RigLSleeves04
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01/RigLSleeves02/RigLSleeves03/RigLSleeves04/RigLSleeves05
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01/RigLSleeves02/RigLSleeves03/RigLSleeves04/RigLSleeves05/RigLSleeves06
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01/RigLSleeves02/RigLSleeves03/RigLSleeves04/RigLSleeves05/RigLSleeves06/RigLSleeves07
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigLArm1/RigLArm2/RigLSleeves01/RigLSleeves02/RigLSleeves03/RigLSleeves04/RigLSleeves05/RigLSleeves06/RigLSleeves07/RigLSleeves08
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigNeck1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigNeck1/RigNeck2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigNeck1/RigNeck2/RigHead
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigNeck1/RigNeck2/RigHead/RigLEar
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigNeck1/RigNeck2/RigHead/RigREar
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmIndex1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmIndex1/RigRArmIndex2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmIndex1/RigRArmIndex2/RigRArmIndex3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmMiddle1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmMiddle1/RigRArmMiddle2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmMiddle1/RigRArmMiddle2/RigRArmMiddle3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmPinky1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmPinky1/RigRArmPinky2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmPinky1/RigRArmPinky2/RigRArmPinky3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmRing1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmRing1/RigRArmRing2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmRing1/RigRArmRing2/RigRArmRing3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmThumb1
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmThumb1/RigRArmThumb2
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRArmPalm/RigRArmThumb1/RigRArmThumb2/RigRArmThumb3
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01/RigRSleeves02
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01/RigRSleeves02/RigRSleeves03
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01/RigRSleeves02/RigRSleeves03/RigRSleeves04
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01/RigRSleeves02/RigRSleeves03/RigRSleeves04/RigRSleeves05
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01/RigRSleeves02/RigRSleeves03/RigRSleeves04/RigRSleeves05/RigRSleeves06
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01/RigRSleeves02/RigRSleeves03/RigRSleeves04/RigRSleeves05/RigRSleeves06/RigRSleeves07
+        weight: 1
+      - path: RigPelvis/RigSpine1/RigSpine2/RigRibcage/RigRArm1/RigRArm2/RigRSleeves01/RigRSleeves02/RigRSleeves03/RigRSleeves04/RigRSleeves05/RigRSleeves06/RigRSleeves07/RigRSleeves08
+        weight: 1
+      - path: RigPelvisGizmo
+        weight: 1
+      - path: RigRArm1Gizmo
+        weight: 1
+      - path: RigRArm2Gizmo
+        weight: 1
+      - path: RigRArmPalmGizmo
+        weight: 1
+      - path: RigREarGizmo
+        weight: 1
+      - path: RigRibcageGizmo
+        weight: 1
+      - path: RigRSleeves01Gizmo
+        weight: 1
+      - path: RigRSleeves02Gizmo
+        weight: 1
+      - path: RigRSleeves03Gizmo
+        weight: 1
+      - path: RigRSleeves04Gizmo
+        weight: 1
+      - path: RigRSleeves05Gizmo
+        weight: 1
+      - path: RigRSleeves06Gizmo
+        weight: 1
+      - path: RigRSleeves07Gizmo
+        weight: 1
+      - path: RigRSleeves08Gizmo
+        weight: 1
+      - path: RigSkirt1Gizmo
+        weight: 1
+      - path: RigSkirt2Gizmo
+        weight: 1
+      - path: RigSkirt3Gizmo
+        weight: 1
+      - path: RigSkirt4Gizmo
+        weight: 1
+      - path: RigSkirt5Gizmo
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 0
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 0
+    importBlendShapes: 1
+    importCameras: 0
+    importLights: 0
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

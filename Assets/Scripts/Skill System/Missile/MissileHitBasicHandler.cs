@@ -6,6 +6,21 @@ using System.Threading.Tasks;
 
 public class MissileHitBasicHandler : IMissileHitHandler
 {
+    public static void MissileCollisionHandler(Missile m1, Missile m2)
+    {
+        m1.TakeDamage(m2.Damage);
+        m2.TakeDamage(m1.Damage);
+        if (!m1.IsAlive && m1.Skill.Data.IsAOE)
+        {
+            m1.Blast(m2);
+        }
+        if (!m2.IsAlive && m2.Skill.Data.IsAOE)
+        {
+            m2.Blast(m1);
+        }
+    }
+
+
     public void Fade(Missile self)
     {
         if (self.Skill.Data.IsAOE)
@@ -16,13 +31,9 @@ public class MissileHitBasicHandler : IMissileHitHandler
 
     public void HitMissile(Missile self, Missile other)
     {
-        self.TakeDamage(other.Damage);
-        if (!self.IsAlive)
+        if (self.ID < other.ID)
         {
-            if (self.Skill.Data.IsAOE)
-            {
-                self.Blast(other);
-            }
+            MissileCollisionHandler(self, other);
         }
     }
 

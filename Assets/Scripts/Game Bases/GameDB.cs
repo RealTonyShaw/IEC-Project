@@ -25,7 +25,7 @@ public partial class GameDB
         unitDataPath = Resources.Load<DataPathIndex>("Unit/A_DataPath");
         skillDataPath = Resources.Load<DataPathIndex>("Skill/A_DataPath");
         buffDataPath = Resources.Load<DataPathIndex>("Buff/A_DataPath");
-        prefabPath = Resources.Load<DataPathIndex>("A_DataPath");
+        //prefabPath = Resources.Load<DataPathIndex>("A_DataPath");
     }
     #endregion
 
@@ -52,14 +52,23 @@ public partial class GameDB
     //拉升速度与最大转向速度比值
     public const float PULL_UP_CONST = 0.5f;
     public const float X_AXIS_BALANCING_CONST = 0.5f;
+    // 最大后退速度与最大速度的比值
+    public const float MAX_BACKWARD_SPEED_RATE = 0.9f;
+    // 最大左右移动速度与最大速度的比值
+    public const float MAX_HORIZON_SPEED_RATE = 0.5f;
     //最大俯仰角
     public const float MAX_ROT_X = 75f;
     //最大俯仰角的倒数
     public const float RECIPROCAL_MAX_ROT_X = 1 / MAX_ROT_X;
+    // 按下水平键（AD键或左右箭头）时，飞行方向与摄像机正方向的偏离角度
+    public const float MAX_HORIZONTAL_ANGLE = 45f;
+    // 按下水平键（AD键或左右箭头）时, 前进方向的旋转速度
+    public const float HORIZONTAL_ROTATION_SPEED = 135f;
     /// <summary>
     /// 单位移动阻尼
     /// </summary>
-    public const float DAMPED_CONST = 2;
+    public const float DAMPED_CONST = 3f;
+    public const float DAMPED_HORIZON_CONST = 18f;
     /// <summary>
     /// 单位转向阻尼
     /// </summary>
@@ -85,6 +94,8 @@ public partial class GameDB
     /// 最大精确度加成。如果点射型技能经过足够长时间的瞄准，其精确度最大加成即为该值。
     /// </summary>
     public const float MAX_ACCURACY_BONUS = 1f;
+
+    public const float FLOAT_ZERO = 1e-7f;
     #endregion
 
     #region 单位字典
@@ -109,6 +120,21 @@ public partial class GameDB
             return -1;
         return unitPool.IDAlloc(unit);
     }
+
+    /// <summary>
+    /// 将单位以指定的ID加入单位池(请勿调用，该方法不会触发单位出生事件，请使用Gamef.UnitBirth()方法)
+    /// </summary>
+    /// <param name="unit">单位控制组件</param>
+    /// <param name="ID">指定的ID</param>
+    /// <returns>单位ID。如果出生失败，返回-1</returns>
+    public int UnitBirth(Unit unit, int ID)
+    {
+        //如果单位已经设置过了，那么不执行
+        if (unit.attributes.ID != -1)
+            return -1;
+        return unitPool.IDAlloc(unit, ID);
+    }
+
     /// <summary>
     /// 将投掷物加入池（请调用Gamef.MissileBirth）
     /// </summary>

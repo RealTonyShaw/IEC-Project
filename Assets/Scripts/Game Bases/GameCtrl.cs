@@ -22,24 +22,40 @@ public partial class GameCtrl : MonoBehaviour
 
     #region 实时公有信息
     //private UnitInfo _mainChara;
-    public static Unit PlayerUnit;
-    public Unit PlayerChara
+    private static Unit _playerUnit = null;
+    public static Unit PlayerUnit
     {
         get
         {
-            return PlayerUnit;
-        }
-        set
-        {
-            PlayerUnit = value;
+            if (_playerUnit == null)
+            {
+                _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
+            }
+            return _playerUnit;
         }
     }
+    public static bool IsOnlineGame = false;
 
     public Transform PlayerCamera
     {
         get; set;
     }
     #endregion
+
+    /// <summary>
+    /// 延迟执行动作。
+    /// </summary>
+    /// <param name="action">动作，即延迟执行的空参数空返回值的方法</param>
+    /// <param name="time">延迟时间</param>
+    public void DelayedExecution(Action action, float time)
+    {
+        StartCoroutine(m_delayedExecution(action, time));
+    }
+    IEnumerator m_delayedExecution(Action action, float time)
+    {
+        yield return new WaitForSeconds(time);
+        action();
+    }
 
     public bool BuildDataPath = false;
     #region 生命周期
@@ -62,32 +78,12 @@ public partial class GameCtrl : MonoBehaviour
         isInit = true;//初始化完毕
 
         if (BuildDataPath)
-        {
-            // 建立单位数据路径
-            string[] paths = GameDB.Instance.unitDataPath.paths = new string[(int)UnitName.MaxIndex];
-            for (int i = 0; i < paths.Length; i++)
-            {
-                paths[i] = "Unit/" + ((UnitName)i).ToString() + "Data";
-            }
-            // 建立技能数据路径
-            paths = GameDB.Instance.skillDataPath.paths = new string[GameDB.MAX_SKILL_INDEX];
-            foreach (SkillName name in Enum.GetValues(typeof(SkillName)))
-            {
-                int i = (int)name;
-                paths[i] = "Skill/" + name + "Data";
-            }
-            // 建立Prefab路径
-            Array enums = Enum.GetValues(typeof(PrefabName));
-            paths = GameDB.Instance.prefabPath.paths = new string[enums.Length];
-            foreach (PrefabName name in enums)
-            {
-                int i = (int)name;
-                paths[i] = name.ToString();
-            }
-        }
+            Build();
 
         //加载游戏场景
         SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+
+        //SceneManager.LoadSceneAsync("Demo_Exterior");
     }
 
     private void Update()
@@ -99,6 +95,33 @@ public partial class GameCtrl : MonoBehaviour
 
     #endregion
 
+    private void Build()
+    {
+        // 建立单位数据路径
+        string[] paths = GameDB.Instance.unitDataPath.paths = new string[(int)UnitName.MaxIndex];
+        for (int i = 0; i < paths.Length; i++)
+        {
+            paths[i] = "Unit/" + ((UnitName)i).ToString() + "Data";
+        }
+        // 建立技能数据路径
+        paths = GameDB.Instance.skillDataPath.paths = new string[GameDB.MAX_SKILL_INDEX];
+        foreach (SkillName name in Enum.GetValues(typeof(SkillName)))
+        {
+            int i = (int)name;
+            paths[i] = "Skill/" + name + "Data";
+        }
+        // 建立技能类的路径
+        SkillFactory.Init();
+        //// 建立Prefab路径
+        //Array enums = Enum.GetValues(typeof(PrefabName));
+        //paths = GameDB.Instance.prefabPath.paths = new string[enums.Length];
+        //foreach (PrefabName name in enums)
+        //{
+        //    int i = (int)name;
+        //    paths[i] = name.ToString();
+        //}
+
+    }
 }
 
 /// <summary>

@@ -4,9 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class ConcreteSkillFactory
+public class SkillFactory
 {
     private static Dictionary<SkillName, Type> skillDict = new Dictionary<SkillName, Type>();
+    private static SkillClassIndex classIndex;
     /// <summary>
     /// 通过技能名创建对应的技能类的实例
     /// </summary>
@@ -18,10 +19,10 @@ public class ConcreteSkillFactory
         {
             Init();
         }
-
-        if (skillDict.ContainsKey(name))
+        int index = (int)name;
+        if (classIndex.SkillClasses[index] != null)
         {
-            Type type = skillDict[name];
+            Type type = classIndex.SkillClasses[index];
             return (ISkill)Activator.CreateInstance(type);
         }
         UnityEngine.Debug.Log("No class for skill named :" + name.ToString());
@@ -30,8 +31,8 @@ public class ConcreteSkillFactory
 
 
     private static bool isInit = false;
-    private static object mutex = new object();
-    private static void Init()
+    private static readonly object mutex = new object();
+    public static void Init()
     {
         lock (mutex)
         {
@@ -39,17 +40,29 @@ public class ConcreteSkillFactory
             {
                 return;
             }
-            isInit = true;
-        }
-        foreach (SkillName name in Enum.GetValues(typeof(SkillName)))
-        {
-            Type type = Type.GetType("Skill_" + name.ToString());
-            if (type == null)
+            classIndex = Resources.Load<SkillClassIndex>("Skill/Skill Class Index");
+            int maxIndex = -1;
+            foreach (SkillName name in Enum.GetValues(typeof(SkillName)))
             {
-                UnityEngine.Debug.Log("No class for skill named :" + name.ToString());
-                continue;
+                if (maxIndex < (int)name)
+                {
+                    maxIndex = (int)name;
+                }
+                Type type = Type.GetType("Skill_" + name.ToString());
+                if (type == null)
+                {
+                    UnityEngine.Debug.Log("No class for skill named :" + name.ToString());
+                    continue;
+                }
+                skillDict.Add(name, type);
             }
-            skillDict.Add(name, type);
+            classIndex.SkillClasses = new Type[maxIndex + 1];
+            foreach (var item in skillDict)
+            {
+                classIndex.SkillClasses[(int)item.Key] = item.Value;
+            }
+
+            isInit = true;
         }
     }
 }
