@@ -61,7 +61,6 @@ public class ObjectPool<T> : IEnumerable<T>
             c.isValid = true;
             c.content = obj;
         }
-        Debug.Log("Add " + typeof(T).ToString() + " to blk " + (res & BLK_MASK) + ", cell " + (res & OFFSET_MASK));
         return res;
 
     }
@@ -106,7 +105,6 @@ public class ObjectPool<T> : IEnumerable<T>
             c.isValid = true;
             c.content = obj;
         }
-        Debug.Log("Add " + typeof(T).ToString() + " to blk " + (id & BLK_MASK) + ", cell " + (id & OFFSET_MASK));
         return id;
     }
 
