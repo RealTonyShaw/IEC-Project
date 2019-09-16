@@ -32,6 +32,9 @@ public class SkillCell : ISkillCell
     Unit caster;
     Transform spawnTransform;
 
+    long startOrStopInstant = 0;
+    float contiguousSkillCastingTimer = 0f;
+
     readonly object mutex = new object();
 
 
@@ -80,7 +83,7 @@ public class SkillCell : ISkillCell
             }
         }
     }
-    
+
     public void Init(Unit caster)
     {
         this.caster = caster;
@@ -90,50 +93,62 @@ public class SkillCell : ISkillCell
 
     float timer = 0f;
     float cooldown;
-    public void OnMouseButtonDown()
+    public void Start()
     {
         StartCasting();
     }
 
-    public void OnMouseButtonUp()
+    public void Stop()
     {
         StopCasting();
     }
-    
+
+    public void SetInstant(long instant)
+    {
+        startOrStopInstant = instant;
+    }
+
     public void ForceToStopCasting()
     {
+        if (!isCasting)
+            Debug.Log(caster.gameObject.name + " isn't casting.");
         StopCasting();
     }
-
     private void StartCasting()
     {
+        float deltaT = (Gamef.SystemTimeInMillisecond - startOrStopInstant) * 1e-3f;
         // 如果不在施法、冷却完毕、单位存活且法力充足，则进行施法
-        lock (mutex)
+        if (isCasting)
         {
-            if (isCasting)
-            {
-                return;
-            }
-            if (timer > 1e-5f)
-            {
-                return;
-            }
-            if (!caster.attributes.isAlive || caster.attributes.ManaPoint.Value < skill.Data.ManaCost)
-            {
-                return;
-            }
-            isCasting = true;
+            return;
+        }
+        // 考虑延迟，当施法时，计时器的值应为 当前值 + deltaT
+        if (timer + deltaT > 1e-5f)
+        {
+            return;
+        }
+        if (!caster.attributes.isAlive || caster.attributes.ManaPoint.Value < skill.Data.ManaCost)
+        {
+            return;
         }
 
+        if (skill is ISkillCastInstant tmp)
+        {
+            tmp.SetInstant(startOrStopInstant);
+        }
         switch (skill.Data.SkillType)
         {
             case SkillType.StrafeSkill:
-                timer = 0f;
+                // trigger event
+                caster.StartCastingEvnt.Trigger();
+                timer = -deltaT;
                 break;
 
             case SkillType.BurstfireSkill:
                 if (Cast())
                 {
+                    // trigger event
+                    caster.StartCastingEvnt.Trigger();
                     StopCasting();
                 }
                 else
@@ -144,9 +159,11 @@ public class SkillCell : ISkillCell
                 break;
 
             case SkillType.ContinuousSkill:
+                contiguousSkillCastingTimer = deltaT;
                 if (Cast())
                 {
-
+                    // trigger event
+                    caster.StartCastingEvnt.Trigger();
                 }
                 else
                 {
@@ -158,33 +175,38 @@ public class SkillCell : ISkillCell
             default:
                 break;
         }
+
+        isCasting = true;
     }
 
     private void StopCasting()
     {
         // 如果在施法，则停止施法
-        lock (mutex)
+        if (!isCasting)
         {
-            if (!isCasting)
-            {
-                return;
-            }
-            isCasting = false;
+            return;
         }
-
+        isCasting = false;
+        float deltaT = (Gamef.SystemTimeInMillisecond - startOrStopInstant) * 1e-3f;
+        if (skill is ISkillCastInstant tmp)
+        {
+            tmp.SetInstant(startOrStopInstant);
+        }
+        // trigger event
+        caster.StopCastingEvnt.Trigger();
         switch (skill.Data.SkillType)
         {
             case SkillType.StrafeSkill:
                 break;
 
             case SkillType.BurstfireSkill:
-                timer = cooldown;
+                timer = cooldown - deltaT;
                 break;
 
             case SkillType.ContinuousSkill:
                 // 停止持续型技能
                 skill.Trigger();
-                timer = cooldown;
+                timer = cooldown - deltaT;
                 break;
 
             default:
@@ -203,13 +225,13 @@ public class SkillCell : ISkillCell
         if (!isCasting)
         {
             // 计时器倒计时
-            if (timer > 1e-5f)
+            if (timer > -2f)
             {
                 timer -= Time.deltaTime;
-                // 如果数过了，归零
-                if (timer < -1e-5f)
+                // 如果数过了，归-2。
+                if (timer < -2f)
                 {
-                    timer = 0f;
+                    timer = -2f;
                 }
             }
             // 精确度恢复
@@ -229,7 +251,7 @@ public class SkillCell : ISkillCell
             }
 
         }
-        // 如果是持续型技能正在施法
+        // 如果技能正在施法
         else
         {
             switch (skill.Data.SkillType)
@@ -267,7 +289,9 @@ public class SkillCell : ISkillCell
     // 持续型技能持续耗魔
     private void ContinuouslyCostingMana()
     {
-        float dMana = skill.Data.ManaCostPerSec * Time.deltaTime;
+        contiguousSkillCastingTimer += Time.deltaTime;
+        float dMana = skill.Data.ManaCostPerSec * contiguousSkillCastingTimer;
+        contiguousSkillCastingTimer = 0f;
         if (caster.attributes.isAlive && caster.attributes.ManaPoint.Value >= dMana)
         {
             caster.attributes.ManaPoint.Value -= dMana;

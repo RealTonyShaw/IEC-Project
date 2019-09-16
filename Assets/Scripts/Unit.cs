@@ -12,9 +12,11 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public partial class Unit : MonoBehaviour
 {
+    [HideInInspector]
     public Rigidbody rigbody;
     public Transform SpawnTransform;
     public UnitName unitName;
+    public AnimatorController animatorController;
     public UnitAttributes attributes;
     public Canvas unitCanvas;
     public Transform unitCamera;
@@ -38,12 +40,28 @@ public partial class Unit : MonoBehaviour
     ISkillTable skillTable = new SkillTable();
     public ISkillTable SkillTable => skillTable;
 
+    // 单位私有事件
+    public readonly MyActionEvent StartCastingEvnt = new MyActionEvent();
+    public readonly MyActionEvent StopCastingEvnt = new MyActionEvent();
+    public readonly MyActionEvent DeathEvnt = new MyActionEvent();
+    public readonly MyActionEvent TakeDmgEvnt = new MyActionEvent();
+
+    [Header("Network Synchronization")]
+    public bool IsLocal = true;
+    public bool RecvSyncMovement = true;
+    public bool RecvSyncUnitState = true;
+    public bool RecvSyncPlayerCastingState = false;
+    public bool RecvSyncPlayerInput = false;
+
+    public long lastSyncUnitStateInstant = 0;
     // 位置同步
-    public readonly ISyncMovement SyncMovement = null;
+    public ISyncMovement SyncMovement { get; private set; }
     // 单位状态同步
-    public readonly ISyncUnitState SyncUnitState = null;
+    public ISyncUnitState SyncUnitState { get; private set; }
     // 玩家施法同步
-    public readonly ISyncPlayerCastingState SyncPlayerCastingState = null;
+    public ISyncPlayerCastingState SyncPlayerCastingState { get; private set; }
+    // 玩家输入同步
+    public ISyncPlayerInput SyncPlayerInput { get; private set; }
 
     #region 生命周期
     private void Awake()
@@ -55,6 +73,31 @@ public partial class Unit : MonoBehaviour
         }
         //加入监听SP变化事件
         EventMgr.SPChangeEvent.AddListener(SPEvent);
+
+        if (GameCtrl.IsOnlineGame)
+        {
+            if (RecvSyncMovement)
+            {
+                SyncMovement = new SyncMovement();
+                SyncMovement.Init(this);
+            }
+            if (RecvSyncUnitState)
+            {
+                SyncUnitState = new SyncUnitState();
+                SyncUnitState.Init(this);
+            }
+            if (RecvSyncPlayerCastingState)
+            {
+                SyncPlayerCastingState = new SyncPlayerCasting();
+                SyncPlayerCastingState.Init(this);
+            }
+            if (RecvSyncPlayerInput)
+            {
+                SyncPlayerInput = new SyncPlayerInput();
+                SyncPlayerInput.Init(this);
+            }
+        }
+
     }
 
     private void Start()
@@ -63,16 +106,62 @@ public partial class Unit : MonoBehaviour
         {
             Debug.LogError(string.Format("Unit {0} is not in Unit layer.", gameObject.name));
         }
+        if (GameCtrl.IsOnlineGame)
+        {
+            // do nothing
+            if (!isInitAttr)
+            {
+                Debug.LogError("Init Error: " + gameObject.name + " initialization failed");
+            }
+        }
+        else
+        {
+            InitAttributes();
+        }
+    }
+
+    private bool isInitAttr = false;
+    public void InitAttributes()
+    {
+        if (isInitAttr)
+            return;
+        isInitAttr = true;
         //注册单位
         lock (GameDB.unitPool)
             attributes.ID = Gamef.UnitBirth(this);
+
         attributes.Init(this);
         SyncMovement?.Init(this);
         //测试用
         if (attributes.name == UnitName.Player)
         {
-            GameCtrl.Instance.PlayerChara = this;
-            StartCoroutine(DisplayProperity());
+            if (DisplayPlayerProperity.Instance != null)
+                StartCoroutine(DisplayProperity());
+        }
+        // 如果该单位是施法单位，则初始化技能表
+        if (attributes.data.IsCaster)
+            skillTable.Init(this);
+    }
+    /// <summary>
+    /// 外部可以通过该接口对单位进行初始化。
+    /// </summary>
+    /// <param name="ID">单位ID</param>
+    public void InitAttributes(int ID)
+    {
+        if (isInitAttr)
+            return;
+        isInitAttr = true;
+        //注册单位
+        lock (GameDB.unitPool)
+            attributes.ID = Gamef.UnitBirth(this, ID);
+
+        attributes.Init(this);
+        SyncMovement?.Init(this);
+        //测试用
+        if (attributes.name == UnitName.Player)
+        {
+            if (DisplayPlayerProperity.Instance != null)
+                StartCoroutine(DisplayProperity());
         }
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
@@ -94,6 +183,15 @@ public partial class Unit : MonoBehaviour
         //触发buff效果
         BuffEvent?.Invoke();
 
+        if (GameCtrl.IsOnlineGame && IsLocal)
+        {
+            if (Gamef.SystemTimeInMillisecond - lastSyncUnitStateInstant >= GameDB.SYNC_TRANSFORM_INTERVAL)
+            {
+                lastSyncUnitStateInstant = Gamef.SystemTimeInMillisecond;
+                DataSync.SyncHP(this, lastSyncUnitStateInstant, attributes.SheildPoint);
+                DataSync.SyncMP(this, lastSyncUnitStateInstant, attributes.ManaPoint.Value);
+            }
+        }
 
         ////单位画布面对摄像机
         //if (unitCanvas != null)
@@ -115,85 +213,6 @@ public partial class Unit : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        //删除物体
-        Gamef.Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        //注销单位
-        lock (GameDB.unitPool)
-            Gamef.UnitClear(this);
-    }
-    #endregion
-
-    #region 技能
-    //[System.Serializable]
-    //public class SkillTable
-    //{
-    //    //技能数组
-    //    public Skill[] skills = new Skill[4];
-    //    private int _currentIndex = 0;
-    //    //当前技能序号
-    //    public int CurrentIndex
-    //    {
-    //        get { return _currentIndex; }
-    //        set
-    //        {
-    //            //施法中禁止切换主动技能
-    //            if (CurrentSkill.IsCasting && !CurrentSkill.data.IsPassive)
-    //            {
-    //                Debug.Log("Skill is casting !");
-    //                return;
-    //            }
-    //            if (skills[value & 0x3].Name == SkillName.unset)
-    //            {
-    //                Debug.Log("空技能");
-    //                return;
-    //            }
-    //            _currentIndex = value & 0x3;
-    //            //
-    //            if (CurrentSkill.caster.UnitCtrl.attributes.name == UnitName.Player)
-    //                DisplaySkillName.Instance.SetText(CurrentSkill.Name.ToString());
-    //            Debug.Log("Shift to Skill " + (_currentIndex + 1));
-    //        }
-    //    }
-    //    //当前技能
-    //    public Skill CurrentSkill
-    //    {
-    //        get { return skills[_currentIndex]; }
-    //    }
-    //    //上一个技能
-    //    public void PrevSkill()
-    //    {
-    //        CurrentIndex--;
-    //    }
-    //    //下一个技能
-    //    public void NextSkill()
-    //    {
-    //        CurrentIndex++;
-    //    }
-    //}
-    //public SkillTable skillTable = new SkillTable();
-    ///// <summary>
-    ///// 玩家施法, 一般点击施法
-    ///// </summary>
-    //public void Spell(params object[] Params)
-    //{
-    //    if (skillTable.CurrentSkill.data == null)
-    //    {
-    //        Debug.LogWarning("No Data");
-    //    }
-    //    if (skillTable.CurrentSkill == null || skillTable.CurrentSkill.data.IsPassive)
-    //    {
-    //        Debug.Log("该技能栏为空 或 该技能为被动技能，不可主动释放");
-    //        return;
-    //    }
-    //    skillTable.CurrentSkill.Spell(Params);
-    //}
-
     #endregion
 
     #region 生命值
@@ -203,12 +222,15 @@ public partial class Unit : MonoBehaviour
     /// <param name="amount">伤害值</param>
     public void TakeDamage(float amount)
     {
+        if (!IsLocal)
+            return;
         if (amount < 0)
         {
             Debug.Log("这已经不是挠痒痒的伤害了");
         }
         //减少护盾值
         attributes.SheildPoint -= amount;
+        TakeDmgEvnt.Trigger();
     }
 
     /// <summary>
@@ -217,6 +239,8 @@ public partial class Unit : MonoBehaviour
     /// <param name="amount">回复量</param>
     public void BeHealed(float amount)
     {
+        if (!IsLocal)
+            return;
         if (amount < 0)
         {
             Debug.Log("你真是口毒奶");
@@ -225,6 +249,8 @@ public partial class Unit : MonoBehaviour
         attributes.SheildPoint += amount;
     }
 
+    bool sendDeathRequest = false;
+    object deathRequestMutex = new object();
     /// <summary>
     /// 护盾值事件，包括因为护盾损失和恢复在内的一切效果的显现等。
     /// 考虑以后加入Death类，作为静态函数，统一处理。
@@ -237,34 +263,53 @@ public partial class Unit : MonoBehaviour
         {
             return;
         }
-        //SP过低，死亡
-        if (info.CurrentValue <= 0)
-            SimpleDeath();
+
+        if (GameCtrl.IsOnlineGame)
+        {
+            lock (deathRequestMutex)
+            {
+                if (!sendDeathRequest)
+                    if (IsLocal && info.CurrentValue <= 0)
+                    {
+                        sendDeathRequest = true;
+                        // send death request
+                    }
+            }
+        }
+        else
+        {
+            //SP过低，死亡
+            if (info.CurrentValue <= 0)
+                Death();
+        }
+
     }
 
-    private void SimpleDeath()
+    public void Death()
     {
         if (!attributes.isAlive)
             return;
+        if (attributes.data.IsCaster)
+            skillTable.CurrentCell.Stop();
         attributes.isAlive = false;
+        if (attributes.SheildPoint > 0f)
+        {
+            attributes.SheildPoint = 0f;
+        }
         //清空所有buff
         while (buffs.Count > 0)
             LogOffBuff(buffs[0]);
         Debug.Log(gameObject.name + " has died.");
+        DeathEvnt.Trigger();
+        //注销单位
+        lock (GameDB.unitPool)
+            Gamef.UnitClear(this);
+    }
+
+    IEnumerator DelayedDisable()
+    {
+        yield return new WaitForSeconds(10f);
         gameObject.SetActive(false);
     }
     #endregion
-}
-
-public partial class Unit
-{
-    [SerializeField]
-    Transform eyeTransform;
-    public Transform EyeTransform
-    {
-        get
-        {
-            return eyeTransform ?? transform;
-        }
-    }
 }

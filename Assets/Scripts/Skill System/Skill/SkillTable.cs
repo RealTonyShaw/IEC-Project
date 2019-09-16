@@ -23,7 +23,7 @@ public class SkillTable : ISkillTable
             SkillCells[i] = new SkillCell();
             SkillCells[i].Init(caster);
             // 设置初始技能
-            ISkill tmpSkill = ConcreteSkillFactory.CreateSkill(caster.attributes.data.skills[i]);
+            ISkill tmpSkill = SkillFactory.CreateSkill(caster.attributes.data.skills[i]);
             if (tmpSkill != null)
             {
                 SkillCells[i].CurrentSkill = tmpSkill;
@@ -41,7 +41,7 @@ public class SkillTable : ISkillTable
                 // 如果切换前的技能还在施放，应该立即停止该技能
                 if (currentSkillNum != 1)
                 {
-                    SkillCells[currentSkillNum - 1].ForceToStopCasting();
+                    SkillCells[currentSkillNum - 1].Stop();
                     flag = true;
                 }
                 currentSkillNum = 1;
@@ -53,7 +53,7 @@ public class SkillTable : ISkillTable
             case 2:
                 if (currentSkillNum != 2)
                 {
-                    SkillCells[currentSkillNum - 1].ForceToStopCasting();
+                    SkillCells[currentSkillNum - 1].Stop();
                     flag = true;
                 }
                 currentSkillNum = 2;
@@ -65,7 +65,7 @@ public class SkillTable : ISkillTable
             case 3:
                 if (currentSkillNum != 3)
                 {
-                    SkillCells[currentSkillNum - 1].ForceToStopCasting();
+                    SkillCells[currentSkillNum - 1].Stop();
                     flag = true;
                 }
                 currentSkillNum = 3;

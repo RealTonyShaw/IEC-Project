@@ -2,13 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(MoveCtrl))]
+[RequireComponent(typeof(Mover))]
 [RequireComponent(typeof(Rigidbody))]
 public class BodyBalancing : MonoBehaviour
 {
     //空气阻尼
     public const float AIR_DAMP = 0.5f;
-    public const float Z_ROT_CONST = 2f;
+    public const float Z_ROT_CONST = 4f;
     //重力加速度
     public const float GRAVITY_CONST = 9.81f;
     public const float RECI_GRAVITY_CONST = 1 / GRAVITY_CONST;
@@ -18,11 +18,11 @@ public class BodyBalancing : MonoBehaviour
     public const float APPROACHING_RATE = 5f;
 
     Rigidbody rb;
-    private MoveCtrl moveCtrl;
+    private Mover mover;
 
     void Awake()
     {
-        moveCtrl = GetComponent<MoveCtrl>();
+        mover = GetComponent<Mover>();
         rb = GetComponent<Rigidbody>();
     }
 
@@ -46,19 +46,20 @@ public class BodyBalancing : MonoBehaviour
 
         // Z轴平衡 (绕自转轴的平衡)
         // omega * v / g
-        z = -Z_ROT_CONST * av.y * rb.velocity.magnitude * RECI_GRAVITY_CONST;
+        z = -Z_ROT_CONST * av.y * Vector3.Dot(rb.velocity, transform.forward) * RECI_GRAVITY_CONST;
         z = Mathf.Atan(z) * Mathf.Rad2Deg;
 
         // X轴平衡 (俯仰平衡)
-        Vector3 projection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
-        x = Vector3.SignedAngle(transform.forward, projection, transform.right) * Mathf.Deg2Rad;
-        //x = srb.XRot.eulerAngles.x * Mathf.Deg2Rad;
-        sinx = Mathf.Sin(x);
-        cosx = Mathf.Cos(x);
-        tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
-        x =Mathf.Atan(tanf) * Mathf.Rad2Deg;
+        //Vector3 projection = Vector3.ProjectOnPlane(transform.forward, Vector3.up);
+        //x = Vector3.SignedAngle(transform.forward, projection, transform.right) * Mathf.Deg2Rad;
+        ////x = srb.XRot.eulerAngles.x * Mathf.Deg2Rad;
+        //sinx = Mathf.Sin(x);
+        //cosx = Mathf.Cos(x);
+        //tanf = (LEAN_CONST * rb.velocity.magnitude - sinx) / cosx;
+        //x = Mathf.Atan(tanf) * Mathf.Rad2Deg;
+        x = 0f;
 
-        moveCtrl.chara.localRotation = Quaternion.Slerp(moveCtrl.chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
+        mover.Chara.localRotation = Quaternion.Slerp(mover.Chara.localRotation, Quaternion.Euler(-x, 0, z), APPROACHING_RATE * Time.fixedDeltaTime);
 
     }
 }

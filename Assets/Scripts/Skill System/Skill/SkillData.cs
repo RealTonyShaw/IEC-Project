@@ -56,4 +56,6 @@ public class SkillData : ScriptableObject
     public float MinAccuracy = 40f;
     public float AccuracyCooldownSpeed = 5;
     public float AccuracyHeatupSpeed = 5;
+    [Header("Resources")]
+    public GameObject[] Prefabs;
 }

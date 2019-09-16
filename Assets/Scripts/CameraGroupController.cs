@@ -10,8 +10,6 @@ public class CameraGroupController : MonoBehaviour
     public Transform PositionParent;
     // 用于控制镜头抖动的父物体
     public Transform TurbulenceParent;
-    public Transform CameraGroupXAxis;
-    public Transform CameraGroupYAxis;
     // 主摄像机
     public Camera MainCamera;
     // 辅助摄像机
@@ -27,12 +25,13 @@ public class CameraGroupController : MonoBehaviour
     public float MaxY = 90f;
     public bool smooth = true;
     public float smoothTime = 15f;
+    //public bool prescribePos = true;
     public bool lockCursor = true;
-    [SerializeField]
-    Transform cameraX;
-    Transform cameraY;
-    Quaternion cameraTargetYRot;
-    Quaternion cameraTargatXRot;
+    //Quaternion xAxis = Quaternion.identity, yAxis = Quaternion.identity;
+    Quaternion cameraXRot = Quaternion.identity;
+    Quaternion cameraYRot = Quaternion.identity;
+    Quaternion targetXRot = Quaternion.identity;
+    Quaternion targetYRot = Quaternion.identity;
 
     [Header("牵连效果")]
     public bool enableImplicatedEffect = true;
@@ -56,12 +55,6 @@ public class CameraGroupController : MonoBehaviour
 
     private void Start()
     {
-        //辅助计算x轴和y轴旋转
-        cameraX = CameraGroupXAxis;
-        cameraY = CameraGroupYAxis;
-        cameraTargatXRot = cameraX.localRotation;
-        cameraTargetYRot = cameraY.localRotation;
-
         lockCursor = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -79,19 +72,21 @@ public class CameraGroupController : MonoBehaviour
 
     public void UpdatePosition()
     {
-        prevPos = PositionParent.position;
+        Vector3 pos = MoveController.Instance.EyePosition;
+        PositionParent.position = pos;
     }
 
-    Vector3 prevPos;
+    private void LateUpdate()
+    {
+        UpdatePosition();
+    }
 
     private void FixedUpdate()
     {
-        if (GameCtrl.PlayerUnit == null)
+        if (MoveController.Instance.PlayerMover == null)
         {
             return;
         }
-        PositionParent.position = MoveCtrl.Instance.eyeTransform.position;
-        UpdatePosition();
         UpdateCameraRotation(Time.fixedDeltaTime);
         SetAngleAroundZAxis(Time.fixedDeltaTime);
     }
@@ -101,30 +96,40 @@ public class CameraGroupController : MonoBehaviour
     {
         xRot = Input.GetAxis("Mouse Y") * XSensitivity;
         yRot = Input.GetAxis("Mouse X") * YSensitivity;
-        cameraTargatXRot *= Quaternion.Euler(-xRot, 0f, 0f);
-        cameraTargetYRot *= Quaternion.Euler(0f, yRot, 0f);
+        targetXRot *= Quaternion.Euler(-xRot, 0f, 0f);
+        targetYRot *= Quaternion.Euler(0f, yRot, 0f);
+        //Quaternion xAxis = this.xAxis, yAxis = this.yAxis;
+        //xAxis *= Quaternion.Euler(-xRot, 0f, 0f);
+        //yAxis *= Quaternion.Euler(0f, yRot, 0f);
         
 
         if (clampVerticalRotation)
         {
-            cameraTargatXRot = ClampRotationAroundXAxis(cameraTargatXRot);
+            targetXRot = ClampRotationAroundXAxis(targetXRot);
+            //xAxis = ClampRotationAroundXAxis(xAxis);
         }
         if (clampHorizontalRotation)
         {
-            cameraTargetYRot = ClampRotationAroundYAxis(cameraTargetYRot);
+            targetYRot = ClampRotationAroundYAxis(targetYRot);
+            //yAxis = ClampRotationAroundYAxis(yAxis);
         }
 
         if (smooth)
         {
-            cameraX.localRotation = Quaternion.Slerp(cameraX.localRotation, cameraTargatXRot, dt * smoothTime);
-            cameraY.localRotation = Quaternion.Slerp(cameraY.localRotation, cameraTargetYRot, dt * smoothTime);
+            cameraXRot = Quaternion.Slerp(cameraXRot, targetXRot, dt * smoothTime);
+            cameraYRot = Quaternion.Slerp(cameraYRot, targetYRot, dt * smoothTime);
+            //this.xAxis = Quaternion.Slerp(this.xAxis, xAxis, dt * smoothTime);
+            //this.yAxis = Quaternion.Slerp(this.yAxis, yAxis, dt * smoothTime);
         }
         else
         {
-            cameraX.localRotation = cameraTargatXRot;
-            cameraY.localRotation = cameraTargetYRot;
+            cameraXRot = targetXRot;
+            cameraYRot = targetYRot;
+            //this.xAxis = xAxis;
+            //this.yAxis = yAxis;
         }
-        PositionParent.localEulerAngles = new Vector3(cameraX.localEulerAngles.x, cameraY.localEulerAngles.y, 0f);
+        PositionParent.localEulerAngles = new Vector3(cameraXRot.eulerAngles.x, cameraYRot.eulerAngles.y, 0f);
+        //PositionParent.localEulerAngles = new Vector3(this.xAxis.eulerAngles.x, this.yAxis.eulerAngles.y, 0f);
         //SetAngleAroundZAxis(GameCtrl.PlayerUnit.EyeTransform.eulerAngles.z);
         //parent.rotation = GameCtrl.PlayerUnit.EyeTransform.rotation;
     }
@@ -169,11 +174,11 @@ public class CameraGroupController : MonoBehaviour
         q.w = 1f;
 
         float angleY = 2f * Mathf.Rad2Deg * Mathf.Atan(q.y);
-        float bias = angleY - MoveCtrl.Instance.eyeTransform.eulerAngles.y;
+        float bias = angleY - MoveController.Instance.EyeEulerAngles.y;
         if (bias > 180f) bias -= 360f;
         else if (bias < -180f) bias += 360f;
-
-        angleY = Mathf.Clamp(bias, MinY, MaxY) + MoveCtrl.Instance.eyeTransform.eulerAngles.y;
+        Debug.Log("Y bias = " + bias);
+        angleY = Mathf.Clamp(bias, MinY, MaxY) + MoveController.Instance.EyeEulerAngles.y;
 
         q.y = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleY);
 
@@ -186,7 +191,7 @@ public class CameraGroupController : MonoBehaviour
     /// <param name="angle">角度</param>
     private void SetAngleAroundZAxis(float dt)
     {
-        float angle = MoveCtrl.Instance.chara.localEulerAngles.z;
+        float angle = MoveController.Instance.CharaLocalEulerAngles.z;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(0f, 0f, angle), 10f * dt);
     }
 

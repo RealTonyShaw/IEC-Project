@@ -6,6 +6,11 @@ using UnityEngine;
 public static partial class Gamef
 {
     #region 游戏机制
+
+    public static long SystemTimeInMillisecond => GameCtrl.IsOnlineGame ? 0 : (long)(Time.time * 1000d);
+
+    public static float SystemTime => GameCtrl.IsOnlineGame ? 0f : Time.time;
+
     /// <summary>
     /// 对单位造成伤害
     /// </summary>
@@ -84,9 +89,26 @@ public static partial class Gamef
     /// 将单位加入单位池
     /// </summary>
     /// <param name="unit">单位的UnitCtrl组件</param>
+    /// <returns>单位ID。如果出生失败，返回-1</returns>
     public static int UnitBirth(Unit unit)
     {
         int id = GameDB.Instance.UnitBirth(unit);
+        //构造并触发事件
+        EventMgr.UnitBirthEventInfo info = new EventMgr.UnitBirthEventInfo(unit);
+        EventMgr.UnitBirthEvent.OnTrigger(info);
+        return id;
+    }
+
+
+    /// <summary>
+    /// 将单位以指定的ID加入单位池。
+    /// </summary>
+    /// <param name="unit">单位控制组件</param>
+    /// <param name="ID">指定的ID</param>
+    /// <returns>单位ID。如果出生失败，返回-1</returns>
+    public static int UnitBirth(Unit unit, int ID)
+    {
+        int id = GameDB.Instance.UnitBirth(unit, ID);
         //构造并触发事件
         EventMgr.UnitBirthEventInfo info = new EventMgr.UnitBirthEventInfo(unit);
         EventMgr.UnitBirthEvent.OnTrigger(info);
@@ -356,7 +378,7 @@ public static partial class Gamef
     }
 
     /// <summary>
-    /// 产生一个基于当前射击精确度的相对于玩家的射击方向
+    /// 产生一个基于当前射击精确度的相对于玩家的射击方向。
     /// </summary>
     /// <param name="forward">标准方向，即不考虑误差时的方向</param>
     /// <param name="runtimeAccuracy">当前射击精确度</param>
@@ -367,6 +389,24 @@ public static partial class Gamef
         float maxAngle = 100 - runtimeAccuracy;
         float vAngle = UnityEngine.Random.Range(-maxAngle, maxAngle);
         float hAngle = UnityEngine.Random.Range(0, 360f);
+        Vector3 res = Quaternion.AngleAxis(vAngle, axis) * forward;
+        return Quaternion.AngleAxis(hAngle, forward) * res;
+    }
+
+    /// <summary>
+    /// 使用给定的随机类，产生一个基于当前射击精确度的相对于玩家的射击方向。
+    /// </summary>
+    /// <param name="forward">标准方向，即不考虑误差时的方向</param>
+    /// <param name="runtimeAccuracy">当前射击精确度</param>
+    /// <param name="random">随机类</param>
+    /// <returns>射击方向</returns>
+    public static Vector3 GenerateRandomDirection(Vector3 forward, float runtimeAccuracy, System.Random random)
+    {
+        Vector3 axis = forward == Vector3.forward ? Vector3.right : Vector3.Cross(forward, Vector3.forward).normalized;
+        float maxAngle = 100 - runtimeAccuracy;
+        int max = (int)(maxAngle * 1000f);
+        float vAngle = random.Next(-max, max) * 1e-3f;
+        float hAngle = random.Next(360000) * 1e-3f;
         Vector3 res = Quaternion.AngleAxis(vAngle, axis) * forward;
         return Quaternion.AngleAxis(hAngle, forward) * res;
     }

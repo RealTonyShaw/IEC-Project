@@ -5,7 +5,7 @@ using UnityEngine;
 public enum PrefabName
 {
     EmptyObject = 0,
-    Fireball = 1,
+    IceBall = 1,
     黑魔爆球 = 2,
     FireballDeathEffect,
 }

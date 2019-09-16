@@ -15,7 +15,7 @@ class SyncUnitState : ISyncUnitState
     public void SyncHP(long instant, float HP)
     {
         // get sys time
-        long sysTime = 0;
+        long sysTime = Gamef.SystemTimeInMillisecond;
         // 预判矫正
         unit.attributes.SheildPoint = HP + unit.attributes.SPRegenerationRate.Value * (instant - sysTime) / 1000f;
     }
@@ -23,7 +23,7 @@ class SyncUnitState : ISyncUnitState
     public void SyncMP(long instant, float MP)
     {
         // get sys time
-        long sysTime = 0;
+        long sysTime = Gamef.SystemTimeInMillisecond;
         // 预判矫正
         unit.attributes.ManaPoint.Value = MP + unit.attributes.MPRegenerationRate.Value * (instant - sysTime) / 1000f;
     }

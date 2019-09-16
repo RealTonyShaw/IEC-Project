@@ -1,56 +1,101 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-[RequireComponent(typeof(Unit))]
+
 /// <summary>
-/// 施法控制器。仅挂载在玩家单位上。用于将玩家的硬件输入转化为对SkillTable的指令。
+/// 施法控制器。用于将玩家的硬件输入转化为对SkillTable的指令。
 /// </summary>
 public class CastingController : MonoBehaviour
 {
-    public Unit player;
+    Unit player = null;
     ISkillTable skillTable;
-
-    private void Awake()
-    {
-        if (player == null)
-        {
-            player = GetComponent<Unit>();
-        }
-    }
 
     private void Start()
     {
-        skillTable = player.SkillTable;
-        
+        if (player == null && GameCtrl.PlayerUnit != null)
+        {
+            player = GameCtrl.PlayerUnit;
+            skillTable = player.SkillTable;
+        }
+
         EventMgr.KeyDownEvent.AddListener(SwitchCellListener);
         EventMgr.MouseButtonDownEvent.AddListener(CellMouseBTNDown);
         EventMgr.MouseButtonUpEvent.AddListener(CellMouseBTNUp);
     }
 
+    private void Update()
+    {
+        if (player == null && GameCtrl.PlayerUnit != null)
+        {
+            player = GameCtrl.PlayerUnit;
+            skillTable = player.SkillTable;
+        }
+    }
+
     private void SwitchCellListener(EventMgr.KeyDownEventInfo info)
     {
+        if (player == null)
+            return;
+
+        int index = -1;
         switch (info.keyCode)
         {
             case KeyCode.Alpha1:
-                skillTable.SwitchCell(1);
+                index = 1;
                 break;
             case KeyCode.Alpha2:
-                skillTable.SwitchCell(2);
+                index = 2;
                 break;
             case KeyCode.Alpha3:
-                skillTable.SwitchCell(3);
+                index = 3;
                 break;
+        }
+        if (GameCtrl.IsOnlineGame)
+        {
+            if (index != -1)
+                DataSync.SyncSwitchSkill(player, Gamef.SystemTimeInMillisecond, index);
+        }
+        else
+        {
+            if (index != -1)
+                skillTable.SwitchCell(index);
         }
     }
 
     private void CellMouseBTNDown(EventMgr.MouseButtonDownEventInfo info)
     {
-        skillTable.CurrentCell.OnMouseButtonDown();
+        if (player == null)
+            return;
+        if (GameCtrl.IsOnlineGame)
+        {
+            DataSync.SyncMouseButton0Down(player, Gamef.SystemTimeInMillisecond);
+        }
+        else
+        {
+            // 为技能设置施法时刻
+            skillTable.CurrentCell.SetInstant(Gamef.SystemTimeInMillisecond);
+            // 为技能设置目标
+            if (skillTable.CurrentSkill.Data.IsTracking && skillTable.CurrentSkill is ITracking it)
+            {
+                it.Target = AimController.Instance.TargetForStrafeSkill;
+            }
+            skillTable.CurrentCell.Start();
+        }
     }
 
     private void CellMouseBTNUp(EventMgr.MouseButtonUpEventInfo info)
     {
-        skillTable.CurrentCell.OnMouseButtonUp();
+        if (player == null)
+            return;
+        if (GameCtrl.IsOnlineGame)
+        {
+            DataSync.SyncMouseButton0Up(player, Gamef.SystemTimeInMillisecond);
+        }
+        else
+        {
+            skillTable.CurrentCell.SetInstant(Gamef.SystemTimeInMillisecond);
+            skillTable.CurrentCell.Stop();
+        }
     }
 }
 

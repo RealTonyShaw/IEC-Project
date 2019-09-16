@@ -2,22 +2,35 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(Unit))]
 public class AimController : MonoBehaviour
 {
     public static AimController Instance { get; private set; }
-    /// <summary>
-    /// 玩家
-    /// </summary>
-    private Unit unit;
+    public long CurrentTargetInstance
+    {
+        get; private set;
+    }
+    Unit targetForStrafeSkill = null;
     /// <summary>
     /// 连射型技能的追踪目标
     /// </summary>
     public Unit TargetForStrafeSkill
     {
+        set
+        {
+            if (targetForStrafeSkill != value)
+            {
+                targetForStrafeSkill = value;
+                if (GameCtrl.IsOnlineGame)
+                {
+                    // sync target
+                    
+                }
+            }
+        }
+
         get
         {
-            return CameraGroupController.Instance.GetClosestUnit();
+            return targetForStrafeSkill;
         }
     }
 
@@ -58,26 +71,21 @@ public class AimController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        unit = GetComponent<Unit>();
     }
 
 
     // Update is called once per frame
     void Update()
     {
-        switch (unit.SkillTable.CurrentSkill.Data.SkillType)
+        Unit tmp = CameraGroupController.Instance.GetClosestUnit();
+        if (InputMgr.AimingButtonPressed)
         {
-            case SkillType.StrafeSkill:
-                // do nothing
-                break;
-            case SkillType.BurstfireSkill:
-                if (InputMgr.AimingButtonPressed)
-                {
-                    TargetForBurstfireSkill = CameraGroupController.Instance.GetClosestUnit();
-                }
-                break;
-            case SkillType.ContinuousSkill:
-                break;
+            TargetForBurstfireSkill = tmp;
         }
+        else
+        {
+            TargetForBurstfireSkill = null;
+        }
+        targetForStrafeSkill = tmp;
     }
 }

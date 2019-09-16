@@ -14,22 +14,29 @@ using UnityEngine;
 public interface ISyncMovement
 {
     /// <summary>
-    /// 位置大同步，用于同步单位的位置、转向、速度和角速度。
+    /// 位置大同步，用于同步单位的位置、转向和速度。
     /// </summary>
     /// <param name="instant">时刻（毫秒），即单位处于该状态的时刻</param>
     /// <param name="position">位置</param>
-    /// <param name="rotation">旋转，以四元数形式表示</param>
-    /// <param name="velocity">速度</param>
-    /// <param name="angularVelocity">角速度</param>
-    void SyncTransform(long instant, Vector3 position, Quaternion rotation, Vector3 velocity, Vector3 angularVelocity);
+    /// <param name="forward">单位的正方向</param>
+    /// <param name="up">单位的上方向</param>
+    /// <param name="speed">速率</param>
+    void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed);
 
     /// <summary>
-    /// 位置小同步，用于同步单位的加速度和摄像机方向。
+    /// 位置小同步，用于同步单位的加速度。
     /// </summary>
     /// <param name="instant">时刻，即单位处于该状态时的时刻</param>
     /// <param name="acceleration">加速度，取值为-1,0,1，分别表示加速，倒退和不变</param>
+    /// <param name="angularAcceleration">角加速度，取值为-1,0,1，分别表示左转，不变和右转</param>
+    void SyncAcceleration(long instant, int acceleration, int angularAcceleration);
+
+    /// <summary>
+    /// 同步摄像机正方向。该同步从小同步中独立出来，以便操作。
+    /// </summary>
+    /// <param name="instant">时刻</param>
     /// <param name="cameraForward">摄像机正方向</param>
-    void SyncAcceleration(long instant, int acceleration, Vector3 cameraForward);
+    void SyncCameraForward(long instant, Vector3 cameraForward);
 
     /// <summary>
     /// 初始化同步类。
