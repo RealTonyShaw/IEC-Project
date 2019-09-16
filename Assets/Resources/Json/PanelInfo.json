@@ -35,6 +35,10 @@
     {
       "panelTypeString": "ComplaintToUs",
       "panelPath": "UIPrefabs/ComplaintToUsPanel"
+    },
+    {
+      "panelTypeString": "Register",
+      "panelPath": "UIPrefabs/RegisterPanel"
     }
   ]
 }

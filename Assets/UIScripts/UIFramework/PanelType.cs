@@ -12,5 +12,6 @@ public enum PanelType
     SetUpGame,
     AboutUs,
     PlayerInfo,
-    ComplaintToUs
+    ComplaintToUs,
+    Register
 }

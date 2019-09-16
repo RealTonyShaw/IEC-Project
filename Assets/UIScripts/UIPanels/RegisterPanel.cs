@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
-public class MultiGamePanel : BasePanel
+public class RegisterPanel : BasePanel
 {
     public Transform trans;
 
@@ -29,21 +29,9 @@ public class MultiGamePanel : BasePanel
         trans.DOScale(new Vector3(0, 0, 0), 2f);
     }
 
-    public override void OnPause()
-    {
-        base.OnPause();
-        trans.DOScale(new Vector3(0, 0, 0), 2f);
-    }
-
-    public override void OnResume()
-    {
-        base.OnResume();
-        trans.DOScale(new Vector3(1, 1, 1), 2f);
-    }
-
     public void OnExitClick()
     {
-        UIManager.Instance.PopPanel(PanelType.MultiGame);
+        UIManager.Instance.PopPanel(PanelType.Register);
     }
 
     public void OnButtonClickDown(Transform transform)
@@ -54,10 +42,5 @@ public class MultiGamePanel : BasePanel
     public void OnButtonClickUp(Transform transform)
     {
         transform.DOScale(new Vector3(1, 1, 1), 0.5f);
-    }
-
-    public void OnRegisterClick()
-    {
-        UIManager.Instance.PushPanel(PanelType.Register);
     }
 }

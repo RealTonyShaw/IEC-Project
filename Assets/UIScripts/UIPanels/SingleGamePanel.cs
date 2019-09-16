@@ -6,6 +6,7 @@ using DG.Tweening;
 public class SingleGamePanel : BasePanel
 {
     public Transform trans;
+    public AudioSource audioSource;
 
     public override void OnEnter()
     {
@@ -16,7 +17,9 @@ public class SingleGamePanel : BasePanel
 
     IEnumerator DelayEnable()
     {
-        yield return new WaitForSeconds(1.8f);
+        yield return new WaitForSecondsRealtime(1f);
+        audioSource.Play();
+        yield return new WaitForSeconds(0.8f);
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
     }

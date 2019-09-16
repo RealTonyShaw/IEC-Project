@@ -49,9 +49,10 @@ public class MainMenuPanel : BasePanel
         canvasGroup.blocksRaycasts = true;
     }
 
-    public void OnSingleGameClick()
+    public void OnSingleGameClick(AudioSource audioSource)
     {
         UIManager.Instance.PushPanel(PanelType.SingleGame);
+        audioSource.Play();
     }
 
     public void OnMultiGameClick()
