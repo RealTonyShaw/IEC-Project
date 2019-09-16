@@ -14,13 +14,17 @@ public class ObjectPool<T> : IEnumerable<T>
     {
         public T content;
         public bool isValid = false;
-        public object mutex = new object();
+        public readonly object mutex = new object();
     }
 
+    // 修改blkList和MaxLength需要使用该锁。
+    private readonly object blkMutex = new object();
     List<Cell[]> blkList = new List<Cell[]>();
     // 最大可能的ID（实际上，最大ID应当小于MaxLength）
     public int MaxLength { get; private set; } = 0;
 
+    // 增减idQueue需要使用该锁。
+    private readonly object idQueueMutex = new object();
     //存储已经不被占用的id（即对象被清除）
     Queue<int> idQueue = new Queue<int>();
     /// <summary>
@@ -32,7 +36,7 @@ public class ObjectPool<T> : IEnumerable<T>
     {
         int res = -1;
 
-        lock (idQueue)
+        lock (idQueueMutex)
         {
             if (idQueue.Count > 0)
                 res = idQueue.Dequeue();
@@ -40,7 +44,7 @@ public class ObjectPool<T> : IEnumerable<T>
 
         if (res == -1)
         {
-            lock (blkList)
+            lock (blkMutex)
             {
                 res = MaxLength++;
                 //如果超负荷，则申请一个新的数组
@@ -79,7 +83,7 @@ public class ObjectPool<T> : IEnumerable<T>
         else
         {
             int prevLen;
-            lock (blkList)
+            lock (blkMutex)
             {
                 prevLen = MaxLength;
                 MaxLength = id + 1;
@@ -88,7 +92,7 @@ public class ObjectPool<T> : IEnumerable<T>
                     ExtendPool();
                 }
             }
-            lock (idQueue)
+            lock (idQueueMutex)
             {
                 for (int i = prevLen; i < MaxLength - 1; i++)
                 {
@@ -135,7 +139,7 @@ public class ObjectPool<T> : IEnumerable<T>
         {
             c.isValid = false;
         }
-        lock (idQueue)
+        lock (idQueueMutex)
             idQueue.Enqueue(id);
     }
 
