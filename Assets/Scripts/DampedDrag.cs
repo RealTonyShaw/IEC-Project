@@ -8,6 +8,7 @@ using UnityEngine;
 /// </summary>
 public class DampedDrag : MonoBehaviour
 {
+    public bool EnableHorizontalDampedDrag = false;
     Rigidbody rb;
     private void Awake()
     {
@@ -16,6 +17,14 @@ public class DampedDrag : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        rb.velocity -= rb.velocity * GameDB.DAMPED_CONST * Time.fixedDeltaTime;
+        if (EnableHorizontalDampedDrag)
+        {
+            Vector3 v = rb.velocity;
+            rb.velocity -= (Vector3.Project(v, transform.forward) * GameDB.DAMPED_CONST + Vector3.Project(v, transform.right) * GameDB.DAMPED_HORIZON_CONST) * Time.fixedDeltaTime;
+        }
+        else
+        {
+            rb.velocity -= rb.velocity * GameDB.DAMPED_CONST * Time.fixedDeltaTime;
+        }
     }
 }

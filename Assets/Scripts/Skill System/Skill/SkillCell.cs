@@ -139,12 +139,16 @@ public class SkillCell : ISkillCell
         switch (skill.Data.SkillType)
         {
             case SkillType.StrafeSkill:
+                // trigger event
+                caster.StartCastingEvnt.Trigger();
                 timer = -deltaT;
                 break;
 
             case SkillType.BurstfireSkill:
                 if (Cast())
                 {
+                    // trigger event
+                    caster.StartCastingEvnt.Trigger();
                     StopCasting();
                 }
                 else
@@ -158,7 +162,8 @@ public class SkillCell : ISkillCell
                 contiguousSkillCastingTimer = deltaT;
                 if (Cast())
                 {
-
+                    // trigger event
+                    caster.StartCastingEvnt.Trigger();
                 }
                 else
                 {
@@ -187,6 +192,8 @@ public class SkillCell : ISkillCell
         {
             tmp.SetInstant(startOrStopInstant);
         }
+        // trigger event
+        caster.StopCastingEvnt.Trigger();
         switch (skill.Data.SkillType)
         {
             case SkillType.StrafeSkill:

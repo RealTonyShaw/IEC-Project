@@ -25,7 +25,7 @@ public partial class GameDB
         unitDataPath = Resources.Load<DataPathIndex>("Unit/A_DataPath");
         skillDataPath = Resources.Load<DataPathIndex>("Skill/A_DataPath");
         buffDataPath = Resources.Load<DataPathIndex>("Buff/A_DataPath");
-        prefabPath = Resources.Load<DataPathIndex>("A_DataPath");
+        //prefabPath = Resources.Load<DataPathIndex>("A_DataPath");
     }
     #endregion
 
@@ -53,7 +53,9 @@ public partial class GameDB
     public const float PULL_UP_CONST = 0.5f;
     public const float X_AXIS_BALANCING_CONST = 0.5f;
     // 最大后退速度与最大速度的比值
-    public const float MAX_BACKWARD_SPEED_RATE = 0.75f;
+    public const float MAX_BACKWARD_SPEED_RATE = 0.9f;
+    // 最大左右移动速度与最大速度的比值
+    public const float MAX_HORIZON_SPEED_RATE = 0.5f;
     //最大俯仰角
     public const float MAX_ROT_X = 75f;
     //最大俯仰角的倒数
@@ -65,7 +67,8 @@ public partial class GameDB
     /// <summary>
     /// 单位移动阻尼
     /// </summary>
-    public const float DAMPED_CONST = 2;
+    public const float DAMPED_CONST = 3f;
+    public const float DAMPED_HORIZON_CONST = 18f;
     /// <summary>
     /// 单位转向阻尼
     /// </summary>

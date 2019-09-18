@@ -46,7 +46,7 @@ public class BodyBalancing : MonoBehaviour
 
         // Z轴平衡 (绕自转轴的平衡)
         // omega * v / g
-        z = -Z_ROT_CONST * av.y * rb.velocity.magnitude * RECI_GRAVITY_CONST;
+        z = -Z_ROT_CONST * av.y * Vector3.Dot(rb.velocity, transform.forward) * RECI_GRAVITY_CONST;
         z = Mathf.Atan(z) * Mathf.Rad2Deg;
 
         // X轴平衡 (俯仰平衡)
