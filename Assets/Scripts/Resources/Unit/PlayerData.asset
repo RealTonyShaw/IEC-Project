@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalPrefab: {fileID: 8572677812863099403, guid: e47df09e3cc012a40a256b961c42b97c,
     type: 3}
-  NetPrefab: {fileID: 800395346338034528, guid: fe9aeba76c198f445a7c73c77e37039d,
+  NetPrefab: {fileID: 8572677812863099403, guid: 5bb2b53e590ce574399014efd7bc7f23,
     type: 3}
   tags:
     player: 0
     elf: 0
     devil: 0
-  MaxVelocity: 50
+  MaxVelocity: 22
   MaxTurningVelocity: 60
   MaxSheildPoint: 50
   ShieldPointRegenerationRate: 0.2

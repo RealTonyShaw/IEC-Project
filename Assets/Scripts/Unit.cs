@@ -16,6 +16,7 @@ public partial class Unit : MonoBehaviour
     public Rigidbody rigbody;
     public Transform SpawnTransform;
     public UnitName unitName;
+    public AnimatorController animatorController;
     public UnitAttributes attributes;
     public Canvas unitCanvas;
     public Transform unitCamera;
@@ -38,6 +39,12 @@ public partial class Unit : MonoBehaviour
     // 技能表
     ISkillTable skillTable = new SkillTable();
     public ISkillTable SkillTable => skillTable;
+
+    // 单位私有事件
+    public readonly MyActionEvent StartCastingEvnt = new MyActionEvent();
+    public readonly MyActionEvent StopCastingEvnt = new MyActionEvent();
+    public readonly MyActionEvent DeathEvnt = new MyActionEvent();
+    public readonly MyActionEvent TakeDmgEvnt = new MyActionEvent();
 
     [Header("Network Synchronization")]
     public bool IsLocal = true;
@@ -99,9 +106,55 @@ public partial class Unit : MonoBehaviour
         {
             Debug.LogError(string.Format("Unit {0} is not in Unit layer.", gameObject.name));
         }
+        if (GameCtrl.IsOnlineGame)
+        {
+            // do nothing
+            if (!isInitAttr)
+            {
+                Debug.LogError("Init Error: " + gameObject.name + " initialization failed");
+            }
+        }
+        else
+        {
+            InitAttributes();
+        }
+    }
+
+    private bool isInitAttr = false;
+    public void InitAttributes()
+    {
+        if (isInitAttr)
+            return;
+        isInitAttr = true;
         //注册单位
         lock (GameDB.unitPool)
             attributes.ID = Gamef.UnitBirth(this);
+
+        attributes.Init(this);
+        SyncMovement?.Init(this);
+        //测试用
+        if (attributes.name == UnitName.Player)
+        {
+            if (DisplayPlayerProperity.Instance != null)
+                StartCoroutine(DisplayProperity());
+        }
+        // 如果该单位是施法单位，则初始化技能表
+        if (attributes.data.IsCaster)
+            skillTable.Init(this);
+    }
+    /// <summary>
+    /// 外部可以通过该接口对单位进行初始化。
+    /// </summary>
+    /// <param name="ID">单位ID</param>
+    public void InitAttributes(int ID)
+    {
+        if (isInitAttr)
+            return;
+        isInitAttr = true;
+        //注册单位
+        lock (GameDB.unitPool)
+            attributes.ID = Gamef.UnitBirth(this, ID);
+
         attributes.Init(this);
         SyncMovement?.Init(this);
         //测试用
@@ -160,25 +213,6 @@ public partial class Unit : MonoBehaviour
         }
     }
 
-    private void OnDisable()
-    {
-        //删除物体
-        Gamef.Destroy(gameObject);
-    }
-
-    private void OnDestroy()
-    {
-        if (!GameCtrl.IsOnlineGame)
-        {
-
-        }
-        else
-        {
-            //注销单位
-            lock (GameDB.unitPool)
-                Gamef.UnitClear(this);
-        }
-    }
     #endregion
 
     #region 生命值
@@ -196,6 +230,7 @@ public partial class Unit : MonoBehaviour
         }
         //减少护盾值
         attributes.SheildPoint -= amount;
+        TakeDmgEvnt.Trigger();
     }
 
     /// <summary>
@@ -254,6 +289,8 @@ public partial class Unit : MonoBehaviour
     {
         if (!attributes.isAlive)
             return;
+        if (attributes.data.IsCaster)
+            skillTable.CurrentCell.Stop();
         attributes.isAlive = false;
         if (attributes.SheildPoint > 0f)
         {
@@ -263,6 +300,15 @@ public partial class Unit : MonoBehaviour
         while (buffs.Count > 0)
             LogOffBuff(buffs[0]);
         Debug.Log(gameObject.name + " has died.");
+        DeathEvnt.Trigger();
+        //注销单位
+        lock (GameDB.unitPool)
+            Gamef.UnitClear(this);
+    }
+
+    IEnumerator DelayedDisable()
+    {
+        yield return new WaitForSeconds(10f);
         gameObject.SetActive(false);
     }
     #endregion

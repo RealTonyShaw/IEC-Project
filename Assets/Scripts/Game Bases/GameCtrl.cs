@@ -19,7 +19,7 @@ public partial class GameCtrl : MonoBehaviour
     /// </summary>
     public static bool isInit = false;
     #endregion
-    
+
     #region 实时公有信息
     //private UnitInfo _mainChara;
     private static Unit _playerUnit = null;
@@ -78,29 +78,7 @@ public partial class GameCtrl : MonoBehaviour
         isInit = true;//初始化完毕
 
         if (BuildDataPath)
-        {
-            // 建立单位数据路径
-            string[] paths = GameDB.Instance.unitDataPath.paths = new string[(int)UnitName.MaxIndex];
-            for (int i = 0; i < paths.Length; i++)
-            {
-                paths[i] = "Unit/" + ((UnitName)i).ToString() + "Data";
-            }
-            // 建立技能数据路径
-            paths = GameDB.Instance.skillDataPath.paths = new string[GameDB.MAX_SKILL_INDEX];
-            foreach (SkillName name in Enum.GetValues(typeof(SkillName)))
-            {
-                int i = (int)name;
-                paths[i] = "Skill/" + name + "Data";
-            }
-            // 建立Prefab路径
-            Array enums = Enum.GetValues(typeof(PrefabName));
-            paths = GameDB.Instance.prefabPath.paths = new string[enums.Length];
-            foreach (PrefabName name in enums)
-            {
-                int i = (int)name;
-                paths[i] = name.ToString();
-            }
-        }
+            Build();
 
         //加载游戏场景
         SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
@@ -117,6 +95,33 @@ public partial class GameCtrl : MonoBehaviour
 
     #endregion
 
+    private void Build()
+    {
+        // 建立单位数据路径
+        string[] paths = GameDB.Instance.unitDataPath.paths = new string[(int)UnitName.MaxIndex];
+        for (int i = 0; i < paths.Length; i++)
+        {
+            paths[i] = "Unit/" + ((UnitName)i).ToString() + "Data";
+        }
+        // 建立技能数据路径
+        paths = GameDB.Instance.skillDataPath.paths = new string[GameDB.MAX_SKILL_INDEX];
+        foreach (SkillName name in Enum.GetValues(typeof(SkillName)))
+        {
+            int i = (int)name;
+            paths[i] = "Skill/" + name + "Data";
+        }
+        // 建立技能类的路径
+        SkillFactory.Init();
+        //// 建立Prefab路径
+        //Array enums = Enum.GetValues(typeof(PrefabName));
+        //paths = GameDB.Instance.prefabPath.paths = new string[enums.Length];
+        //foreach (PrefabName name in enums)
+        //{
+        //    int i = (int)name;
+        //    paths[i] = name.ToString();
+        //}
+
+    }
 }
 
 /// <summary>

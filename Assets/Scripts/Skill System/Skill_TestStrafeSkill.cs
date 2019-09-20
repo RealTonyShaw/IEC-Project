@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
 {
-    private GameObject fireballPrefab;
+    private GameObject missilePrefab;
     private GameObject tmp;
 
     public override void AccuracyCooldown(float dt)
@@ -17,15 +17,15 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
     protected override void LoadData()
     {
         Data = Gamef.LoadSkillData(SkillName.TestStrafeSkill);
-        fireballPrefab = Resources.Load<GameObject>("Fireball");
-        if (fireballPrefab == null)
-            Debug.LogError("未能找到Prefab名为：Fireball");
+        missilePrefab = Data.Prefabs[0];
+        if (missilePrefab == null)
+            Debug.LogError("未能找到 Ice ball prefab");
     }
 
     protected override Missile Shoot()
     {
         Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
-        tmp = Gamef.Instantiate(fireballPrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
+        tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
         Missile missile = tmp.GetComponent<Missile>();
         missile.Init(Caster, Target, this);
         //Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
