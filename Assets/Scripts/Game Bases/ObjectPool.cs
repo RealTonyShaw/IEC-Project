@@ -271,41 +271,61 @@ public class ObjectPool<T> : IEnumerable<T>
             // if not empty
             if ((v >> ofs) != 0)
             {
-                for (int j = ofs; j < BLK_LENGTH; j++)
-                {
-                    if (((v >> j) & 0x1) == 0x1)
-                    {
-                        // find
-                        currentID = (minID & BLK_MASK) | j;
-                        return true;
-                    }
-                }
+                currentID = minID + RetrieveZeros(v >> ofs);
+                return true;
             }
+
             // find from next blk
             for (int i = (minID & BLK_MASK) + 1; i < maxBlkIndex; i++)
             {
                 blk = pool.blks[i];
                 v = blk.validates;
-                // 该 blk 是空的。
-                if (v == 0)
+                // 该 blk 非空的。
+                if (v != 0)
                 {
-                    continue;
+                    currentID = (i << 6) | RetrieveZeros(v);
+                    return true;
                 }
-                for (int j = 0; j < BLK_LENGTH; j++)
-                {
-                    if (((v >> j) & 0x1) == 0x1)
-                    {
-                        // find
-                        currentID = (i << 6) | j;
-                        return true;
-                    }
-                }
-                // not find in this iteration
             }
 
             // no next item
             currentID = -1;
             return false;
+        }
+
+        int RetrieveZeros(ulong tp)
+        {
+            int cnt = 0;
+            if ((tp & 0xffffffff) == 0)
+            {
+                cnt |= 32;
+                tp >>= 32;
+            }
+            if ((tp & 0xffff) == 0)
+            {
+                cnt |= 16;
+                tp >>= 16;
+            }
+            if ((tp & 0xff) == 0)
+            {
+                cnt |= 8;
+                tp >>= 8;
+            }
+            if ((tp & 0xf) == 0)
+            {
+                cnt |= 4;
+                tp >>= 4;
+            }
+            if ((tp & 0x3) == 0)
+            {
+                cnt |= 2;
+                tp >>= 2;
+            }
+            if ((tp & 0x1) == 0)
+            {
+                cnt |= 1;
+            }
+            return cnt;
         }
 
         public void Reset()
