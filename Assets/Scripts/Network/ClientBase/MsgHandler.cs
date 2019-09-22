@@ -19,13 +19,41 @@ namespace ClientBase
             long delta = proto.GetLong(start, ref start);
             ClientLauncher.Instant.TimeCheck(delta);
         }
-        public void Ping()
+        public void Ping(ProtocolBase protocol)
         {
             ClientLauncher.Instant.PingBack();
         }
         #endregion
 
         #region Login
+        public void Login(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            int ispass = proto.GetByte(start, ref start);
+            if (ispass == 1)
+            {
+                int id = proto.GetByte(start, ref start);
+                //Login
+
+            }
+            else
+            {
+                //Login failed
+                
+            }
+        }
+
+        //public void Logout(ProtocolBase protocol){}
+
+        public void Register(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+
+        }
         #endregion
 
         #region Net Object
@@ -42,8 +70,9 @@ namespace ClientBase
             bool isLocal = proto.GetByte(start, ref start) == 1;
             UnitData unitData = Gamef.LoadUnitData(unitName);
             GameObject prefab = isLocal ? unitData.NetPrefab : unitData.NetPrefab;
-            GameObject gameObject = Gamef.Instantiate(prefab, pos, rot);
+            GameObject gameObj = Gamef.Instantiate(prefab, pos, rot);
             //set id
+            Unit unit = gameObj.GetComponent<Unit>();
             
         }
 
