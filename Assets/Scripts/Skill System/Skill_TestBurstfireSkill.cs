@@ -4,21 +4,32 @@ using UnityEngine;
 
 public class Skill_TestBurstfireSkill : AbstractBurstfireSkill
 {
+    private GameObject missilePrefab;
+    private GameObject tmp;
 
     public override void AccuracyCooldown(float dt)
     {
         this.Caster.RuntimeAccuracy += dt * Data.AccuracyCooldownSpeed;
     }
 
+    public Unit Target { get; set; } = null;
+
     protected override void LoadData()
     {
         Data = Gamef.LoadSkillData(SkillName.TestBurstfireSkill);
+        missilePrefab = Data.Prefabs[0];
+        if (missilePrefab == null)
+            Debug.LogError("未能找到 Ice ball prefab");
     }
 
     protected override Missile Shoot()
     {
-        Debug.Log("Burstfire Accuracy : " + Caster.RuntimeAccuracy);
-        this.Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
-        return null;
+        Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
+        tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
+        Missile missile = tmp.GetComponent<Missile>();
+        missile.Init(Caster, Target, this);
+        //Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
+        Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
+        return missile;
     }
 }

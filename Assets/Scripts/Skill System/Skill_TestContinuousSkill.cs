@@ -7,19 +7,35 @@ using UnityEngine;
 /// </summary>
 public class Skill_TestContinuousSkill : AbstractContinuousSkill
 {
+    private GameObject missilePrefab;
+    private GameObject tmp;
+    protected System.Random random;
+
     public override void AccuracyCooldown(float dt)
     {
         this.Caster.RuntimeAccuracy += dt * Data.AccuracyCooldownSpeed;
     }
 
+    public Unit Target { get; set; } = null;
+
     protected override void LoadData()
     {
         Data = Gamef.LoadSkillData(SkillName.TestContinuousSkill);
+        missilePrefab = Data.Prefabs[0];
+        if (missilePrefab == null)
+            Debug.LogError("未能找到 Ice ball prefab");
     }
 
     protected override void Start()
     {
-        Debug.Log("啊哈，您成功释放了一个持续型技能！");
+        random = new System.Random((int)(Time.time * 1000f));
+
+        Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
+        tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
+        Missile missile = tmp.GetComponent<Missile>();
+        missile.Init(Caster, Target, this);
+        //Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
+        Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
     }
 
     protected override void Stop()
