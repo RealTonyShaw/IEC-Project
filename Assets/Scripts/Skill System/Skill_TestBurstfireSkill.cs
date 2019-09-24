@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill_TestBurstfireSkill : AbstractBurstfireSkill
+public class Skill_TestBurstfireSkill : AbstractBurstfireSkill, ITracking
 {
     private GameObject missilePrefab;
     private GameObject tmp;

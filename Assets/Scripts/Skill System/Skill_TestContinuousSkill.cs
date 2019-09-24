@@ -9,6 +9,7 @@ public class Skill_TestContinuousSkill : AbstractContinuousSkill
 {
     private GameObject missilePrefab;
     private GameObject tmp;
+    private float original;
     protected System.Random random;
 
     public override void AccuracyCooldown(float dt)
@@ -23,23 +24,19 @@ public class Skill_TestContinuousSkill : AbstractContinuousSkill
         Data = Gamef.LoadSkillData(SkillName.TestContinuousSkill);
         missilePrefab = Data.Prefabs[0];
         if (missilePrefab == null)
-            Debug.LogError("未能找到 Ice ball prefab");
+            Debug.LogError("未能找到 prefab");
     }
 
     protected override void Start()
     {
-        random = new System.Random((int)(Time.time * 1000f));
-
-        Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
-        tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
-        Missile missile = tmp.GetComponent<Missile>();
-        missile.Init(Caster, Target, this);
-        //Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
-        Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
+        Debug.Log("哦豁，您成功释放了一个持续型技能！");
+        original = Caster.attributes.MaxV_bonus;
+        Caster.attributes.MaxV_bonus += Data.Params[0];
     }
 
     protected override void Stop()
     {
+        Caster.attributes.MaxV_bonus = original;
         Debug.Log("哦豁，您成功停止了一个持续型技能！");
     }
 }
