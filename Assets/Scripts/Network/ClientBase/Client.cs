@@ -5,6 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ClientBase
 {
@@ -15,7 +16,7 @@ namespace ClientBase
         public bool isConnect = false;
         public Socket client;
 
-        private ProtocolTestCRC proto = new ProtocolTestCRC();
+        private ProtocolBytes proto = new ProtocolBytes();
 
         private int start = 0;
         private int length = 0;
@@ -62,7 +63,7 @@ namespace ClientBase
             {
                 Console.WriteLine("There is a connection");
             }
-            if (client.Connected)
+            if (client != null && client.Connected)
             {
                 Console.WriteLine("Already connect");
             }
@@ -82,6 +83,7 @@ namespace ClientBase
             {
                 Console.WriteLine(e);
             }
+            Debug.Log("It seems that the connection has been built.");
         }
 
         /// <summary>
@@ -103,7 +105,7 @@ namespace ClientBase
             }
         }
 
-        byte[] lenBytes = new byte[sizeof(int)];
+        byte[] lenBytes = new byte[sizeof(short)];
         /// <summary>
         /// 处理信息，管理接收到的数据
         /// </summary>
@@ -112,34 +114,45 @@ namespace ClientBase
             //如果小于存储长度的数据长度，则返回
             if (start < sizeof(short))
                 return;
-            length = BitConverter.ToInt32(buffer, 0);
+            length = BitConverter.ToInt16(buffer, 0);
             //如果没接收完毕返回
             if (start < SF.SHORT_SIZE + length)
                 return;
             ProtocolBase protocol = proto.Decode(buffer, SF.SHORT_SIZE, length);
+
+            //Debug.Log();
+
             //todo this is to deal with protocol
             bool cor = false;
             //length
-            if (length > 144)
+            if (length >= 144)
             {
-                CRC16 crc16 = new CRC16(protocol.Encode());
+                CRC16 crc16 = new CRC16(protocol.Encode(), true);
+                crc16.CRC_16();
                 cor = crc16.IsCorrect();
             }
             else
             {
                 CRC8 crc8 = new CRC8(protocol.Encode(), CRC_op.Judge);
+                Debug.Log("CRC8");
                 cor = crc8.IsCorrect();
             }
 
             if (cor)
             {
                 //Add handler and handle.
+                Debug.Log(protocol.GetName() + " is cor");
                 EventHandler.GetEventHandler().AddProtocol(protocol);
+            }
+            else
+            {
+                Debug.Log("CRC failed");
             }
 
             //Operations for protocol
             int count = start - SF.SHORT_SIZE - length;
             Array.Copy(buffer, start, buffer, 0, count);
+            start = count;
             if (count > 0)
                 DataProcessor();
             return;

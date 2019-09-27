@@ -23,13 +23,25 @@ public class ClientLauncher : MonoBehaviour
         }
     }
 
+    public string message = "";
+
+    public void SendMsg(string msg)
+    {
+        UnityEngine.Debug.Log(string.Format("Begin send to server {0}", msg));
+        DataSync.Chatting(msg);
+    }
+
     public void InitClient()
     {
         Client.Instance.Host = "127.0.0.1";
-        Client.Instance.port = 3356;
+        Client.Instance.port = 4089;
         for (int i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
         {
             Client.Instance.Connect();
+            if (i == MAX_CONNECT_TIMES)
+            {
+                UnityEngine.Debug.Log("Connect times over max connect times");
+            }
         }
     }
 
@@ -42,6 +54,10 @@ public class ClientLauncher : MonoBehaviour
     {
         eventHandler = ClientBase.EventHandler.GetEventHandler();
         client = Client.Instance;
+        timeMgr = new TimeMgr();
+        timeMgr.StartTimer();
+        InitClient();
+        SendMsg("olleH! revreS");
     }
 
     public void Update()

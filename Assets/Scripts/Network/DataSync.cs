@@ -74,6 +74,13 @@ public static class DataSync
     {
         Client.Instance.Send(SF.GetProtocolHead(ProtoName.Ping));
     }
+
+    public static void Chatting(string msg)
+    {
+        ProtocolBytes protocol =  SF.GetProtocolHead(ProtoName.Chatting);
+        protocol.AddString(msg);
+        Client.Instance.Send(protocol);
+    }
     #endregion
 
     #region Net Object

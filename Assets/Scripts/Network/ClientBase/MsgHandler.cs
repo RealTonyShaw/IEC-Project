@@ -11,7 +11,7 @@ namespace ClientBase
     {
         #region Server&Client
         #region Base
-        public void SyncTimeCheck(ProtocolBase protocol)
+        public static void SyncTimeCheck(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -19,14 +19,25 @@ namespace ClientBase
             long delta = proto.GetLong(start, ref start);
             ClientLauncher.Instant.TimeCheck(delta);
         }
-        public void Ping(ProtocolBase protocol)
+        public static void Ping(ProtocolBase protocol)
         {
             ClientLauncher.Instant.PingBack();
+        }
+
+        public static void Chatting(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            string str;
+            Debug.Log("Receive msg from server");
+            Debug.Log(str = proto.GetString(start, ref start));
+            ClientLauncher.Instant.message = str;
         }
         #endregion
 
         #region Login
-        public void Login(ProtocolBase protocol)
+        public static void Login(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -47,7 +58,7 @@ namespace ClientBase
 
         //public void Logout(ProtocolBase protocol){}
 
-        public void Register(ProtocolBase protocol)
+        public static void Register(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -58,7 +69,7 @@ namespace ClientBase
 
         #region Net Object
         //UnitName unit, Vector3 position, Quaternion rotation
-        public void CreateObject(ProtocolBase protocol)
+        public static void CreateObject(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -76,7 +87,7 @@ namespace ClientBase
             
         }
 
-        public void DestroyObj(ProtocolBase protocol)
+        public static void DestroyObj(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -93,7 +104,7 @@ namespace ClientBase
         #endregion
 
         #region Movement
-        public void SyncTransform(ProtocolBase protocol)
+        public static void SyncTransform(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -110,7 +121,7 @@ namespace ClientBase
         #endregion
 
         #region Input
-        public void SyncMobileControlAxes(ProtocolBase protocol)
+        public static void SyncMobileControlAxes(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -123,7 +134,7 @@ namespace ClientBase
             unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1]);
         }
 
-        public void SyncSwitchSkill(ProtocolBase protocol)
+        public static void SyncSwitchSkill(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -135,7 +146,7 @@ namespace ClientBase
             unit.SyncPlayerInput.SyncSwitchSkill(instant, skillIndex);
         }
 
-        public void SyncMouseButton0Down(ProtocolBase protocol)
+        public static void SyncMouseButton0Down(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -146,7 +157,7 @@ namespace ClientBase
             unit.SyncPlayerInput.SyncMouseButton0Down(instant);
         }
 
-        public void SyncMouseButton0Up(ProtocolBase protocol)
+        public static void SyncMouseButton0Up(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -155,11 +166,11 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             unit.SyncPlayerInput.SyncMouseButton0Up(instant);
-        }
+        }        
         #endregion
 
         #region Player Casting State
-        public void SyncStart(ProtocolBase protocol)
+        public static void SyncStart(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
@@ -171,7 +182,7 @@ namespace ClientBase
             unit.SyncPlayerCastingState.SyncStart(instant, skillIndex);
         }
 
-        public void SyncStop(ProtocolBase protocol)
+        public static void SyncStop(ProtocolBase protocol)
         {
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
