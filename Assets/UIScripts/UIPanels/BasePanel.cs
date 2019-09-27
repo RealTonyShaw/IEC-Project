@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BasePanel : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class BasePanel : MonoBehaviour
     /// </summary>
     public virtual void OnEnter()
     {
-        canvasGroup.alpha = 1;
+        canvasGroup.DOFade(1, 1);
         canvasGroup.interactable = true;
         canvasGroup.blocksRaycasts = true;
     }
@@ -39,7 +40,7 @@ public class BasePanel : MonoBehaviour
     /// </summary>
     public virtual void OnExit()
     {
-        canvasGroup.alpha = 0;
+        canvasGroup.DOFade(0, 1);
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
     }

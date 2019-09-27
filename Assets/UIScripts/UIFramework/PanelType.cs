@@ -5,5 +5,13 @@ using UnityEngine;
 public enum PanelType
 {
     MainMenu,
-    Start
+    Start,
+    Blank,
+    SingleGame,
+    MultiGame,
+    SetUpGame,
+    AboutUs,
+    PlayerInfo,
+    ComplaintToUs,
+    Register
 }
