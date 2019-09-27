@@ -400,21 +400,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9441d5450817c342a45e4b8dd66de6e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  showEditorMainBehavior: 1
-  showEditorBloomBehavior: 0
-  showEditorLensSurfaceBehavior: 0
-  showEditorLensFlareBehavior: 0
-  showEditorGlareBehavior: 0
-  debugView: 0
-  workflow: 1
-  selectiveRenderLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  bloomThreshold:
-    minValue: 1
-    maxValue: 10
-  bloomScattering: 7
-  bloomIntensity: 1
 --- !u!1 &1623841797
 GameObject:
   m_ObjectHideFlags: 0
