@@ -3,16 +3,68 @@ using System.Collections.Generic;
 using UnityEngine;
 using ClientBase;
 using System;
+using System.Security.Cryptography;
+using System.Text;
 
 public static class DataSync
 {
     #region Server & Client
+
+    #region Login
+    public static void Login(string username, string password)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Login);
+        MD5 md5p = MD5.Create(password);
+        protocol.AddString(username);
+        protocol.AddString(GetMd5(password));
+        Client.Instance.Send(protocol);
+    }
+
+    public static void Logout()
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
+        Client.Instance.Send(protocol);
+    }
+
+    public static void Ready()
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
+        Client.Instance.Send(protocol);
+    }
+
+    public static void ReadyCancel()
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Logout);
+        Client.Instance.Send(protocol);
+    }
+
+    /// <summary>
+    /// To apply for register.
+    /// </summary>
+    /// <param name="username">At least 8 bits</param>
+    /// <param name="password">At least 8 bits</param>
+    public static void Register(string username, string password)
+    {
+        if (username == null || password == null)
+        {
+            return;
+        }
+        if (username.Length < 8 || password.Length < 8)
+        {
+            return;
+        }
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Register);
+        Client.Instance.Send(protocol);
+    }
+    #endregion
+
+    #region Base
     /// <summary>
     /// Heart beat, 5 or more seconds per
     /// </summary>
     public static void SyncTimeCheck()
-    {        
-        AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.SyncTimeCheck));
+    {
+        Client.Instance.Send(SF.GetProtocolHead(ProtoName.SyncTimeCheck));
     }
 
     /// <summary>
@@ -20,12 +72,49 @@ public static class DataSync
     /// </summary>
     public static void Ping()
     {
-        AppendCRC8AndSend(SF.GetProtocolHead(ProtoName.Ping));
+        Client.Instance.Send(SF.GetProtocolHead(ProtoName.Ping));
+    }
+
+    public static void Chatting(string msg)
+    {
+        ProtocolBytes protocol =  SF.GetProtocolHead(ProtoName.Chatting);
+        protocol.AddString(msg);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
+    #region Net Object
+    /// <summary>
+    /// Send a message to server, which includes the message of unit and applies for permission.
+    /// </summary>
+    /// <param name="unit">The unit type enum</param>
+    /// <param name="isLocal">Is this object local</param>
+    /// <param name="position">The position of the unit that would be created at</param>
+    /// <param name="rotation">The rotation of the unit</param>
+    public static void CreateObject(UnitName unit, Vector3 position, Quaternion rotation)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.CreateObject);
+        protocol.AddByte((byte)unit);
+        AppendVector3(protocol, position);
+        AppendQuaternion(protocol, rotation);
+        Client.Instance.Send(protocol);
+    }
+
+    /// <summary>
+    /// Destroy a object.
+    /// </summary>
+    /// <param name="id">The id of the unit that being destroyed</param>
+    public static void DestroyObj(byte id)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.DestroyObj);
+        protocol.AddByte(id);
+        Client.Instance.Send(protocol);
+    }
+    #endregion
+    #endregion
+
     #region Sync Movement
-    public static void SyncTransform(Unit unit, long instant, Vector3 position, Vector3 rotation, Vector3 velocity, float speed)
+    public static void SyncTransform(Unit unit, long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
     {
         //8 bits
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncTransform);
@@ -36,13 +125,13 @@ public static class DataSync
         //96 bits
         AppendVector3(protocol, position);
         //96 bits
-        AppendVector3(protocol, rotation);
+        AppendVector3(protocol, forward);
         //96 bits
-        AppendVector3(protocol, velocity);
+        AppendVector3(protocol, up);
         //32 bits
         protocol.AddFloat(speed);
 
-        AppendCRC16AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
 
@@ -68,7 +157,7 @@ public static class DataSync
         protocol.AddInt((int)instant);
         protocol.AddByte((byte)unit.attributes.ID);
         protocol.AddByte(PackHaV(h, v));
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
 
@@ -83,7 +172,7 @@ public static class DataSync
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID);//8 bits 
         protocol.AddByte((byte)skillIndex);//32 bits
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     /// <summary>
     /// 同步鼠标左键按下事件。
@@ -94,7 +183,7 @@ public static class DataSync
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Down);//16 bits
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -106,7 +195,7 @@ public static class DataSync
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Up);//16 bits
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
@@ -126,7 +215,7 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);
         protocol.AddByte((byte)skillIndex);
 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -145,7 +234,7 @@ public static class DataSync
         //8 bits
         protocol.AddByte((byte)skillIndex);
 
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
@@ -166,7 +255,7 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);
         //32 bits
         protocol.AddFloat(HP);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
 
     /// <summary>
@@ -184,7 +273,7 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);
         //32 bits
         protocol.AddFloat(MP);
-        AppendCRC8AndSend(protocol);
+        Client.Instance.Send(protocol);
     }
     #endregion
 
@@ -285,23 +374,47 @@ public static class DataSync
     {
         return n == 3 ? -1 : n;
     }
-    #endregion
 
-    #region CRC
-    public static void AppendCRC16AndSend(ProtocolBase protocol)
+    public static string GetMd5(string password)
     {
-        CRC16 crc = new CRC16(protocol.Encode(), false);
-        crc.CRC_16();
-        crc.AppendCRC();
-        Client.Instance.Send(protocol);
-    }
-
-    public static void AppendCRC8AndSend(ProtocolBase protocol)
-    {
-        CRC8 crc = new CRC8(protocol.Encode(), false);
-        crc.CRC_8();
-        crc.AppendCRC();
-        Client.Instance.Send(protocol);
+        MD5 md5p = new MD5CryptoServiceProvider();
+        byte[] bs = md5p.ComputeHash(Encoding.Default.GetBytes(password));
+        string pw = "";
+        for (int i = 0; i < bs.Length; i++)
+        {
+            pw += string.Format("{0:x}", bs[i]);
+        }
+        return pw;
     }
     #endregion
+
+    //#region CRC
+    //public static void AppendCrcAndSend(ProtocolBase protocol)
+    //{
+    //    if (protocol.Encode().Length > 128)
+    //    {
+    //        AppendCRC16AndSend(protocol);
+    //    }
+    //    else
+    //    {
+    //        AppendCRC8AndSend(protocol);
+    //    }
+    //}
+
+    //public static void AppendCRC16AndSend(ProtocolBase protocol)
+    //{
+    //    CRC16 crc = new CRC16(protocol.Encode(), false);
+    //    crc.CRC_16();
+    //    crc.AppendCRC();
+    //    Client.Instance.Send(protocol);
+    //}
+
+    //public static void AppendCRC8AndSend(ProtocolBase protocol)
+    //{
+    //    CRC8 crc = new CRC8(protocol.Encode(), false);
+    //    crc.CRC_8();
+    //    crc.AppendCRC();
+    //    Client.Instance.Send(protocol);
+    //}
+    //#endregion
 }
