@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ClientBase
 {
@@ -87,12 +88,11 @@ namespace ClientBase
             {
                 if (proDicStr.ContainsKey(m.Name))
                 {
+                    //Debug.Log(m.Name);
                     proDic.Add(proDicStr[m.Name],
                         (ProtocolProcessor)Delegate.CreateDelegate(typeof(ProtocolProcessor), m));
                 }
-            }
-
-
+            }            
         }
 
         /// <summary>
@@ -101,13 +101,13 @@ namespace ClientBase
         /// <param name="proto">protocol to add</param>
         public void AddProtocol(ProtocolBase proto)
         {
-            lock (protocols)
+            lock (m_lock)
             {
                 protocols.Enqueue(proto);
             }
         }
 
-        private int perFrame = 10;
+        private int perFrame = 2;
 
         /// <summary>
         /// Set the handle frame of protocols.
@@ -117,6 +117,8 @@ namespace ClientBase
         {
             perFrame = pfr > 0 ? pfr : perFrame;
         }
+
+        private static readonly object m_lock = new object();
 
         //private double last = 0;
         /// <summary>
@@ -133,7 +135,7 @@ namespace ClientBase
                     continue;
                 }
                 //Lock the protocols for thread safety
-                lock (protocols)
+                lock (m_lock)
                 {
                     Handle(protocols.Dequeue());
                 }
@@ -150,11 +152,11 @@ namespace ClientBase
         {
             int number = protocol.GetNumber();
             ProtoName pn = (ProtoName)number;
+            Debug.Log("Handle" + pn.ToString());
             if (proDic.ContainsKey(number))
             {
                 if (listeners.Contains(pn)) { }
                 else if (onceListeners.Contains(pn)) { onceListeners.Remove(pn); }                                
-                else{ return;}
                 proDic[number](protocol);
             }
         }
