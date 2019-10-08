@@ -46,7 +46,6 @@ public class CrosshairController : MonoBehaviour
         Color tempColor = aimingCrosshair.GetComponent<Image>().color;
         tempColor.a -= 0.1f;
         aimingCrosshair.GetComponent<Image>().color = tempColor;
-        Debug.Log("Disappearing");
     }
 
     float GetAlphaOfCrosshair()
