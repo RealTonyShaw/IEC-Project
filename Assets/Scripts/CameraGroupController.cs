@@ -177,7 +177,6 @@ public class CameraGroupController : MonoBehaviour
         float bias = angleY - MoveController.Instance.EyeEulerAngles.y;
         if (bias > 180f) bias -= 360f;
         else if (bias < -180f) bias += 360f;
-        Debug.Log("Y bias = " + bias);
         angleY = Mathf.Clamp(bias, MinY, MaxY) + MoveController.Instance.EyeEulerAngles.y;
 
         q.y = Mathf.Tan(0.5f * Mathf.Deg2Rad * angleY);
