@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: A_DataPath
   m_EditorClassIdentifier: 
   paths:
-  - Skill/NullSkillData
+  - Skill/NullSkill
   - Skill/TestContinuousSkillData
   - Skill/TestBurstfireSkillData
   - Skill/TestStrafeSkillData
+  - Skill/HPRecovery
