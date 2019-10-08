@@ -16710,7 +16710,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 629775261}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: 0}
+  m_LocalPosition: {x: -7, y: 0, z: 2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -36079,7 +36079,6 @@ GameObject:
   - component: {fileID: 1260574556}
   - component: {fileID: 1260574555}
   - component: {fileID: 1260574552}
-  - component: {fileID: 1260574553}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -36087,36 +36086,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1260574552
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1260574551}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ddaf5ee478a3dee4ca3f1748f2256840, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  camra: {fileID: 1260574555}
---- !u!114 &1260574553
-MonoBehaviour:
+--- !u!111 &1260574552
+Animation:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1260574551}
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ca738aaf2f3f68b4e836022877fb795f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  distance: 20
-  horizontalSpeed: 10
-  verticalSpeed: 5
-  lookedTransform: {fileID: 0}
-  centerTransform: {fileID: 1260574556}
+  serializedVersion: 3
+  m_Animation: {fileID: 0}
+  m_Animations:
+  - {fileID: 7400000, guid: 514a99795b9c0274d9bf5211ae93eb1d, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!20 &1260574555
 Camera:
   m_ObjectHideFlags: 0
@@ -36173,7 +36158,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -12, y: 75, z: 0}
+  m_LocalEulerAnglesHint: {x: -12, y: 0, z: 0}
 --- !u!1001 &1265575099
 PrefabInstance:
   m_ObjectHideFlags: 0

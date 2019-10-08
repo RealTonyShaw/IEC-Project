@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class SetUpGamePanel : BasePanel
@@ -42,5 +43,10 @@ public class SetUpGamePanel : BasePanel
     public void OnButtonClickUp(Transform transform)
     {
         transform.DOScale(new Vector3(1, 1, 1), 0.5f);
+    }
+
+    public void OnSliderValueChanged()
+    {
+        
     }
 }
