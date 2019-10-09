@@ -97,7 +97,7 @@ namespace ClientBase
             GameObject gameObj = Gamef.Instantiate(prefab, pos, rot);
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
-            
+            Gamef.UnitBirth(unit, unitId);
         }
 
         public static void DestroyObj(ProtocolBase protocol)
