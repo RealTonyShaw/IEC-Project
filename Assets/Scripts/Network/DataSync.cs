@@ -14,7 +14,7 @@ public static class DataSync
     public static void Login(string username, string password)
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Login);
-        MD5 md5p = MD5.Create(password);
+        //MD5 md5p = MD5.Create(password);
         protocol.AddString(username);
         protocol.AddString(GetMd5(password));
         Client.Instance.Send(protocol);
@@ -49,11 +49,13 @@ public static class DataSync
         {
             return;
         }
-        if (username.Length < 8 || password.Length < 8)
+        if (username.Length < 1 || password.Length < 1)
         {
             return;
         }
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Register);
+        protocol.AddString(username);
+        protocol.AddString(GetMd5(password));
         Client.Instance.Send(protocol);
     }
     #endregion

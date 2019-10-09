@@ -45,14 +45,15 @@ namespace ClientBase
             int ispass = proto.GetByte(start, ref start);
             if (ispass == 1)
             {
-                int id = proto.GetByte(start, ref start);
+                //int id = proto.GetByte(start, ref start);
+                Debug.Log("Login success");
                 //Login
 
             }
             else
             {
+                Debug.Log("Login failed");
                 //Login failed
-                
             }
         }
 
@@ -63,7 +64,19 @@ namespace ClientBase
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
+            int ispass = proto.GetByte(start, ref start);
+            if (ispass == 1)
+            {
+                //int id = proto.GetByte(start, ref start);
+                Debug.Log("Reg success");
+                //Login
 
+            }
+            else
+            {
+                Debug.Log("Reg failed");
+                //Login failed
+            }
         }
         #endregion
 
