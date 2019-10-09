@@ -19,12 +19,12 @@ public class Missile : MonoBehaviour
     public Unit Enemy { get; private set; }
     Transform enemyTrans;
 
-    IMissileHitHandler missileHitHandler;
-    IPhysicalEffectHandler physicalEffectHandler = new PhysicalEffectHandler();
-    ISpecialEffectHandler specialEffectHandler;
+    protected IMissileHitHandler missileHitHandler;
+    protected IPhysicalEffectHandler physicalEffectHandler = new PhysicalEffectHandler();
+    protected ISpecialEffectHandler specialEffectHandler;
     TrackSystem trackSystem;
 
-    Rigidbody rb;
+    protected Rigidbody rb;
 
     bool isInit = false;
 
@@ -45,9 +45,9 @@ public class Missile : MonoBehaviour
     /// <param name="caster">投掷物的释放者</param>
     /// <param name="enemy">敌方目标，即投掷物的追踪对象</param>
     /// <param name="skill">释放投掷物的技能</param>
-    public void Init(Unit caster, Unit enemey, ISkill skill)
+    public void Init(Unit caster, Unit enemy, ISkill skill)
     {
-        Init(caster, enemey, skill, new MissileHitBasicHandler(), new SpecialEffectHandler());
+        Init(caster, enemy, skill, new MissileHitBasicHandler(), new SpecialEffectHandler());
     }
 
     /// <summary>
