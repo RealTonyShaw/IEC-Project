@@ -8,6 +8,7 @@ public class CameraGroupController : MonoBehaviour
     [Header("Camera Group Controller")]
     // 用于控制位置的父物体
     public Transform PositionParent;
+    public Transform RotationParent;
     // 用于控制镜头抖动的父物体
     public Transform TurbulenceParent;
     // 主摄像机
@@ -38,14 +39,14 @@ public class CameraGroupController : MonoBehaviour
     public AnimationCurve FovCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 1.3f);
     public float MaxVelocity = 50f;
     public float smoothTimeForFov = 3f;
-    
+
     #endregion
 
     public static CameraGroupController Instance
     {
         get; private set;
     }
-    
+
     private void Awake()
     {
         Instance = this;
@@ -92,46 +93,33 @@ public class CameraGroupController : MonoBehaviour
     }
 
     private float xRot, yRot;
-    private void UpdateCameraRotation(float dt)
+    protected virtual void UpdateCameraRotation(float dt)
     {
         xRot = Input.GetAxis("Mouse Y") * XSensitivity;
         yRot = Input.GetAxis("Mouse X") * YSensitivity;
         targetXRot *= Quaternion.Euler(-xRot, 0f, 0f);
         targetYRot *= Quaternion.Euler(0f, yRot, 0f);
-        //Quaternion xAxis = this.xAxis, yAxis = this.yAxis;
-        //xAxis *= Quaternion.Euler(-xRot, 0f, 0f);
-        //yAxis *= Quaternion.Euler(0f, yRot, 0f);
-        
 
         if (clampVerticalRotation)
         {
             targetXRot = ClampRotationAroundXAxis(targetXRot);
-            //xAxis = ClampRotationAroundXAxis(xAxis);
         }
         if (clampHorizontalRotation)
         {
             targetYRot = ClampRotationAroundYAxis(targetYRot);
-            //yAxis = ClampRotationAroundYAxis(yAxis);
         }
 
         if (smooth)
         {
             cameraXRot = Quaternion.Slerp(cameraXRot, targetXRot, dt * smoothTime);
             cameraYRot = Quaternion.Slerp(cameraYRot, targetYRot, dt * smoothTime);
-            //this.xAxis = Quaternion.Slerp(this.xAxis, xAxis, dt * smoothTime);
-            //this.yAxis = Quaternion.Slerp(this.yAxis, yAxis, dt * smoothTime);
         }
         else
         {
             cameraXRot = targetXRot;
             cameraYRot = targetYRot;
-            //this.xAxis = xAxis;
-            //this.yAxis = yAxis;
         }
-        PositionParent.localEulerAngles = new Vector3(cameraXRot.eulerAngles.x, cameraYRot.eulerAngles.y, 0f);
-        //PositionParent.localEulerAngles = new Vector3(this.xAxis.eulerAngles.x, this.yAxis.eulerAngles.y, 0f);
-        //SetAngleAroundZAxis(GameCtrl.PlayerUnit.EyeTransform.eulerAngles.z);
-        //parent.rotation = GameCtrl.PlayerUnit.EyeTransform.rotation;
+        RotationParent.localEulerAngles = new Vector3(cameraXRot.eulerAngles.x, cameraYRot.eulerAngles.y, 0f);
     }
 
     private void CheckInput()
@@ -188,7 +176,7 @@ public class CameraGroupController : MonoBehaviour
     /// 设置镜头绕z轴的旋转角度。
     /// </summary>
     /// <param name="angle">角度</param>
-    private void SetAngleAroundZAxis(float dt)
+    protected virtual void SetAngleAroundZAxis(float dt)
     {
         float angle = MoveController.Instance.CharaLocalEulerAngles.z;
         transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(0f, 0f, angle), 10f * dt);

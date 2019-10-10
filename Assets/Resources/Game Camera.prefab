@@ -23,12 +23,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 574126852370043647}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3944911300433809176}
-  m_Father: {fileID: 2669480433704419840}
+  - {fileID: 2863709059387656041}
+  m_Father: {fileID: 3944911300433809176}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2692576984276146790
@@ -58,7 +58,7 @@ Transform:
   m_LocalPosition: {x: 43.899998, y: 932.3, z: 197.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 3261278174981582821}
+  - {fileID: 3944911300433809176}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -87,12 +87,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2838873140415351405}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
-  - {fileID: 2863709059387656041}
-  m_Father: {fileID: 3261278174981582821}
+  - {fileID: 3261278174981582821}
+  m_Father: {fileID: 2669480433704419840}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3893319552717616270
@@ -108,6 +108,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PositionParent: {fileID: 2669480433704419840}
+  RotationParent: {fileID: 3944911300433809176}
   TurbulenceParent: {fileID: 3261278174981582821}
   MainCamera: {fileID: 2863709059387656040}
   AssistantCameras: []
@@ -190,7 +191,7 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
-  m_Father: {fileID: 3944911300433809176}
+  m_Father: {fileID: 3261278174981582821}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &2863709059387656040
@@ -217,7 +218,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.12
-  far clip plane: 10000
+  far clip plane: 3000
   field of view: 60
   orthographic: 0
   orthographic size: 5
