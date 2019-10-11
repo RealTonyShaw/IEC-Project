@@ -26,6 +26,9 @@
         CreateObject = 18,
         DestroyObj = 19,
         StartGame = 20,
+        Match = 21,
+        CancelMatch = 22,
+
         Chatting = 99,
         //SyncAcceleration = 3,
         //SyncUpgradeInfo = 4,

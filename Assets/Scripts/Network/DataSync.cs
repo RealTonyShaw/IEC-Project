@@ -96,9 +96,9 @@ public static class DataSync
     public static void CreateObject(UnitName unit, Vector3 position, Quaternion rotation)
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.CreateObject);
-        protocol.AddByte((byte)unit);
-        AppendVector3(protocol, position);
-        AppendQuaternion(protocol, rotation);
+        protocol.AddByte((byte)unit);//UnitName
+        AppendVector3(protocol, position);//Position
+        AppendQuaternion(protocol, rotation);//Rotation
         Client.Instance.Send(protocol);
     }
 
