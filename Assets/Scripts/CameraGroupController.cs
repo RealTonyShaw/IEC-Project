@@ -31,8 +31,10 @@ public class CameraGroupController : MonoBehaviour
     //Quaternion xAxis = Quaternion.identity, yAxis = Quaternion.identity;
     Quaternion cameraXRot = Quaternion.identity;
     Quaternion cameraYRot = Quaternion.identity;
+    Quaternion cameraZRot = Quaternion.identity;
     Quaternion targetXRot = Quaternion.identity;
     Quaternion targetYRot = Quaternion.identity;
+    Quaternion targetZRot = Quaternion.identity;
 
     [Header("牵连效果")]
     public bool enableImplicatedEffect = true;
@@ -119,7 +121,9 @@ public class CameraGroupController : MonoBehaviour
             cameraXRot = targetXRot;
             cameraYRot = targetYRot;
         }
-        RotationParent.localEulerAngles = new Vector3(cameraXRot.eulerAngles.x, cameraYRot.eulerAngles.y, 0f);
+        cameraZRot = Quaternion.Slerp(cameraZRot, targetZRot, dt * smoothTime);
+
+        RotationParent.localEulerAngles = new Vector3(cameraXRot.eulerAngles.x, cameraYRot.eulerAngles.y, cameraZRot.eulerAngles.z);
     }
 
     private void CheckInput()
@@ -178,8 +182,7 @@ public class CameraGroupController : MonoBehaviour
     /// <param name="angle">角度</param>
     protected virtual void SetAngleAroundZAxis(float dt)
     {
-        float angle = MoveController.Instance.CharaLocalEulerAngles.z;
-        transform.localRotation = Quaternion.Slerp(transform.localRotation, Quaternion.Euler(0f, 0f, angle), 10f * dt);
+        targetZRot = Quaternion.Euler(0f, 0f, MoveController.Instance.CharaLocalEulerAngles.z);
     }
 
     /// <summary>

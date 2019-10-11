@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
 
 public static partial class Gamef
 {
@@ -220,6 +221,12 @@ public static partial class Gamef
     {
         GameCtrl.Instance.DelayedExecution(action, time);
     }
+
+    //public static void ControllerHapticPulse()
+    //{
+    //    var device = SteamVR_Input_Source.GetHandle(SteamVR_Input_Sources.LeftHand);
+    //    SteamVR_Controller.
+    //}
 
     #endregion
 

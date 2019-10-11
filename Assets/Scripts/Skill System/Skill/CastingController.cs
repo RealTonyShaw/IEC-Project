@@ -63,53 +63,57 @@ public class CastingController : MonoBehaviour
 
         if (player == null)
             return;
-        
-        if (GetTriggerDown())
+
+        if (GameCtrl.IsVR)
         {
-            EventMgr.MouseButtonDownEvent.OnTrigger(new EventMgr.MouseButtonDownEventInfo(0));
-        }
-        if (GetTriggerUp())
-        {
-            EventMgr.MouseButtonUpEvent.OnTrigger(new EventMgr.MouseButtonUpEventInfo(0));
-        }
-        if (GetPressPadDown())
-        {
-            Vector2 pos = GetPadPos();
-            int nextIndex = -1;
-            KeyCode key;
-            if (pos.y > 0.1f)
+            if (GetTriggerDown())
             {
-                nextIndex = index + 1;
-                if (nextIndex > 3)
-                    nextIndex -= 3;
+                EventMgr.MouseButtonDownEvent.OnTrigger(new EventMgr.MouseButtonDownEventInfo(0));
             }
-            else if (pos.y < -0.1f)
+            if (GetTriggerUp())
             {
-                nextIndex = index - 1;
-                if (nextIndex < 1)
-                    nextIndex += 3;
+                EventMgr.MouseButtonUpEvent.OnTrigger(new EventMgr.MouseButtonUpEventInfo(0));
             }
-            if (nextIndex != -1)
+            if (GetPressPadDown())
             {
-                switch (nextIndex)
+                Vector2 pos = GetPadPos();
+                int nextIndex = -1;
+                KeyCode key;
+                if (pos.y > 0.1f)
                 {
-                    case 1:
-                        key = KeyCode.Alpha1;
-                        break;
-                    case 2:
-                        key = KeyCode.Alpha2;
-                        break;
-                    case 3:
-                        key = KeyCode.Alpha3;
-                        break;
-                    default:
-                        key = KeyCode.Alpha1;
-                        break;
+                    nextIndex = index + 1;
+                    if (nextIndex > 3)
+                        nextIndex -= 3;
                 }
-                SwitchCellListener(new EventMgr.KeyDownEventInfo(key));
-                index = nextIndex;
+                else if (pos.y < -0.1f)
+                {
+                    nextIndex = index - 1;
+                    if (nextIndex < 1)
+                        nextIndex += 3;
+                }
+                if (nextIndex != -1)
+                {
+                    switch (nextIndex)
+                    {
+                        case 1:
+                            key = KeyCode.Alpha1;
+                            break;
+                        case 2:
+                            key = KeyCode.Alpha2;
+                            break;
+                        case 3:
+                            key = KeyCode.Alpha3;
+                            break;
+                        default:
+                            key = KeyCode.Alpha1;
+                            break;
+                    }
+                    SwitchCellListener(new EventMgr.KeyDownEventInfo(key));
+                    index = nextIndex;
+                }
             }
         }
+
     }
 
 
