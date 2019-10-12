@@ -8,5 +8,6 @@ public enum SkillName
     TestContinuousSkill,
     TestBurstfireSkill,
     TestStrafeSkill,
-    HPRecovery
+    HPRecovery,
+    Lazer
 }

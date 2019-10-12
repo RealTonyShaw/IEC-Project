@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using Valve.VR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -35,12 +32,19 @@ public partial class GameCtrl : MonoBehaviour
         }
     }
     public static bool IsOnlineGame = false;
+    public static bool IsVR = true;
+    public bool Is_VR = true;
+    public bool Is_Online_Game = false;
 
     public Transform PlayerCamera
     {
         get; set;
     }
     #endregion
+
+    public SteamVR_Action_Vibration hapticSignal;
+    public bool check = false;
+    public string gameScene;
 
     /// <summary>
     /// 延迟执行动作。
@@ -62,6 +66,8 @@ public partial class GameCtrl : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        IsOnlineGame = Is_Online_Game;
+        IsVR = Is_VR;
         EventMgr.initEvent.OnAwake();
         EventMgr.UpdateEvent.AddListener(InputMgr.CheckHotKey);
         //InputMgr.BindHotKey(TestHotKey, KeyCode.F);
@@ -81,7 +87,12 @@ public partial class GameCtrl : MonoBehaviour
             Build();
 
         //加载游戏场景
-        SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+        if (check)
+        {
+            SceneManager.LoadSceneAsync(gameScene);
+        }
+        else
+            SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
 
         //SceneManager.LoadSceneAsync("Demo_Exterior");
     }
