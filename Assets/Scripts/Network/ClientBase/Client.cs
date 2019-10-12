@@ -154,19 +154,19 @@ namespace ClientBase
             else
             {
                 CRC8 crc8 = new CRC8(protocol.Encode(), CRC_op.Judge);
-                Debug.Log("CRC8");
+                //Debug.Log("CRC8");
                 cor = crc8.IsCorrect();
             }
 
             if (cor)
             {
                 //Add handler and handle.
-                Debug.Log(protocol.GetName() + " is cor");
+                //Debug.Log(protocol.GetName() + " is cor");
                 EventHandler.GetEventHandler().AddProtocol(protocol);
             }
             else
             {
-                Debug.Log("CRC failed");
+                //Debug.Log("CRC failed");
             }
 
             //Operations for protocol

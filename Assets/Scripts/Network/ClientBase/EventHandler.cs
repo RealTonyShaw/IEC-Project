@@ -164,14 +164,14 @@ namespace ClientBase
             int number = protocol.GetNumber();
             ProtoName pn = (ProtoName)number;
             Debug.Log("Accept" + pn.ToString());
-            Debug.Log("Contain key" + pn.ToString() + " " + proDic.ContainsKey(number));
-            Debug.Log("Contain listener" + pn.ToString() + " " + listeners.Contains(pn));
+            //Debug.Log("Contain key" + pn.ToString() + " " + proDic.ContainsKey(number));
+            //Debug.Log("Contain listener" + pn.ToString() + " " + listeners.Contains(pn));
             if (proDic.ContainsKey(number))//&& listeners.Contains(pn)
             {
                     proDic[number](protocol);
                     Debug.Log("Handle listener" + pn.ToString());                                         
             }
-            Debug.Log("Contain once listener" + pn.ToString() + " " + onceListeners.ContainsKey(pn));
+            //Debug.Log("Contain once listener" + pn.ToString() + " " + onceListeners.ContainsKey(pn));
             if (onceListeners.ContainsKey(pn))
             {
                 onceListeners[pn](protocol);

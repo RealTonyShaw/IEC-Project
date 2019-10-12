@@ -74,8 +74,8 @@ public class ServerTestPanel : MonoBehaviour
     {
         if (isMatching && mt_timer > 3)
         {
-            DataSync.CancelMatch();            
-            mt_timer = 0;
+            DataSync.CancelMatch();
+            EventHandler.GetEventHandler().AddOnceListener(ProtoName.CancelMatch, OnCancelMatchBack);
         }
         else if (!isMatching)
         {
@@ -106,6 +106,7 @@ public class ServerTestPanel : MonoBehaviour
         if (flag == 1)
         {
             isMatching = false;
+            mt_timer = 0;
             Debug.Log("Out of matching list");
         }
     }
