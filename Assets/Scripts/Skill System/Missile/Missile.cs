@@ -213,11 +213,6 @@ public class Missile : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        Debug.Log("Miss!");
-    }
-
     object mutex = new object();
     public void TakeDamage(float damage)
     {

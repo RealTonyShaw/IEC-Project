@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Map/Low-Poly Sky World/Scenes/PracticalDemo.unity
     guid: 4781bfff4fef1bc4fb9a8fa75f147859
+  - enabled: 1
+    path: Assets/Scenes/VR Game.unity
+    guid: 108f915d2245da34596d27f84ef87236
   m_configObjects: {}

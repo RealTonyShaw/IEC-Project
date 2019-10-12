@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Valve.VR;
+
 
 /// <summary>
 /// 施法控制器。用于将玩家的硬件输入转化为对SkillTable的指令。
@@ -9,6 +11,33 @@ public class CastingController : MonoBehaviour
 {
     Unit player = null;
     ISkillTable skillTable;
+    int index = 1;
+    public SteamVR_Input_Sources triggerHandType = SteamVR_Input_Sources.RightHand;
+    public SteamVR_Action_Boolean trigger;
+    public SteamVR_Input_Sources padPosHandType = SteamVR_Input_Sources.LeftHand;
+    public SteamVR_Action_Vector2 padPos;
+    public SteamVR_Input_Sources pressPadHandType = SteamVR_Input_Sources.LeftHand;
+    public SteamVR_Action_Boolean pressPad;
+
+    bool GetTriggerDown()
+    {
+        return trigger.GetStateDown(triggerHandType);
+    }
+
+    bool GetTriggerUp()
+    {
+        return trigger.GetStateUp(triggerHandType);
+    }
+
+    Vector2 GetPadPos()
+    {
+        return padPos.GetAxis(padPosHandType);
+    }
+
+    bool GetPressPadDown()
+    {
+        return pressPad.GetStateDown(pressPadHandType);
+    }
 
     private void Start()
     {
@@ -30,7 +59,64 @@ public class CastingController : MonoBehaviour
             player = GameCtrl.PlayerUnit;
             skillTable = player.SkillTable;
         }
+
+
+        if (player == null)
+            return;
+
+        if (GameCtrl.IsVR)
+        {
+            if (GetTriggerDown())
+            {
+                EventMgr.MouseButtonDownEvent.OnTrigger(new EventMgr.MouseButtonDownEventInfo(0));
+            }
+            if (GetTriggerUp())
+            {
+                EventMgr.MouseButtonUpEvent.OnTrigger(new EventMgr.MouseButtonUpEventInfo(0));
+            }
+            if (GetPressPadDown())
+            {
+                Vector2 pos = GetPadPos();
+                int nextIndex = -1;
+                KeyCode key;
+                if (pos.y > 0.7f)
+                {
+                    nextIndex = index + 1;
+                    if (nextIndex > 3)
+                        nextIndex -= 3;
+                }
+                else if (pos.y < -0.7f)
+                {
+                    nextIndex = index - 1;
+                    if (nextIndex < 1)
+                        nextIndex += 3;
+                }
+                if (nextIndex != -1)
+                {
+                    switch (nextIndex)
+                    {
+                        case 1:
+                            key = KeyCode.Alpha1;
+                            break;
+                        case 2:
+                            key = KeyCode.Alpha2;
+                            break;
+                        case 3:
+                            key = KeyCode.Alpha3;
+                            break;
+                        default:
+                            key = KeyCode.Alpha1;
+                            break;
+                    }
+                    SwitchCellListener(new EventMgr.KeyDownEventInfo(key));
+                    index = nextIndex;
+                }
+            }
+        }
+
     }
+
+
 
     private void SwitchCellListener(EventMgr.KeyDownEventInfo info)
     {
