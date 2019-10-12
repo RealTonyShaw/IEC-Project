@@ -28,6 +28,7 @@
         StartGame = 20,
         Match = 21,
         CancelMatch = 22,
+        CanControll = 23,
 
         Chatting = 99,
         //SyncAcceleration = 3,

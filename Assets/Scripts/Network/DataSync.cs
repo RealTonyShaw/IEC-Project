@@ -83,6 +83,30 @@ public static class DataSync
         protocol.AddString(msg);
         Client.Instance.Send(protocol);
     }
+
+    public static void Match()
+    {
+        if (Client.Instance.isConnect && Client.Instance.pl_info.isLogin)
+        {
+            Client.Instance.Send(SF.GetProtocolHead(ProtoName.Match));
+        }
+    }
+
+    public static void CanControll()
+    {
+        if (Client.Instance.isConnect && Client.Instance.pl_info.isLogin)
+        {
+            Client.Instance.Send(SF.GetProtocolHead(ProtoName.CanControll));
+        }
+    }
+
+    public static void CancelMatch()
+    {
+        if (Client.Instance.isConnect && Client.Instance.pl_info.isLogin)
+        {
+            Client.Instance.Send(SF.GetProtocolHead(ProtoName.CancelMatch));
+        }
+    }
     #endregion
 
     #region Net Object

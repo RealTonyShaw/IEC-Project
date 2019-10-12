@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using ClientBase;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,11 +10,32 @@ public class ServerTestPanel : MonoBehaviour
     public InputField userName;
     public InputField password;
     public InputField pwConfirm;
+    public InputField ipAdr;
+    public InputField port;
+    private CanvasGroup canvasGroup;
+    public GameObject loginAndregPanel;
+    private CanvasGroup larPaCag;
+
+    public GameObject launcherHost;
+    private ClientLauncher launcher;
+
+    private float mt_timer = 0;
+    private bool isMatching = false;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
+        canvasGroup = GetComponent<CanvasGroup>();
+        larPaCag = loginAndregPanel.GetComponent<CanvasGroup>();
+        launcher = launcherHost.GetComponent<ClientLauncher>();
+    }
+
+    private void Update()
+    {
+        if (isMatching)
+        {
+            mt_timer += Time.deltaTime;
+        }
     }
 
     public void OnRegClicked()
@@ -46,6 +68,27 @@ public class ServerTestPanel : MonoBehaviour
             return;
         }
         DataSync.Login(userName.text, password.text);
+    }
+
+    public void OnMatchClick()
+    {
+        if (isMatching && mt_timer > 3)
+        {
+            DataSync.CancelMatch();
+            isMatching = false;
+            mt_timer = 0;
+        }
+        else if (!isMatching)
+        {
+            DataSync.Match();
+            isMatching = true;
+        }
+    }
+
+    public void OnConnectClicked()
+    {
+        if (Client.Instance.isConnect) { return; }
+        launcher.Connect(ipAdr.text, port.text);
     }
 
     public void OnSendClicked()

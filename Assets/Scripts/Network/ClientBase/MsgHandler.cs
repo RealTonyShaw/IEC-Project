@@ -47,8 +47,8 @@ namespace ClientBase
             {
                 //int id = proto.GetByte(start, ref start);
                 Debug.Log("Login success");
+                Client.Instance.pl_info.isLogin = true;
                 //Login
-
             }
             else
             {
@@ -78,6 +78,26 @@ namespace ClientBase
                 //Login failed
             }
         }
+
+        public static void StartGame(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            Client.Instance.pl_info.id_game = proto.GetByte(start, ref start);
+
+            Debug.Log("Start game!!! Loading scene!");
+            //Loading
+            //Loading complete
+            DataSync.CanControll();
+        }
+
+        public static void CanControll()
+        {
+            //...
+            Debug.Log("You can controll the player now!!!");
+        }
+
         #endregion
 
         #region Net Object
@@ -91,6 +111,7 @@ namespace ClientBase
             Vector3 pos = ParseVector3(proto, ref start);
             Quaternion rot = ParseQuaternion(proto, ref start);
             int unitId = proto.GetByte(start, ref start);
+
             bool isLocal = proto.GetByte(start, ref start) == 1;
             UnitData unitData = Gamef.LoadUnitData(unitName);
             GameObject prefab = isLocal ? unitData.NetPrefab : unitData.NetPrefab;
