@@ -25,6 +25,8 @@ namespace ClientBase
 
         private byte[] buffer = new byte[MAX_BUFFER_SIZE];
 
+        public PlayerInfo pl_info = new PlayerInfo();
+
         private string host;
         public string Host
         {
@@ -86,6 +88,23 @@ namespace ClientBase
             Debug.Log("It seems that the connection has been built.");
         }
 
+        public void Connect(string _host, string _port)
+        {
+            try
+            { 
+                if (int.TryParse(_port, out port))
+                {
+                    this.host = _host;
+                    Connect();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                Debug.Log(e.StackTrace);
+            }
+        }
+
         /// <summary>
         /// Invoke this when accept message from client.
         /// </summary>
@@ -97,10 +116,11 @@ namespace ClientBase
                 start += client.EndReceive(ar);
                 DataProcessor();
                 client.BeginReceive(buffer, start, MAX_BUFFER_SIZE - start,
-        SocketFlags.None, ReceiveCallback, null);
+                SocketFlags.None, ReceiveCallback, null);
             }
             catch (Exception e)
             {
+                isConnect = false;
                 Console.WriteLine(e);
             }
         }
@@ -134,19 +154,19 @@ namespace ClientBase
             else
             {
                 CRC8 crc8 = new CRC8(protocol.Encode(), CRC_op.Judge);
-                Debug.Log("CRC8");
+                //Debug.Log("CRC8");
                 cor = crc8.IsCorrect();
             }
 
             if (cor)
             {
                 //Add handler and handle.
-                Debug.Log(protocol.GetName() + " is cor");
+                //Debug.Log(protocol.GetName() + " is cor");
                 EventHandler.GetEventHandler().AddProtocol(protocol);
             }
             else
             {
-                Debug.Log("CRC failed");
+                //Debug.Log("CRC failed");
             }
 
             //Operations for protocol

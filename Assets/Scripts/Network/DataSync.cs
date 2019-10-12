@@ -14,7 +14,7 @@ public static class DataSync
     public static void Login(string username, string password)
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Login);
-        MD5 md5p = MD5.Create(password);
+        //MD5 md5p = MD5.Create(password);
         protocol.AddString(username);
         protocol.AddString(GetMd5(password));
         Client.Instance.Send(protocol);
@@ -49,11 +49,13 @@ public static class DataSync
         {
             return;
         }
-        if (username.Length < 8 || password.Length < 8)
+        if (username.Length < 1 || password.Length < 1)
         {
             return;
         }
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Register);
+        protocol.AddString(username);
+        protocol.AddString(GetMd5(password));
         Client.Instance.Send(protocol);
     }
     #endregion
@@ -81,6 +83,30 @@ public static class DataSync
         protocol.AddString(msg);
         Client.Instance.Send(protocol);
     }
+
+    public static void Match()
+    {
+        if (Client.Instance.isConnect && Client.Instance.pl_info.isLogin)
+        {
+            Client.Instance.Send(SF.GetProtocolHead(ProtoName.Match));
+        }
+    }
+
+    public static void CanControll()
+    {
+        if (Client.Instance.isConnect && Client.Instance.pl_info.isLogin)
+        {
+            Client.Instance.Send(SF.GetProtocolHead(ProtoName.CanControll));
+        }
+    }
+
+    public static void CancelMatch()
+    {
+        if (Client.Instance.isConnect && Client.Instance.pl_info.isLogin)
+        {
+            Client.Instance.Send(SF.GetProtocolHead(ProtoName.CancelMatch));
+        }
+    }
     #endregion
 
     #region Net Object
@@ -94,9 +120,9 @@ public static class DataSync
     public static void CreateObject(UnitName unit, Vector3 position, Quaternion rotation)
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.CreateObject);
-        protocol.AddByte((byte)unit);
-        AppendVector3(protocol, position);
-        AppendQuaternion(protocol, rotation);
+        protocol.AddByte((byte)unit);//UnitName
+        AppendVector3(protocol, position);//Position
+        AppendQuaternion(protocol, rotation);//Rotation
         Client.Instance.Send(protocol);
     }
 

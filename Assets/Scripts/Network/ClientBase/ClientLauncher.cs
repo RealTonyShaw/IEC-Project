@@ -8,7 +8,8 @@ using System;
 public class ClientLauncher : MonoBehaviour
 {
 
-    public const uint MAX_CONNECT_TIMES = 10;
+    public const uint MAX_CONNECT_TIMES = 3;
+    public bool AutoConnect = false;
     private ClientBase.EventHandler eventHandler;
     private Client client;
     private TimeMgr timeMgr;
@@ -33,17 +34,20 @@ public class ClientLauncher : MonoBehaviour
 
     public void InitClient()
     {
-        Client.Instance.Host = "127.0.0.1";
-        Client.Instance.port = 4089;
-        for (int i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
+        if (AutoConnect)
         {
-            Client.Instance.Connect();
-            if (i == MAX_CONNECT_TIMES)
+            Client.Instance.Host = "127.0.0.1";
+            Client.Instance.port = 4089;
+            for (int i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
             {
-                UnityEngine.Debug.Log("Connect times over max connect times");
+                Client.Instance.Connect();
+                if (i == MAX_CONNECT_TIMES)
+                {
+                    UnityEngine.Debug.Log("Connect times over max connect times");
+                }
             }
         }
-    }
+    }    
 
     public void Awake()
     {
@@ -55,9 +59,19 @@ public class ClientLauncher : MonoBehaviour
         eventHandler = ClientBase.EventHandler.GetEventHandler();
         client = Client.Instance;
         timeMgr = new TimeMgr();
-        timeMgr.StartTimer();
+        timeMgr.StartTimer();       
         InitClient();
         SendMsg("olleH! revreS");
+    }
+
+    public void Connect(string host, string port)
+    {
+        Client.Instance.Connect(host, port);
+        if (client.isConnect)
+        {
+            timeMgr = new TimeMgr();
+            timeMgr.StartTimer();
+        }
     }
 
     public void Update()
