@@ -45,14 +45,15 @@ namespace ClientBase
             int ispass = proto.GetByte(start, ref start);
             if (ispass == 1)
             {
-                int id = proto.GetByte(start, ref start);
+                //int id = proto.GetByte(start, ref start);
+                Debug.Log("Login success");
+                Client.Instance.pl_info.isLogin = true;
                 //Login
-
             }
             else
             {
+                Debug.Log("Login failed");
                 //Login failed
-                
             }
         }
 
@@ -63,8 +64,40 @@ namespace ClientBase
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
+            int ispass = proto.GetByte(start, ref start);
+            if (ispass == 1)
+            {
+                //int id = proto.GetByte(start, ref start);
+                Debug.Log("Reg success");
+                //Login
 
+            }
+            else
+            {
+                Debug.Log("Reg failed");
+                //Login failed
+            }
         }
+
+        public static void StartGame(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            Client.Instance.pl_info.id_game = proto.GetByte(start, ref start);
+
+            Debug.Log("Start game!!! Loading scene!");
+            //Loading
+            //Loading complete
+            DataSync.CanControll();
+        }
+
+        public static void CanControll()
+        {
+            //...
+            Debug.Log("You can controll the player now!!!");
+        }
+
         #endregion
 
         #region Net Object
@@ -78,13 +111,14 @@ namespace ClientBase
             Vector3 pos = ParseVector3(proto, ref start);
             Quaternion rot = ParseQuaternion(proto, ref start);
             int unitId = proto.GetByte(start, ref start);
+
             bool isLocal = proto.GetByte(start, ref start) == 1;
             UnitData unitData = Gamef.LoadUnitData(unitName);
             GameObject prefab = isLocal ? unitData.NetPrefab : unitData.NetPrefab;
             GameObject gameObj = Gamef.Instantiate(prefab, pos, rot);
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
-            
+            Gamef.UnitBirth(unit, unitId);
         }
 
         public static void DestroyObj(ProtocolBase protocol)
