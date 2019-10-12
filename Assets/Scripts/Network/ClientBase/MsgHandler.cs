@@ -92,7 +92,7 @@ namespace ClientBase
             DataSync.CanControll();
         }
 
-        public static void CanControll()
+        public static void CanControll(ProtocolBase protocol)
         {
             //...
             Debug.Log("You can controll the player now!!!");
