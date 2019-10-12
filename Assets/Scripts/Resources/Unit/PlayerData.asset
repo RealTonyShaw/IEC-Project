@@ -20,7 +20,7 @@ MonoBehaviour:
     player: 0
     elf: 0
     devil: 0
-  MaxVelocity: 22
+  MaxVelocity: 42
   MaxTurningVelocity: 60
   MaxSheildPoint: 50
   ShieldPointRegenerationRate: 0.2
@@ -28,4 +28,4 @@ MonoBehaviour:
   MaxManaPoint: 100
   ManaPointRegenerationRate: 10
   IsCaster: 1
-  skills: 01000000020000000300000000000000
+  skills: 05000000020000000300000000000000
