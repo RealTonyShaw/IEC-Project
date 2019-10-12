@@ -109,6 +109,16 @@
           }
         },
         {
+          "path": "/user/hand/left/input/trackpad",
+          "mode": "button",
+          "parameters": {},
+          "inputs": {
+            "click": {
+              "output": "/actions/default/in/teleport"
+            }
+          }
+        },
+        {
           "path": "/user/hand/left/input/grip",
           "mode": "button",
           "parameters": {
@@ -160,6 +170,16 @@
           }
         },
         {
+          "path": "/user/hand/right/input/trackpad",
+          "mode": "button",
+          "parameters": {},
+          "inputs": {
+            "click": {
+              "output": "/actions/default/in/teleport"
+            }
+          }
+        },
+        {
           "path": "/user/hand/right/input/grip",
           "mode": "button",
           "parameters": {
@@ -192,52 +212,6 @@
               "output": "/actions/default/in/squeeze"
             }
           }
-        },
-        {
-          "path": "/user/hand/right/input/trackpad",
-          "mode": "trackpad",
-          "parameters": {},
-          "inputs": {
-            "click": {
-              "output": "/actions/default/in/presspad"
-            },
-            "position": {
-              "output": "/actions/default/in/touchpadpos"
-            }
-          }
-        },
-        {
-          "path": "/user/hand/left/input/trigger",
-          "mode": "button",
-          "parameters": {},
-          "inputs": {
-            "click": {
-              "output": "/actions/default/in/trigger"
-            }
-          }
-        },
-        {
-          "path": "/user/hand/right/input/trigger",
-          "mode": "button",
-          "parameters": {},
-          "inputs": {
-            "click": {
-              "output": "/actions/default/in/trigger"
-            }
-          }
-        },
-        {
-          "path": "/user/hand/left/input/trackpad",
-          "mode": "trackpad",
-          "parameters": {},
-          "inputs": {
-            "click": {
-              "output": "/actions/default/in/presspad"
-            },
-            "position": {
-              "output": "/actions/default/in/touchpadpos"
-            }
-          }
         }
       ],
       "skeleton": [
@@ -261,5 +235,5 @@
   },
   "controller_type": "vive_controller",
   "description": "",
-  "name": "My IEC-Project [Testing] configuration for Vive Controller"
+  "name": "vive_controller"
 }
