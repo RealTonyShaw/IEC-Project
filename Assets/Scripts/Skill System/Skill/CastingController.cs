@@ -79,13 +79,13 @@ public class CastingController : MonoBehaviour
                 Vector2 pos = GetPadPos();
                 int nextIndex = -1;
                 KeyCode key;
-                if (pos.y > 0.1f)
+                if (pos.y > 0.7f)
                 {
                     nextIndex = index + 1;
                     if (nextIndex > 3)
                         nextIndex -= 3;
                 }
-                else if (pos.y < -0.1f)
+                else if (pos.y < -0.7f)
                 {
                     nextIndex = index - 1;
                     if (nextIndex < 1)

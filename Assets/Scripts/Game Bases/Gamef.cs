@@ -222,11 +222,18 @@ public static partial class Gamef
         GameCtrl.Instance.DelayedExecution(action, time);
     }
 
-    //public static void ControllerHapticPulse()
-    //{
-    //    var device = SteamVR_Input_Source.GetHandle(SteamVR_Input_Sources.LeftHand);
-    //    SteamVR_Controller.
-    //}
+    /// <summary>
+    /// 触发(手柄)震动效果。(仅适用于VR游戏)
+    /// </summary>
+    /// <param name="secondsFromNow">延迟触发时长(即等待多长时间再触发震动)</param>
+    /// <param name="durationSeconds">震动持续时间</param>
+    /// <param name="frequency">频率, 如160</param>
+    /// <param name="amplitude">强度, 如0.5</param>
+    /// <param name="inputSource">输入源，一般为LeftHand或者RightHand</param>
+    public static void ControllerVibration(float secondsFromNow, float durationSeconds, float frequency, float amplitude, SteamVR_Input_Sources inputSource)
+    {
+        GameCtrl.Instance.hapticSignal.Execute(secondsFromNow, durationSeconds, frequency, amplitude, inputSource);
+    }
 
     #endregion
 

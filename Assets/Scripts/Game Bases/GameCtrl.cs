@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
+using Valve.VR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -45,6 +42,7 @@ public partial class GameCtrl : MonoBehaviour
     }
     #endregion
 
+    public SteamVR_Action_Vibration hapticSignal;
     public bool check = false;
     public string gameScene;
 
