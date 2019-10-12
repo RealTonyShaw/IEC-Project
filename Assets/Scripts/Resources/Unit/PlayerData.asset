@@ -28,4 +28,4 @@ MonoBehaviour:
   MaxManaPoint: 100
   ManaPointRegenerationRate: 10
   IsCaster: 1
-  skills: 01000000020000000300000000000000
+  skills: 05000000020000000300000000000000
