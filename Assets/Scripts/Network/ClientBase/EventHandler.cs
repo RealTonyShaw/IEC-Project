@@ -118,7 +118,7 @@ namespace ClientBase
             }
         }
 
-        private int perFrame = 2;
+        private int perFrame = 100;
 
         /// <summary>
         /// Set the handle frame of protocols.

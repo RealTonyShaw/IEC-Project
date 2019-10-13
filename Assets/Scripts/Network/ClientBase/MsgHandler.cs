@@ -261,6 +261,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             float val = proto.GetFloat(start, ref start);
+            Debug.Log("ID " + id + " : recv sync hp = " + val);
             unit.SyncUnitState.SyncHP(instant, val);
         }
 
@@ -273,6 +274,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             float val = proto.GetFloat(start, ref start);
+            Debug.Log("ID " + id + " : recv sync mp = " + val);
             unit.SyncUnitState.SyncMP(instant, val);
         }
         #endregion
