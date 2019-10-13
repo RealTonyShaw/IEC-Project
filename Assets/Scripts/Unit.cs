@@ -131,7 +131,6 @@ public partial class Unit : MonoBehaviour
             attributes.ID = Gamef.UnitBirth(this);
 
         attributes.Init(this);
-        SyncMovement?.Init(this);
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
             skillTable.Init(this);
@@ -150,7 +149,6 @@ public partial class Unit : MonoBehaviour
             attributes.ID = Gamef.UnitBirth(this, ID);
 
         attributes.Init(this);
-        SyncMovement?.Init(this);
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
             skillTable.Init(this);
@@ -175,6 +173,7 @@ public partial class Unit : MonoBehaviour
         {
             if (Gamef.SystemTimeInMillisecond - lastSyncUnitStateInstant >= GameDB.SYNC_TRANSFORM_INTERVAL)
             {
+                Debug.Log("Send Hp = " + attributes.SheildPoint + ", Mp = " + attributes.ManaPoint.Value);
                 lastSyncUnitStateInstant = Gamef.SystemTimeInMillisecond;
                 DataSync.SyncHP(this, lastSyncUnitStateInstant, attributes.SheildPoint);
                 DataSync.SyncMP(this, lastSyncUnitStateInstant, attributes.ManaPoint.Value);
