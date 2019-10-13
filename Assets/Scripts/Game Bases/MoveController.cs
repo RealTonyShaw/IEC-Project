@@ -48,8 +48,7 @@ public class MoveController : MonoBehaviour
             lastSyncT = Gamef.SystemTimeInMillisecond;
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
-            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()));
-            DataSync.SyncCameraForward(CameraGroupController.Instance.transform.forward);
+            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()), CameraGroupController.Instance.transform.forward);
             DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
         }
         else
@@ -94,8 +93,7 @@ public class MoveController : MonoBehaviour
         {
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
-            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v));
-            DataSync.SyncCameraForward(CameraGroupController.Instance.transform.forward);
+            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()), CameraGroupController.Instance.transform.forward);
             if (instant - lastSyncT >= 300)
             {
                 if (instant - lastSyncT <= 350)

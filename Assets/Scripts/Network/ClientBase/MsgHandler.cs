@@ -160,17 +160,17 @@ namespace ClientBase
             unit.SyncMovement.SyncTransform(instant, position, forward, up, speed);
         }
 
-        public static void SyncCameraForward(ProtocolBase protocol)
-        {
-            int start = 0;
-            ProtocolBytes proto = (ProtocolBytes)protocol;
-            proto.GetNameX(start, ref start);
-            long instant = proto.GetInt(start, ref start);
-            int id = proto.GetByte(start, ref start);
-            Unit unit = Gamef.GetUnit(id);
-            Vector3 fwd = ParseVector3(proto, ref start);
-            unit.SyncMovement.SyncCameraForward(instant, fwd);
-        }
+        //public static void SyncCameraForward(ProtocolBase protocol)
+        //{
+        //    int start = 0;
+        //    ProtocolBytes proto = (ProtocolBytes)protocol;
+        //    proto.GetNameX(start, ref start);
+        //    long instant = proto.GetInt(start, ref start);
+        //    int id = proto.GetByte(start, ref start);
+        //    Unit unit = Gamef.GetUnit(id);
+        //    Vector3 fwd = ParseVector3(proto, ref start);
+        //    unit.SyncMovement.SyncCameraForward(instant, fwd);
+        //}
         #endregion
 
         #region Input
@@ -183,8 +183,10 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
 
             int[] hv = ParseHaV(proto.GetByte(start, ref start));
+            Vector3 fwd = ParseVector3(proto, ref start);
             Unit unit = Gamef.GetUnit(id);
             unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1]);
+            unit.SyncPlayerInput.SyncCameraFoward(instant, fwd);
         }
 
         public static void SyncSwitchSkill(ProtocolBase protocol)
