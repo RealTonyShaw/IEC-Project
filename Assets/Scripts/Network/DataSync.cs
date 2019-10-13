@@ -389,9 +389,10 @@ public static class DataSync
     {
         int a = h;
         a = a << 2;
-        Console.WriteLine("a = " + Convert.ToString(a, 2));
+        //Debug.Log("a = " + Convert.ToString(a, 2));
         a = a | (v & 3);
-        Console.WriteLine("a = " + Convert.ToString(a, 2));
+        Debug.Log("a = " + Convert.ToString(a, 2));
+        Debug.Log(string.Format("Pack : h = {0}, v = {1}", h, v));
         return (byte)a;
     }
 
@@ -400,6 +401,7 @@ public static class DataSync
         int[] res = new int[2];
         res[1] = ParseBitResult(3 & data);
         res[0] = ParseBitResult((12 & data) >> 2);
+        Debug.Log(string.Format("Recv : h = {0}, v = {1}", res[0], res[1]));
         return res;
     }
 
