@@ -93,6 +93,7 @@ public class MoveController : MonoBehaviour
         {
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
+            Debug.Log("Send sync acceleration");
             DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()), CameraGroupController.Instance.transform.forward);
             if (instant - lastSyncT >= 300)
             {
@@ -104,6 +105,7 @@ public class MoveController : MonoBehaviour
                 {
                     lastSyncT = instant;
                 }
+                Debug.Log("Send sync transform");
                 DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
             }
         }

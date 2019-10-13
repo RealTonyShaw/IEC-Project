@@ -117,7 +117,7 @@ namespace ClientBase
 
             bool isLocal = proto.GetByte(start, ref start) == 1;
             UnitData unitData = Gamef.LoadUnitData(unitName);
-            GameObject prefab = isLocal ? unitData.NetPrefab : unitData.NetPrefab;
+            GameObject prefab = isLocal ? unitData.LocalPrefab : unitData.NetPrefab;
             GameObject gameObj = Gamef.Instantiate(prefab, pos, rot);
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
