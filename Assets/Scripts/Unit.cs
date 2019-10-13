@@ -110,7 +110,14 @@ public partial class Unit : MonoBehaviour
         {
             Debug.LogError("ID not set!!!!");
         }
-        InitAttributes();
+        if (!GameCtrl.IsOnlineGame)
+        {
+            InitAttributes();
+            if (attributes.name == UnitName.Player)
+            {
+                GameCtrl.PlayerUnit = this;
+            }
+        }
     }
 
     private bool isInitAttr = false;
@@ -120,16 +127,8 @@ public partial class Unit : MonoBehaviour
             return;
         isInitAttr = true;
         //注册单位
-        if (GameCtrl.IsOnlineGame)
-        {
-            lock (GameDB.unitPool)
-                Gamef.UnitBirth(this, attributes.ID);
-        }
-        else
-        {
-            lock (GameDB.unitPool)
-                attributes.ID = Gamef.UnitBirth(this);
-        }
+        lock (GameDB.unitPool)
+            attributes.ID = Gamef.UnitBirth(this);
 
         attributes.Init(this);
         SyncMovement?.Init(this);

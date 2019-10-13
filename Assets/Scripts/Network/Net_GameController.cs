@@ -14,6 +14,7 @@ public partial class GameCtrl
 
     public void StartCreatePlayer(int playerID)
     {
+        Debug.Log("Player ID = " + playerID);
         Transform t = GameSceneInfo.Instance.spawnPoints[playerID].transform;
 
         DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
