@@ -1717,6 +1717,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 4461669274873986015}
+  userName: {fileID: 135121341}
+  password: {fileID: 78445199}
+  repeatPw: {fileID: 2109231672}
   trans: {fileID: 7747319683374245757}
 --- !u!1 &7632207201887093406
 GameObject:

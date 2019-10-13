@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 2837455851235651066}
   - component: {fileID: 2837455851235651068}
   - component: {fileID: 2837455851235651067}
+  - component: {fileID: 3371446225316369919}
   m_Layer: 8
   m_Name: Controller
   m_TagString: GameController
@@ -144,6 +145,20 @@ MonoBehaviour:
   pressPad:
     actionPath: /actions/default/in/PressPad
     needsReinit: 0
+--- !u!114 &3371446225316369919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2837455851235651062}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a24cf81ff470e4d44ad0366adbef8c92, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AutoConnect: 0
+  message: 
 --- !u!1 &2837455851520828651
 GameObject:
   m_ObjectHideFlags: 0
@@ -207,6 +222,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2837455851520828652}
     m_Modifications:
+    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
+        type: 3}
+      propertyPath: m_Name
+      value: Empty Audio Source 2D (4)
+      objectReference: {fileID: 0}
     - target: {fileID: 1508853944388767653, guid: d76c2457846d56c4bbb7b20f86495982,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -262,11 +282,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
-        type: 3}
-      propertyPath: m_Name
-      value: Empty Audio Source 2D (4)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76c2457846d56c4bbb7b20f86495982, type: 3}
 --- !u!4 &3715519973938950302 stripped
@@ -288,6 +303,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2837455851520828652}
     m_Modifications:
+    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
+        type: 3}
+      propertyPath: m_Name
+      value: Empty Audio Source 2D (1)
+      objectReference: {fileID: 0}
     - target: {fileID: 1508853944388767653, guid: d76c2457846d56c4bbb7b20f86495982,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -343,11 +363,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
-        type: 3}
-      propertyPath: m_Name
-      value: Empty Audio Source 2D (1)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76c2457846d56c4bbb7b20f86495982, type: 3}
 --- !u!4 &3715519974707360722 stripped
@@ -369,6 +384,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2837455851520828652}
     m_Modifications:
+    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
+        type: 3}
+      propertyPath: m_Name
+      value: Empty Audio Source 2D (2)
+      objectReference: {fileID: 0}
     - target: {fileID: 1508853944388767653, guid: d76c2457846d56c4bbb7b20f86495982,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -424,11 +444,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
-        type: 3}
-      propertyPath: m_Name
-      value: Empty Audio Source 2D (2)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76c2457846d56c4bbb7b20f86495982, type: 3}
 --- !u!4 &3715519974881053730 stripped
@@ -450,6 +465,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2837455851520828652}
     m_Modifications:
+    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
+        type: 3}
+      propertyPath: m_Name
+      value: Empty Audio Source 2D (3)
+      objectReference: {fileID: 0}
     - target: {fileID: 1508853944388767653, guid: d76c2457846d56c4bbb7b20f86495982,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -505,11 +525,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
-        type: 3}
-      propertyPath: m_Name
-      value: Empty Audio Source 2D (3)
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76c2457846d56c4bbb7b20f86495982, type: 3}
 --- !u!4 &3715519975620028794 stripped
@@ -531,6 +546,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2837455851520828652}
     m_Modifications:
+    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
+        type: 3}
+      propertyPath: m_Name
+      value: Empty Audio Source 2D
+      objectReference: {fileID: 0}
     - target: {fileID: 1508853944388767653, guid: d76c2457846d56c4bbb7b20f86495982,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -585,11 +605,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1508853944388767652, guid: d76c2457846d56c4bbb7b20f86495982,
-        type: 3}
-      propertyPath: m_Name
-      value: Empty Audio Source 2D
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d76c2457846d56c4bbb7b20f86495982, type: 3}

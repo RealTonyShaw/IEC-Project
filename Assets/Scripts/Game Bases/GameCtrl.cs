@@ -86,13 +86,13 @@ public partial class GameCtrl : MonoBehaviour
         if (BuildDataPath)
             Build();
 
-        //加载游戏场景
-        if (check)
-        {
-            SceneManager.LoadSceneAsync(gameScene);
-        }
-        else
-            SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+        ////加载游戏场景
+        //if (check)
+        //{
+        //    SceneManager.LoadSceneAsync(gameScene);
+        //}
+        //else
+        //    SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
 
         //SceneManager.LoadSceneAsync("Demo_Exterior");
     }
