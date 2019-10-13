@@ -58,6 +58,7 @@ public class SyncMovement : ISyncMovement
 
     public void SyncAcceleration(long instant, int acceleration, int angularAcceleration)
     {
+        Debug.Log("ID " + unit.attributes.ID + " :recv acceleration");
         this.lastAccelerationInstant = instant;
         // 直接同步角加速度和加速度
         mover.H = angularAcceleration;
@@ -70,6 +71,7 @@ public class SyncMovement : ISyncMovement
 
     public void SyncCameraForward(long instant, Vector3 cameraForward)
     {
+        Debug.Log("ID " + unit.attributes.ID + " :recv cam fwd");
         this.lastCameraForwardInstant = instant;
         this.lastCameraForward = cameraForward;
         if (!recv_Cam)
@@ -80,6 +82,7 @@ public class SyncMovement : ISyncMovement
 
     public void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
     {
+        Debug.Log("ID " + unit.attributes.ID + " :recv transform");
         this.lastTransformInstant = instant;
         this.lastPosition = position;
         this.lastVelocity = speed * forward;
