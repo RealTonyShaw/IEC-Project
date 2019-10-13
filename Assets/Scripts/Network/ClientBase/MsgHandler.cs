@@ -49,6 +49,9 @@ namespace ClientBase
                 Debug.Log("Login success");
                 Client.Instance.pl_info.isLogin = true;
                 //Login
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                DataSync.Match();
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             }
             else
             {
@@ -88,8 +91,7 @@ namespace ClientBase
 
             Debug.Log("Start game!!! Loading scene!");
             //Loading
-            //Loading complete
-            DataSync.CanControll();
+            GameCtrl.Instance.StartLoadingGameScene();
         }
 
         public static void CanControll(ProtocolBase protocol)

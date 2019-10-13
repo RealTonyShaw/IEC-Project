@@ -2,9 +2,12 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using UnityEngine.UI;
 
-public class MultiGamePanel : BasePanel
+public partial class MultiGamePanel : BasePanel
 {
+    public InputField userName;
+    public InputField password;
     public Transform trans;
 
     public override void OnEnter()
