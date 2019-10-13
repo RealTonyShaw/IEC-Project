@@ -121,7 +121,7 @@ namespace ClientBase
             GameObject gameObj = Gamef.Instantiate(prefab, pos, rot);
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
-            unit.attributes.ID = unitId;
+            unit.InitAttributes(unitId);
             if (unitName == UnitName.Player && isLocal)
             {
                 GameCtrl.PlayerUnit = unit;
