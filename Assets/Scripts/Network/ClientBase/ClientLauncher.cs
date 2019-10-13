@@ -26,6 +26,7 @@ public class ClientLauncher : MonoBehaviour
             return clientLauncher;
         }
     }
+    
 
     public string message = "";
 
@@ -78,6 +79,11 @@ public class ClientLauncher : MonoBehaviour
 
     public void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            UnityEngine.Debug.Log("What ????");
+            DataSync.Chatting("What ????");
+        }
         eventHandler.Update();
     }
 
