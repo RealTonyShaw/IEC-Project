@@ -79,7 +79,8 @@ namespace ClientBase
                 client.Connect(iPEndPoint);
                 client.BeginReceive(buffer, start, MAX_BUFFER_SIZE - start,
                     SocketFlags.None, ReceiveCallback, null);
-                isConnect = client.Connected;
+                //isConnect = client.Connected;
+                isConnect = true;
             }
             catch (Exception e)
             {
@@ -136,7 +137,7 @@ namespace ClientBase
         /// </summary>
         private void DataProcessor()
         {
-            isConnect = client.Connected;
+            //isConnect = client.Connected;
             //如果小于存储长度的数据长度，则返回
             if (start < sizeof(short))
                 return;
@@ -210,7 +211,7 @@ namespace ClientBase
             try
             {
                 client.Disconnect(true);
-                isConnect = client.Connected;
+                isConnect = false;
             } catch (Exception e)
             {
                 Console.WriteLine(e);
@@ -223,7 +224,10 @@ namespace ClientBase
         public void Send(ProtocolBase protocol)
         {
             if (!isConnect)
+            {
+                Debug.Log("Try to send but failed : isConnect = false");
                 return;
+            }                
             protocol.AppendCrc();
             //把传输的信息转化为字节数组A
             byte[] bytes = protocol.Encode();
