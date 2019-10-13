@@ -6,21 +6,23 @@ public class SyncMovement : ISyncMovement
 {
 
     Unit unit;
+    int recvT_Cnt = 0;
+    int recvA_Cnt = 0;
 
     // 保存上上次 Transform 参数
     long firstTransformInstant = 0;
-    Vector3 firstPosition = new Vector3();
-    Quaternion firstRotation = new Quaternion();
-    Vector3 firstVelocity = new Vector3();
-    Vector3 firstAngularVelocity = new Vector3();
+    Vector3 firstPosition = Vector3.zero;
+    Quaternion firstRotation = Quaternion.identity;
+    Vector3 firstVelocity = Vector3.zero;
+    Vector3 firstAngularVelocity = Vector3.zero;
 
     // 保存上次 Transform 参数
     long lastTransformInstant = 0;
-    Vector3 lastPosition = new Vector3();
-    Vector3 lastForward = new Vector3();
-    Vector3 lastUp = new Vector3();
+    Vector3 lastPosition = Vector3.zero;
+    Vector3 lastForward = Vector3.zero;
+    Vector3 lastUp = Vector3.zero;
     float lastSpeed = 0;
-    Vector3 lastVelocity = new Vector3();
+    Vector3 lastVelocity = Vector3.zero;
 
     // 保存上次 Acceleration 参数
     long lastAccelerationInstant = 0;
@@ -59,7 +61,7 @@ public class SyncMovement : ISyncMovement
         // 直接同步角加速度和加速度
         mover.H = angularAcceleration;
         mover.V = acceleration;
-        
+
     }
 
     public void SyncCameraForward(long instant, Vector3 cameraForward)
