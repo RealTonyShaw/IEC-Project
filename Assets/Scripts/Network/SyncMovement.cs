@@ -7,7 +7,8 @@ public class SyncMovement : ISyncMovement
 
     Unit unit;
     int recvT_Cnt = 0;
-    int recvA_Cnt = 0;
+    bool recv_A = false;
+    bool recv_Cam = false;
 
     // 保存上上次 Transform 参数
     long firstTransformInstant = 0;
@@ -61,13 +62,20 @@ public class SyncMovement : ISyncMovement
         // 直接同步角加速度和加速度
         mover.H = angularAcceleration;
         mover.V = acceleration;
-
+        if (!recv_A)
+        {
+            recv_A = true;
+        }
     }
 
     public void SyncCameraForward(long instant, Vector3 cameraForward)
     {
         this.lastCameraForwardInstant = instant;
         this.lastCameraForward = cameraForward;
+        if (!recv_Cam)
+        {
+            recv_Cam = true;
+        }
     }
 
     public void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
@@ -80,21 +88,29 @@ public class SyncMovement : ISyncMovement
         this.lastSpeed = speed;
         // 直接同步速度
         rb.velocity = unit.transform.forward * Mathf.Lerp(rb.velocity.magnitude, lastSpeed, 0.5f);
+        recvT_Cnt++;
     }
 
     public void Update(float dt)
     {
-        // 对 unit 的三维坐标进行插值
-        this.currentPosition.x = interpolate.Hermite(firstTransformInstant, firstPosition.x, firstVelocity.x, lastTransformInstant, lastPosition.x, lastVelocity.x, Gamef.SystemTimeInMillisecond);
-        this.currentPosition.y = interpolate.Hermite(firstTransformInstant, firstPosition.y, firstVelocity.y, lastTransformInstant, lastPosition.y, lastVelocity.y, Gamef.SystemTimeInMillisecond);
-        this.currentPosition.z = interpolate.Hermite(firstTransformInstant, firstPosition.z, firstVelocity.z, lastTransformInstant, lastPosition.z, lastVelocity.z, Gamef.SystemTimeInMillisecond);
-        // 修改 unit 的位置
-        unit.transform.position = Vector3.Lerp(unit.transform.position, this.currentPosition, 5f * dt);
-        // rotation
-        unit.transform.forward = Vector3.Slerp(this.lastForward, unit.transform.forward, 5f * dt);
-        unit.transform.up = Vector3.Slerp(this.lastUp, unit.transform.up, 5f * dt);
-        // cameraForward
-        mover.CameraForward = Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
+        if (recvT_Cnt >= 2)
+        {
+            // 对 unit 的三维坐标进行插值
+            this.currentPosition.x = interpolate.Hermite(firstTransformInstant, firstPosition.x, firstVelocity.x, lastTransformInstant, lastPosition.x, lastVelocity.x, Gamef.SystemTimeInMillisecond);
+            this.currentPosition.y = interpolate.Hermite(firstTransformInstant, firstPosition.y, firstVelocity.y, lastTransformInstant, lastPosition.y, lastVelocity.y, Gamef.SystemTimeInMillisecond);
+            this.currentPosition.z = interpolate.Hermite(firstTransformInstant, firstPosition.z, firstVelocity.z, lastTransformInstant, lastPosition.z, lastVelocity.z, Gamef.SystemTimeInMillisecond);
+            // 修改 unit 的位置
+            unit.transform.position = Vector3.Lerp(unit.transform.position, this.currentPosition, 5f * dt);
+            // rotation
+            unit.transform.forward = Vector3.Slerp(this.lastForward, unit.transform.forward, 5f * dt);
+            unit.transform.up = Vector3.Slerp(this.lastUp, unit.transform.up, 5f * dt);
+        }
+
+        if (recv_Cam)
+        {
+            // cameraForward
+            mover.CameraForward = Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
+        }
     }
 
 }
