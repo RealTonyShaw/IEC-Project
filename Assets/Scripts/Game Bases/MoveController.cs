@@ -44,10 +44,12 @@ public class MoveController : MonoBehaviour
             return;
         if (GameCtrl.IsOnlineGame)
         {
+            lastSyncA = Gamef.SystemTimeInMillisecond;
+            lastSyncT = Gamef.SystemTimeInMillisecond;
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
             DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()));
-            // sync cam fwd
+            DataSync.SyncCameraForward(CameraGroupController.Instance.transform.forward);
             DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
         }
         else
@@ -57,7 +59,8 @@ public class MoveController : MonoBehaviour
             mover.CameraForward = CameraGroupController.Instance.transform.forward;
         }
     }
-
+    long lastSyncA;
+    long lastSyncT;
     private void Update()
     {
         if (mover == null)
@@ -92,8 +95,19 @@ public class MoveController : MonoBehaviour
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
             DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v));
-            // sync cam fwd
-            DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
+            DataSync.SyncCameraForward(CameraGroupController.Instance.transform.forward);
+            if (instant - lastSyncT >= 300)
+            {
+                if (instant - lastSyncT <= 350)
+                {
+                    lastSyncT += 300;
+                }
+                else
+                {
+                    lastSyncT = instant;
+                }
+                DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
+            }
         }
         else
         {
