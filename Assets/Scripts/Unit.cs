@@ -106,18 +106,11 @@ public partial class Unit : MonoBehaviour
         {
             Debug.LogError(string.Format("Unit {0} is not in Unit layer.", gameObject.name));
         }
-        if (GameCtrl.IsOnlineGame)
+        if (GameCtrl.IsOnlineGame && attributes.ID == -1)
         {
-            // do nothing
-            if (!isInitAttr)
-            {
-                Debug.LogError("Init Error: " + gameObject.name + " initialization failed");
-            }
+            Debug.LogError("ID not set!!!!");
         }
-        else
-        {
-            InitAttributes();
-        }
+        InitAttributes();
     }
 
     private bool isInitAttr = false;
@@ -127,17 +120,19 @@ public partial class Unit : MonoBehaviour
             return;
         isInitAttr = true;
         //注册单位
-        lock (GameDB.unitPool)
-            attributes.ID = Gamef.UnitBirth(this);
+        if (GameCtrl.IsOnlineGame)
+        {
+            lock (GameDB.unitPool)
+                Gamef.UnitBirth(this, attributes.ID);
+        }
+        else
+        {
+            lock (GameDB.unitPool)
+                attributes.ID = Gamef.UnitBirth(this);
+        }
 
         attributes.Init(this);
         SyncMovement?.Init(this);
-        //测试用
-        if (attributes.name == UnitName.Player)
-        {
-            if (DisplayPlayerProperity.Instance != null)
-                StartCoroutine(DisplayProperity());
-        }
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
             skillTable.Init(this);
@@ -157,12 +152,6 @@ public partial class Unit : MonoBehaviour
 
         attributes.Init(this);
         SyncMovement?.Init(this);
-        //测试用
-        if (attributes.name == UnitName.Player)
-        {
-            if (DisplayPlayerProperity.Instance != null)
-                StartCoroutine(DisplayProperity());
-        }
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
             skillTable.Init(this);
@@ -202,15 +191,6 @@ public partial class Unit : MonoBehaviour
     {
         // 执行位置同步
         SyncMovement?.Update(Time.fixedDeltaTime);
-    }
-
-    IEnumerator DisplayProperity()
-    {
-        while (true)
-        {
-            DisplayPlayerProperity.Instance.SetText(attributes.SheildPoint, attributes.MaxShieldPoint, attributes.ManaPoint.Value, attributes.MaxManaPoint.Value);
-            yield return new WaitForSeconds(0.1f);
-        }
     }
 
     #endregion

@@ -41,6 +41,7 @@ public class CameraGroupController : MonoBehaviour
     public AnimationCurve FovCurve = AnimationCurve.EaseInOut(0f, 1f, 1f, 1.3f);
     public float MaxVelocity = 50f;
     public float smoothTimeForFov = 3f;
+    
 
     #endregion
 
@@ -53,8 +54,6 @@ public class CameraGroupController : MonoBehaviour
     {
         Instance = this;
     }
-
-
 
     private void Start()
     {
@@ -81,6 +80,10 @@ public class CameraGroupController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (GameCtrl.PlayerUnit == null)
+        {
+            return;
+        }
         UpdatePosition();
     }
 

@@ -12,6 +12,13 @@ public partial class GameCtrl
         EventMgr.UpdateEvent.AddListener(_checkIsDone);
     }
 
+    public void StartCreatePlayer(int playerID)
+    {
+        Transform t = GameSceneInfo.Instance.spawnPoints[playerID].transform;
+
+        DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
+    }
+
     private void _checkIsDone()
     {
         if (ao.isDone)

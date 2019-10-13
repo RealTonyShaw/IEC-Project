@@ -949,6 +949,43 @@ public static partial class EventMgr
 
     #endregion
 }
+
+
+//发布器
+public class EventPublisher<T>
+{
+    //事件
+    private event Action<T> CallEvents;
+
+    /// <summary>
+    /// 触发事件
+    /// </summary>
+    /// <param name="info">事件信息</param>
+    public void OnTrigger(T info)
+    {
+        CallEvents?.Invoke(info);
+    }
+
+    /// <summary>
+    /// 监听事件
+    /// </summary>
+    /// <param name="func">事件监听方法</param>
+    public void AddListener(Action<T> func)
+    {
+        CallEvents += func;
+    }
+
+    /// <summary>
+    /// 取消监听
+    /// </summary>
+    /// <param name="func">事件监听方法</param>
+    public void RemoveListener(Action<T> func)
+    {
+        CallEvents -= func;
+    }
+}
+
+
 //#region 示例事件
 ////发布器
 //public class ExampleEventPublisher

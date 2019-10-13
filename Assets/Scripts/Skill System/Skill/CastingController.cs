@@ -19,6 +19,12 @@ public class CastingController : MonoBehaviour
     public SteamVR_Input_Sources pressPadHandType = SteamVR_Input_Sources.LeftHand;
     public SteamVR_Action_Boolean pressPad;
 
+    private void UpdatePlayer(Unit player)
+    {
+        this.player = player;
+        skillTable = player.SkillTable;
+    }
+
     bool GetTriggerDown()
     {
         return trigger.GetStateDown(triggerHandType);
@@ -46,7 +52,7 @@ public class CastingController : MonoBehaviour
             player = GameCtrl.PlayerUnit;
             skillTable = player.SkillTable;
         }
-
+        GameCtrl.PlayerUnitChangeEvent.AddListener(UpdatePlayer);
         EventMgr.KeyDownEvent.AddListener(SwitchCellListener);
         EventMgr.MouseButtonDownEvent.AddListener(CellMouseBTNDown);
         EventMgr.MouseButtonUpEvent.AddListener(CellMouseBTNUp);
@@ -54,13 +60,6 @@ public class CastingController : MonoBehaviour
 
     private void Update()
     {
-        if (player == null && GameCtrl.PlayerUnit != null)
-        {
-            player = GameCtrl.PlayerUnit;
-            skillTable = player.SkillTable;
-        }
-
-
         if (player == null)
             return;
 

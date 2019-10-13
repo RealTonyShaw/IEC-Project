@@ -8,9 +8,9 @@ public static partial class Gamef
 {
     #region 游戏机制
 
-    public static long SystemTimeInMillisecond => GameCtrl.IsOnlineGame ? 0 : (long)(Time.time * 1000d);
+    public static long SystemTimeInMillisecond => GameCtrl.IsOnlineGame ? ClientLauncher.Instance.GetTime() : (long)(Time.time * 1000d);
 
-    public static float SystemTime => GameCtrl.IsOnlineGame ? 0f : Time.time;
+    public static float SystemTime => SystemTimeInMillisecond / 1000f;
 
     /// <summary>
     /// 对单位造成伤害
