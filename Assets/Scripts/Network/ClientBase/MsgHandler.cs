@@ -17,11 +17,11 @@ namespace ClientBase
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
             long delta = proto.GetLong(start, ref start);
-            ClientLauncher.Instant.TimeCheck(delta);
+            ClientLauncher.Instance.TimeCheck(delta);
         }
         public static void Ping(ProtocolBase protocol)
         {
-            ClientLauncher.Instant.PingBack();
+            ClientLauncher.Instance.PingBack();
         }
 
         public static void Chatting(ProtocolBase protocol)
@@ -32,7 +32,7 @@ namespace ClientBase
             string str;
             Debug.Log("Receive msg from server");
             Debug.Log(str = proto.GetString(start, ref start));
-            ClientLauncher.Instant.message = str;
+            ClientLauncher.Instance.message = str;
         }
         #endregion
 
@@ -97,6 +97,7 @@ namespace ClientBase
         public static void CanControll(ProtocolBase protocol)
         {
             //...
+            GameCtrl.Instance.StartCreatePlayer(Client.Instance.pl_info.id_game);
             Debug.Log("You can controll the player now!!!");
         }
 
@@ -120,7 +121,11 @@ namespace ClientBase
             GameObject gameObj = Gamef.Instantiate(prefab, pos, rot);
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
-            Gamef.UnitBirth(unit, unitId);
+            unit.attributes.ID = unitId;
+            if (unitName == UnitName.Player && isLocal)
+            {
+                GameCtrl.PlayerUnit = unit;
+            }
         }
 
         public static void DestroyObj(ProtocolBase protocol)
@@ -153,6 +158,18 @@ namespace ClientBase
             Vector3 up = ParseVector3(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
             unit.SyncMovement.SyncTransform(instant, position, forward, up, speed);
+        }
+
+        public static void SyncCameraForward(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            long instant = proto.GetInt(start, ref start);
+            int id = proto.GetByte(start, ref start);
+            Unit unit = Gamef.GetUnit(id);
+            Vector3 fwd = ParseVector3(proto, ref start);
+            unit.SyncMovement.SyncCameraForward(instant, fwd);
         }
         #endregion
 

@@ -19,7 +19,7 @@ public class ClientLauncher : MonoBehaviour
     private int ping = 0;
     private long lastSend = 0;
     private static ClientLauncher clientLauncher;
-    public static ClientLauncher Instant
+    public static ClientLauncher Instance
     {
         get
         {

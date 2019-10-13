@@ -26,9 +26,16 @@ public class MoveController : MonoBehaviour
         Instance = this;
     }
 
+    void UpdateMover(Unit player)
+    {
+        mover = player.GetComponent<Mover>();
+        rb = mover.GetComponent<Rigidbody>();
+    }
+
     private void Start()
     {
-        if ((mover == null && GameCtrl.PlayerUnit != null) || (mover != null && mover.gameObject != GameCtrl.PlayerUnit.gameObject))
+        GameCtrl.PlayerUnitChangeEvent.AddListener(UpdateMover);
+        if ((mover == null && GameCtrl.PlayerUnit != null))
         {
             mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
             rb = mover.GetComponent<Rigidbody>();
@@ -53,11 +60,6 @@ public class MoveController : MonoBehaviour
 
     private void Update()
     {
-        if ((mover == null && GameCtrl.PlayerUnit != null) || (mover != null && mover.gameObject != GameCtrl.PlayerUnit.gameObject))
-        {
-            mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
-            rb = mover.GetComponent<Rigidbody>();
-        }
         if (mover == null)
             return;
 

@@ -160,6 +160,12 @@ public static class DataSync
         Client.Instance.Send(protocol);
     }
 
+    public static void SyncCameraForward(Vector3 cameraFwd)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncCameraForward);
+        AppendVector3(protocol, cameraFwd);
+        Client.Instance.Send(protocol);
+    }
 
     //public static void SyncAcceleration(Unit unit, long instant, int acceleration, int angularAcceleration, Vector3 cameraForward)
     //{

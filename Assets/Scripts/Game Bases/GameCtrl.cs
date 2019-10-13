@@ -20,15 +20,23 @@ public partial class GameCtrl : MonoBehaviour
     #region 实时公有信息
     //private UnitInfo _mainChara;
     private static Unit _playerUnit = null;
+    public static EventPublisher<Unit> PlayerUnitChangeEvent = new EventPublisher<Unit>();
     public static Unit PlayerUnit
     {
         get
         {
-            if (_playerUnit == null)
-            {
-                _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
-            }
+            //if (_playerUnit == null)
+            //{
+            //    _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
+            //    PlayerUnitChangeEvent.OnTrigger(_playerUnit);
+            //}
             return _playerUnit;
+        }
+
+        set
+        {
+            _playerUnit = value;
+            PlayerUnitChangeEvent.OnTrigger(_playerUnit);
         }
     }
     public static bool IsOnlineGame = false;
