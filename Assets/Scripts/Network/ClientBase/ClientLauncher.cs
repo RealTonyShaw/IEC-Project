@@ -27,8 +27,7 @@ public class ClientLauncher : MonoBehaviour
     public string message = "";
 
     public void SendMsg(string msg)
-    {
-        UnityEngine.Debug.Log(string.Format("Begin send to server {0}", msg));
+    {    
         DataSync.Chatting(msg);
     }
 
