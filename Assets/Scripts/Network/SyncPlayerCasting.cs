@@ -18,14 +18,17 @@ public class SyncPlayerCasting : ISyncPlayerCastingState
         // get system time. MUST make sure that the system time would not tremble.
         long sysTime = Gamef.SystemTimeInMillisecond;
         StartCasting cast = new StartCasting(unit, skillIndex, instant);
+        Debug.Log(string.Format("sysTime = {0}, instant = {1}", sysTime, instant));
         // 施法事件还未发生
         if (sysTime < instant)
         {
+            Debug.Log(string.Format("Incorrect sysTime = {0}, instant = {1}", sysTime, instant));
             Gamef.DelayedExecution(cast.Start, (instant - sysTime) / 1000f);
         }
-        else if (sysTime == instant)
+        else if (sysTime >= instant)
         {
             cast.Start();
+            Debug.Log("开始施法啦！");
         }
         else
         {

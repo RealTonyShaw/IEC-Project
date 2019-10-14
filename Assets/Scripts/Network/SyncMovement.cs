@@ -58,7 +58,6 @@ public class SyncMovement : ISyncMovement
 
     public void SyncAcceleration(long instant, int acceleration, int angularAcceleration)
     {
-        Debug.Log("ID " + unit.attributes.ID + " :recv acceleration");
         this.lastAccelerationInstant = instant;
         // 直接同步角加速度和加速度
         mover.H = angularAcceleration;
@@ -70,8 +69,7 @@ public class SyncMovement : ISyncMovement
     }
 
     public void SyncCameraForward(long instant, Vector3 cameraForward)
-    {
-        Debug.Log("ID " + unit.attributes.ID + " :recv cam fwd");
+    {        
         this.lastCameraForwardInstant = instant;
         this.lastCameraForward = cameraForward;
         if (!recv_Cam)
@@ -112,7 +110,8 @@ public class SyncMovement : ISyncMovement
         if (recv_Cam)
         {
             // cameraForward
-            mover.CameraForward = Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
+            mover.CameraForward = lastCameraForward;
+                //Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
         }
     }
 

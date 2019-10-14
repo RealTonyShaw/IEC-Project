@@ -119,16 +119,12 @@ namespace ClientBase
         {
             try
             {
-                Debug.Log("1");
                 start += client.EndReceive(ar);
-                Debug.Log("2");
+
                 DataProcessor();
-                Debug.Log("3");
-                //client.BeginReceive(buffer, start, MAX_BUFFER_SIZE - start,
-                //SocketFlags.None, ReceiveCallback, null);
+
                 client.BeginReceive(buffer, start, MAX_BUFFER_SIZE - start,
 SocketFlags.None, ReceiveCallback, null);
-                Debug.Log("4");
             }
             catch (Exception e)
             {
@@ -145,15 +141,14 @@ SocketFlags.None, ReceiveCallback, null);
         {
             //isConnect = client.Connected;
             //如果小于存储长度的数据长度，则返回
-            Debug.Log("1.1");
             if (start < sizeof(short))
                 return;
             length = BitConverter.ToInt16(buffer, 0);
-            Debug.Log("1.1 length = " + length + ", start = " + start);
+
             //如果没接收完毕返回
             if (start < SF.SHORT_SIZE + length)
                 return;
-            Debug.Log("1.2");
+
             ProtocolBase protocol = proto.Decode(buffer, SF.SHORT_SIZE, length);
 
             //Debug.Log();
@@ -173,7 +168,7 @@ SocketFlags.None, ReceiveCallback, null);
                 //Debug.Log("CRC8");
                 cor = crc8.IsCorrect();
             }
-            Debug.Log("1.3");
+
             if (cor)
             {
                 //Add handler and handle.
@@ -184,11 +179,11 @@ SocketFlags.None, ReceiveCallback, null);
             {
                 //Debug.Log("CRC failed");
             }
-            Debug.Log("1.4");
+
             //Operations for protocol
             int count = start - SF.SHORT_SIZE - length;
             Array.Copy(buffer, length + SF.SHORT_SIZE, buffer, 0, count);
-            Debug.Log(string.Format("start = {0}, count = {1}, length = {2}", start, count, length));
+            //Debug.Log(string.Format("start = {0}, count = {1}, length = {2}", start, count, length));
             start = count;
             if (count > 0)
                 DataProcessor();

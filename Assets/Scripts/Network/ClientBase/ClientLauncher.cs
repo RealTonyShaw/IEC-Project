@@ -4,6 +4,7 @@ using UnityEngine;
 using ClientBase;
 using System.Diagnostics;
 using System;
+using System.Threading;
 
 public class ClientLauncher : MonoBehaviour
 {
@@ -37,19 +38,23 @@ public class ClientLauncher : MonoBehaviour
 
     public void InitClient()
     {
-        if (AutoConnect)
-        {
-            Client.Instance.Host = host;
-            Client.Instance.port = port;
-            for (int i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
+        Thread t = new Thread(() => {
+            if (AutoConnect)
             {
-                Client.Instance.Connect();
+                Client.Instance.Host = host;
+                Client.Instance.port = port;
+                int i = 0;
+                for (i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
+                {
+                    Client.Instance.Connect();
+                }
                 if (i == MAX_CONNECT_TIMES)
                 {
                     UnityEngine.Debug.Log("Connect times over max connect times");
                 }
             }
-        }
+        });
+        t.Start();
     }    
 
     public void Awake()
@@ -77,14 +82,17 @@ public class ClientLauncher : MonoBehaviour
         }
     }
 
+    private float timer = 0;
+    private float time_check_freq = 1f;
     public void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            UnityEngine.Debug.Log("What ????");
-            DataSync.Chatting("What ????");
-        }
         eventHandler.Update();
+        timer += Time.deltaTime;
+        if (timer >= 1 / time_check_freq)
+        {
+            timer = 0;
+            DataSync.SyncTimeCheck();
+        }
     }
 
     /// <summary>
@@ -145,7 +153,6 @@ public class ClientLauncher : MonoBehaviour
             return stopwatch.ElapsedMilliseconds + bias;
         }
 
-        private long DTO = ((new DateTime(1970, 1, 1, 0, 0, 0, 0)).Ticks) / 10000;
         
         /// <summary>
         /// To check the timer.
@@ -157,7 +164,7 @@ public class ClientLauncher : MonoBehaviour
             {
                 return;
             }
-            long tick = DateTime.UtcNow.Ticks / 10000 - DTO;
+            long tick = DateTime.UtcNow.Ticks / 10000;
             bias = tick + delta - stopwatch.ElapsedMilliseconds;
         }
     }
