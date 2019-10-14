@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalPrefab: {fileID: 8572677812863099403, guid: e47df09e3cc012a40a256b961c42b97c,
     type: 3}
-  NetPrefab: {fileID: 8572677812863099403, guid: 40c77c4f6d85acb4bb97f1b5e0f71add,
+  NetPrefab: {fileID: 8572677812863099403, guid: 909ae44c009ee594bbaa3c3e170cb640,
     type: 3}
   tags:
     player: 0
