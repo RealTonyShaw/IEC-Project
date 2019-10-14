@@ -1,10 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using ClientBase;
+﻿using ClientBase;
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 using System.Text;
+using System.Threading;
+using UnityEngine;
 
 public static class DataSync
 {
@@ -79,7 +80,7 @@ public static class DataSync
 
     public static void Chatting(string msg)
     {
-        ProtocolBytes protocol =  SF.GetProtocolHead(ProtoName.Chatting);
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.Chatting);
         protocol.AddString(msg);
         Client.Instance.Send(protocol);
     }
@@ -160,6 +161,12 @@ public static class DataSync
         Client.Instance.Send(protocol);
     }
 
+    //public static void SyncCameraForward(Vector3 cameraFwd)
+    //{
+    //    ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncCameraForward);
+    //    AppendVector3(protocol, cameraFwd);
+    //    Client.Instance.Send(protocol);
+    //}
 
     //public static void SyncAcceleration(Unit unit, long instant, int acceleration, int angularAcceleration, Vector3 cameraForward)
     //{
@@ -177,12 +184,15 @@ public static class DataSync
     /// <param name="instant">发生时刻</param>
     /// <param name="h">水平轴的值 Horizontal Axis</param>
     /// <param name="v">垂直轴的值 Vertical Axis</param>
-    public static void SyncMobileControlAxes(Unit unit, long instant, int h, int v)
+    public static void SyncMobileControlAxes(Unit unit, long instant, int h, int v, Vector3 cameraFwd)
     {
+
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMobileControlAxes);
-        protocol.AddInt((int)instant);
-        protocol.AddByte((byte)unit.attributes.ID);
-        protocol.AddByte(PackHaV(h, v));
+        protocol.AddInt((int)instant);//instant
+        protocol.AddByte((byte)unit.attributes.ID);//unit id
+        protocol.AddByte(PackHaV(h, v));//h and v
+        AppendVector3(protocol, cameraFwd);// camera forward
+
         Client.Instance.Send(protocol);
     }
 
@@ -330,7 +340,7 @@ public static class DataSync
             y = proto.GetFloat(start, ref start);
             z = proto.GetFloat(start, ref start);
             return new Vector3(x, y, z);
-            
+
             //return new Vector3(protocol.)
         }
         catch (Exception e)
@@ -382,9 +392,10 @@ public static class DataSync
     {
         int a = h;
         a = a << 2;
-        Console.WriteLine("a = " + Convert.ToString(a, 2));
+        //Debug.Log("a = " + Convert.ToString(a, 2));
         a = a | (v & 3);
-        Console.WriteLine("a = " + Convert.ToString(a, 2));
+        //Debug.Log("a = " + Convert.ToString(a, 2));
+        //Debug.Log(string.Format("Pack : h = {0}, v = {1}", h, v));
         return (byte)a;
     }
 
@@ -393,6 +404,7 @@ public static class DataSync
         int[] res = new int[2];
         res[1] = ParseBitResult(3 & data);
         res[0] = ParseBitResult((12 & data) >> 2);
+        //Debug.Log(string.Format("Recv : h = {0}, v = {1}", res[0], res[1]));
         return res;
     }
 

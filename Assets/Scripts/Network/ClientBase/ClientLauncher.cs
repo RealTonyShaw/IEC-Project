@@ -4,9 +4,13 @@ using UnityEngine;
 using ClientBase;
 using System.Diagnostics;
 using System;
+using System.Threading;
 
 public class ClientLauncher : MonoBehaviour
 {
+    [Header("Test Only")]
+    public string host;
+    public int port;
 
     public const uint MAX_CONNECT_TIMES = 3;
     public bool AutoConnect = false;
@@ -16,37 +20,41 @@ public class ClientLauncher : MonoBehaviour
     private int ping = 0;
     private long lastSend = 0;
     private static ClientLauncher clientLauncher;
-    public static ClientLauncher Instant
+    public static ClientLauncher Instance
     {
         get
         {
             return clientLauncher;
         }
     }
+    
 
     public string message = "";
 
     public void SendMsg(string msg)
-    {
-        UnityEngine.Debug.Log(string.Format("Begin send to server {0}", msg));
+    {    
         DataSync.Chatting(msg);
     }
 
     public void InitClient()
     {
-        if (AutoConnect)
-        {
-            Client.Instance.Host = "127.0.0.1";
-            Client.Instance.port = 4089;
-            for (int i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
+        Thread t = new Thread(() => {
+            if (AutoConnect)
             {
-                Client.Instance.Connect();
+                Client.Instance.Host = host;
+                Client.Instance.port = port;
+                int i = 0;
+                for (i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
+                {
+                    Client.Instance.Connect();
+                }
                 if (i == MAX_CONNECT_TIMES)
                 {
                     UnityEngine.Debug.Log("Connect times over max connect times");
                 }
             }
-        }
+        });
+        t.Start();
     }    
 
     public void Awake()
@@ -74,9 +82,17 @@ public class ClientLauncher : MonoBehaviour
         }
     }
 
+    private float timer = 0;
+    private float time_check_freq = 1f;
     public void Update()
     {
         eventHandler.Update();
+        timer += Time.deltaTime;
+        if (timer >= 1 / time_check_freq)
+        {
+            timer = 0;
+            DataSync.SyncTimeCheck();
+        }
     }
 
     /// <summary>
@@ -137,7 +153,6 @@ public class ClientLauncher : MonoBehaviour
             return stopwatch.ElapsedMilliseconds + bias;
         }
 
-        private long DTO = ((new DateTime(1970, 1, 1, 0, 0, 0, 0)).Ticks) / 10000;
         
         /// <summary>
         /// To check the timer.
@@ -149,7 +164,7 @@ public class ClientLauncher : MonoBehaviour
             {
                 return;
             }
-            long tick = DateTime.UtcNow.Ticks / 10000 - DTO;
+            long tick = DateTime.UtcNow.Ticks / 10000;
             bias = tick + delta - stopwatch.ElapsedMilliseconds;
         }
     }

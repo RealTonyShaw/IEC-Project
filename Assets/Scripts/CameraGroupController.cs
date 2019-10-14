@@ -42,6 +42,7 @@ public class CameraGroupController : MonoBehaviour
     public float MaxVelocity = 50f;
     public float smoothTimeForFov = 3f;
 
+
     #endregion
 
     public static CameraGroupController Instance
@@ -54,15 +55,25 @@ public class CameraGroupController : MonoBehaviour
         Instance = this;
     }
 
-
-
     private void Start()
     {
+        GameCtrl.PlayerUnitChangeEvent.AddListener(OnPlayerChanged);
         lockCursor = true;
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        if (GameCtrl.PlayerUnit != null)
+        {
+            ResetTransform(GameCtrl.PlayerUnit.transform.position, GameCtrl.PlayerUnit.transform.rotation);
+        }
     }
 
+    void OnPlayerChanged(Unit player)
+    {
+        if (player != null)
+        {
+            ResetTransform(player.transform.position, player.transform.rotation);
+        }
+    }
 
     private void Update()
     {
@@ -81,6 +92,10 @@ public class CameraGroupController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (GameCtrl.PlayerUnit == null)
+        {
+            return;
+        }
         UpdatePosition();
     }
 
@@ -94,11 +109,28 @@ public class CameraGroupController : MonoBehaviour
         SetAngleAroundZAxis(Time.fixedDeltaTime);
     }
 
+    public void ResetTransform(Vector3 position, Quaternion rotation)
+    {
+        PositionParent.position = position;
+        PositionParent.rotation = Quaternion.identity;
+        RotationParent.localRotation = rotation;
+        Vector3 e = rotation.eulerAngles;
+        e.z = 0f;
+        e.x = 0f;
+        cameraXRot = Quaternion.Euler(e.x, 0f, 0f);
+        cameraYRot = Quaternion.Euler(0f, e.y, 0f);
+        cameraZRot = Quaternion.Euler(0f, 0f, e.z);
+        targetXRot = cameraXRot;
+        targetYRot = cameraYRot;
+        targetZRot = cameraZRot;
+    }
+
     private float xRot, yRot;
     protected virtual void UpdateCameraRotation(float dt)
     {
         xRot = Input.GetAxis("Mouse Y") * XSensitivity;
         yRot = Input.GetAxis("Mouse X") * YSensitivity;
+        //Debug.Log("X rot = " + xRot + ", Y rot = " + yRot);
         targetXRot *= Quaternion.Euler(-xRot, 0f, 0f);
         targetYRot *= Quaternion.Euler(0f, yRot, 0f);
 
@@ -110,6 +142,7 @@ public class CameraGroupController : MonoBehaviour
         {
             targetYRot = ClampRotationAroundYAxis(targetYRot);
         }
+        //Debug.Log("clamped Y rot = " + targetYRot.eulerAngles.y);
 
         if (smooth)
         {
@@ -121,6 +154,7 @@ public class CameraGroupController : MonoBehaviour
             cameraXRot = targetXRot;
             cameraYRot = targetYRot;
         }
+        //Debug.Log("camera Y rot = " + cameraYRot.eulerAngles.y);
         cameraZRot = Quaternion.Slerp(cameraZRot, targetZRot, dt * smoothTime);
 
         RotationParent.localEulerAngles = new Vector3(cameraXRot.eulerAngles.x, cameraYRot.eulerAngles.y, cameraZRot.eulerAngles.z);

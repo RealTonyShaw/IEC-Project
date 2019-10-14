@@ -26,9 +26,16 @@ public class MoveController : MonoBehaviour
         Instance = this;
     }
 
+    void UpdateMover(Unit player)
+    {
+        mover = player.GetComponent<Mover>();
+        rb = mover.GetComponent<Rigidbody>();
+    }
+
     private void Start()
     {
-        if ((mover == null && GameCtrl.PlayerUnit != null) || (mover != null && mover.gameObject != GameCtrl.PlayerUnit.gameObject))
+        GameCtrl.PlayerUnitChangeEvent.AddListener(UpdateMover);
+        if ((mover == null && GameCtrl.PlayerUnit != null))
         {
             mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
             rb = mover.GetComponent<Rigidbody>();
@@ -37,10 +44,11 @@ public class MoveController : MonoBehaviour
             return;
         if (GameCtrl.IsOnlineGame)
         {
+            lastSyncA = Gamef.SystemTimeInMillisecond;
+            lastSyncT = Gamef.SystemTimeInMillisecond;
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
-            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()));
-            // sync cam fwd
+            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()), CameraGroupController.Instance.transform.forward);
             DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
         }
         else
@@ -50,14 +58,10 @@ public class MoveController : MonoBehaviour
             mover.CameraForward = CameraGroupController.Instance.transform.forward;
         }
     }
-
+    long lastSyncA;
+    long lastSyncT;
     private void Update()
     {
-        if ((mover == null && GameCtrl.PlayerUnit != null) || (mover != null && mover.gameObject != GameCtrl.PlayerUnit.gameObject))
-        {
-            mover = GameCtrl.PlayerUnit.GetComponent<Mover>();
-            rb = mover.GetComponent<Rigidbody>();
-        }
         if (mover == null)
             return;
 
@@ -89,9 +93,32 @@ public class MoveController : MonoBehaviour
         {
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
-            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v));
-            // sync cam fwd
-            DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
+            Debug.Log("Send sync acceleration");
+            if (instant - lastSyncA >= 33)
+            {
+                if (instant - lastSyncT <= 40)
+                {
+                    lastSyncT += 33;
+                }
+                else
+                {
+                    lastSyncT = instant;
+                }
+                DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()), CameraGroupController.Instance.transform.forward);
+            }
+            if (instant - lastSyncT >= 300)
+            {
+                if (instant - lastSyncT <= 350)
+                {
+                    lastSyncT += 300;
+                }
+                else
+                {
+                    lastSyncT = instant;
+                }
+                Debug.Log("Send sync transform");
+                DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
+            }
         }
         else
         {

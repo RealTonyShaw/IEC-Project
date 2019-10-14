@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections;
-using Valve.VR;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Valve.VR;
 
 public partial class GameCtrl : MonoBehaviour
 {
@@ -20,15 +20,23 @@ public partial class GameCtrl : MonoBehaviour
     #region 实时公有信息
     //private UnitInfo _mainChara;
     private static Unit _playerUnit = null;
+    public static EventPublisher<Unit> PlayerUnitChangeEvent = new EventPublisher<Unit>();
     public static Unit PlayerUnit
     {
         get
         {
-            if (_playerUnit == null)
-            {
-                _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
-            }
+            //if (_playerUnit == null)
+            //{
+            //    _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
+            //    PlayerUnitChangeEvent.OnTrigger(_playerUnit);
+            //}
             return _playerUnit;
+        }
+
+        set
+        {
+            _playerUnit = value;
+            PlayerUnitChangeEvent.OnTrigger(_playerUnit);
         }
     }
     public static bool IsOnlineGame = false;
@@ -45,6 +53,12 @@ public partial class GameCtrl : MonoBehaviour
     public SteamVR_Action_Vibration hapticSignal;
     public bool check = false;
     public string gameScene;
+
+    public void StartSingleGame()
+    {
+        if (check)
+            SceneManager.LoadSceneAsync(gameScene);
+    }
 
     /// <summary>
     /// 延迟执行动作。
@@ -86,13 +100,13 @@ public partial class GameCtrl : MonoBehaviour
         if (BuildDataPath)
             Build();
 
-        //加载游戏场景
-        if (check)
-        {
-            SceneManager.LoadSceneAsync(gameScene);
-        }
-        else
-            SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+        ////加载游戏场景
+        //if (check)
+        //{
+        //    SceneManager.LoadSceneAsync(gameScene);
+        //}
+        //else
+        //    SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
 
         //SceneManager.LoadSceneAsync("Demo_Exterior");
     }

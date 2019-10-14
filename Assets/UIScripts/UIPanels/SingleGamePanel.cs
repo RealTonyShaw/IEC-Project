@@ -46,4 +46,9 @@ public class SingleGamePanel : BasePanel
     {
         transform.DOScale(new Vector3(1, 1, 1), 0.5f);
     }
+
+    public void OnEnterButtonClick()
+    {
+        GameCtrl.Instance.StartSingleGame();
+    }
 }

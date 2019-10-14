@@ -104,6 +104,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 2854940207237181125}
+  userName: {fileID: 1346177524338459745}
+  password: {fileID: 4775181793391789906}
   trans: {fileID: 170764007517260581}
 --- !u!1 &662095998659203446
 GameObject:
@@ -340,7 +342,18 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 4346635586741462229}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 4380088316460887781}
+        m_MethodName: OnSignInClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: UnityEngine.UI.Button+ButtonClickedEvent, UnityEngine.UI, Version=1.0.0.0,
       Culture=neutral, PublicKeyToken=null
 --- !u!1 &1623177098763830843

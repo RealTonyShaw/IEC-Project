@@ -117,6 +117,16 @@ public class ServerTestPanel : MonoBehaviour
         launcher.Connect(ipAdr.text, port.text);
     }
 
+    public void OnDisConnectClicked()
+    {
+        if (!Client.Instance.isConnect)
+        {
+            return;
+        }
+        Client.Instance.Disconnect();
+        Debug.Log("Is disconnecting succeed = " + !Client.Instance.client.Connected);
+    }
+
     public void OnSendClicked()
     {
         DataSync.Chatting(sendMsg.text);
