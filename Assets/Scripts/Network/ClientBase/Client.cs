@@ -11,7 +11,7 @@ namespace ClientBase
 {
     public class Client
     {
-        public const int MAX_BUFFER_SIZE = 16 * 1024;
+        public const int MAX_BUFFER_SIZE = 128 * 1024;
         private static Client instance;
         public bool isConnect = false;
         public Socket client;
@@ -120,9 +120,11 @@ namespace ClientBase
             try
             {
                 start += client.EndReceive(ar);
+
                 DataProcessor();
+
                 client.BeginReceive(buffer, start, MAX_BUFFER_SIZE - start,
-                SocketFlags.None, ReceiveCallback, null);
+SocketFlags.None, ReceiveCallback, null);
             }
             catch (Exception e)
             {
@@ -142,9 +144,11 @@ namespace ClientBase
             if (start < sizeof(short))
                 return;
             length = BitConverter.ToInt16(buffer, 0);
+
             //如果没接收完毕返回
             if (start < SF.SHORT_SIZE + length)
                 return;
+
             ProtocolBase protocol = proto.Decode(buffer, SF.SHORT_SIZE, length);
 
             //Debug.Log();
@@ -178,7 +182,8 @@ namespace ClientBase
 
             //Operations for protocol
             int count = start - SF.SHORT_SIZE - length;
-            Array.Copy(buffer, start, buffer, 0, count);
+            Array.Copy(buffer, length + SF.SHORT_SIZE, buffer, 0, count);
+            //Debug.Log(string.Format("start = {0}, count = {1}, length = {2}", start, count, length));
             start = count;
             if (count > 0)
                 DataProcessor();
@@ -226,16 +231,23 @@ namespace ClientBase
             if (!isConnect)
             {
                 Debug.Log("Try to send but failed : isConnect = false");
-                return;
-            }                
-            protocol.AppendCrc();
-            //把传输的信息转化为字节数组A
-            byte[] bytes = protocol.Encode();
-            //把信息长度大小转换成字节数组
-            byte[] length = BitConverter.GetBytes((short)bytes.Length);
-            //这段话表示连接length和bytes数组，并且length在前
-            byte[] sendBuff = length.Concat(bytes).ToArray();
-            client.Send(sendBuff);
+                //return;
+            }
+            try
+            {
+                protocol.AppendCrc();
+                //把传输的信息转化为字节数组A
+                byte[] bytes = protocol.Encode();
+                //把信息长度大小转换成字节数组
+                byte[] length = BitConverter.GetBytes((short)bytes.Length);
+                //这段话表示连接length和bytes数组，并且length在前
+                byte[] sendBuff = length.Concat(bytes).ToArray();
+                client.Send(sendBuff);
+            } catch (Exception e)
+            {
+                Debug.Log(e);
+                Debug.Log(e.StackTrace);
+            }
         }
     }
 }
