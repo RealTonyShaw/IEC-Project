@@ -12,5 +12,6 @@ public class GameSceneInfo : MonoBehaviour {
         Instance = this;
     }
 
-    public Transform ReusableGameObjectParent;
+    public GameObject[] spawnPoints;
+
 }

@@ -1,10 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
-public class RegisterPanel : BasePanel
+public partial class RegisterPanel : BasePanel
 {
+    public InputField userName;
+    public InputField password;
+    public InputField repeatPw;
+
     public Transform trans;
 
     public override void OnEnter()

@@ -17,11 +17,11 @@ namespace ClientBase
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
             long delta = proto.GetLong(start, ref start);
-            ClientLauncher.Instant.TimeCheck(delta);
+            ClientLauncher.Instance.TimeCheck(delta);
         }
         public static void Ping(ProtocolBase protocol)
         {
-            ClientLauncher.Instant.PingBack();
+            ClientLauncher.Instance.PingBack();
         }
 
         public static void Chatting(ProtocolBase protocol)
@@ -32,7 +32,7 @@ namespace ClientBase
             string str;
             Debug.Log("Receive msg from server");
             Debug.Log(str = proto.GetString(start, ref start));
-            ClientLauncher.Instant.message = str;
+            ClientLauncher.Instance.message = str;
         }
         #endregion
 
@@ -49,6 +49,9 @@ namespace ClientBase
                 Debug.Log("Login success");
                 Client.Instance.pl_info.isLogin = true;
                 //Login
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                DataSync.Match();
+                //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
             }
             else
             {
@@ -88,13 +91,13 @@ namespace ClientBase
 
             Debug.Log("Start game!!! Loading scene!");
             //Loading
-            //Loading complete
-            DataSync.CanControll();
+            GameCtrl.Instance.StartLoadingGameScene();
         }
 
-        public static void CanControll()
+        public static void CanControll(ProtocolBase protocol)
         {
             //...
+            GameCtrl.Instance.StartCreatePlayer(Client.Instance.pl_info.id_game);
             Debug.Log("You can controll the player now!!!");
         }
 
@@ -114,11 +117,15 @@ namespace ClientBase
 
             bool isLocal = proto.GetByte(start, ref start) == 1;
             UnitData unitData = Gamef.LoadUnitData(unitName);
-            GameObject prefab = isLocal ? unitData.NetPrefab : unitData.NetPrefab;
+            GameObject prefab = isLocal ? unitData.LocalPrefab : unitData.NetPrefab;
             GameObject gameObj = Gamef.Instantiate(prefab, pos, rot);
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
-            Gamef.UnitBirth(unit, unitId);
+            unit.InitAttributes(unitId);
+            if (unitName == UnitName.Player && isLocal)
+            {
+                GameCtrl.PlayerUnit = unit;
+            }
         }
 
         public static void DestroyObj(ProtocolBase protocol)
@@ -152,6 +159,18 @@ namespace ClientBase
             float speed = proto.GetFloat(start, ref start);
             unit.SyncMovement.SyncTransform(instant, position, forward, up, speed);
         }
+
+        //public static void SyncCameraForward(ProtocolBase protocol)
+        //{
+        //    int start = 0;
+        //    ProtocolBytes proto = (ProtocolBytes)protocol;
+        //    proto.GetNameX(start, ref start);
+        //    long instant = proto.GetInt(start, ref start);
+        //    int id = proto.GetByte(start, ref start);
+        //    Unit unit = Gamef.GetUnit(id);
+        //    Vector3 fwd = ParseVector3(proto, ref start);
+        //    unit.SyncMovement.SyncCameraForward(instant, fwd);
+        //}
         #endregion
 
         #region Input
@@ -164,8 +183,10 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
 
             int[] hv = ParseHaV(proto.GetByte(start, ref start));
+            Vector3 fwd = ParseVector3(proto, ref start);
             Unit unit = Gamef.GetUnit(id);
             unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1]);
+            unit.SyncPlayerInput.SyncCameraFoward(instant, fwd);
         }
 
         public static void SyncSwitchSkill(ProtocolBase protocol)
@@ -240,6 +261,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             float val = proto.GetFloat(start, ref start);
+            Debug.Log("ID " + id + " : recv sync hp = " + val);
             unit.SyncUnitState.SyncHP(instant, val);
         }
 
@@ -252,6 +274,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             float val = proto.GetFloat(start, ref start);
+            Debug.Log("ID " + id + " : recv sync mp = " + val);
             unit.SyncUnitState.SyncMP(instant, val);
         }
         #endregion
