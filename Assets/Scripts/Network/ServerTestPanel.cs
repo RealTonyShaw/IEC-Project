@@ -19,8 +19,8 @@ public class ServerTestPanel : MonoBehaviour
     public GameObject launcherHost;
     private ClientLauncher launcher;
 
-    private float mt_timer = 0;
     private bool isMatching = false;
+    private float mt_timer = 0;
 
     // Start is called before the first frame update
     private void Start()
@@ -75,13 +75,39 @@ public class ServerTestPanel : MonoBehaviour
         if (isMatching && mt_timer > 3)
         {
             DataSync.CancelMatch();
-            isMatching = false;
-            mt_timer = 0;
+            EventHandler.GetEventHandler().AddOnceListener(ProtoName.CancelMatch, OnCancelMatchBack);
         }
         else if (!isMatching)
         {
+            EventHandler.GetEventHandler().AddOnceListener(ProtoName.Match, OnMatchBack);
             DataSync.Match();
+        }
+    }
+
+    public void OnMatchBack(ProtocolBase protocol)
+    {
+        int start = 0;
+        ProtocolBytes proto = (ProtocolBytes)protocol;
+        proto.GetNameX(start, ref start);
+        int flag = proto.GetByte(start, ref start);
+        if (flag == 1)
+        {
             isMatching = true;
+            Debug.Log("Enter matching list");
+        }
+    }
+
+    public void OnCancelMatchBack(ProtocolBase protocol)
+    {
+        int start = 0;
+        ProtocolBytes proto = (ProtocolBytes)protocol;
+        proto.GetNameX(start, ref start);
+        int flag = proto.GetByte(start, ref start);
+        if (flag == 1)
+        {
+            isMatching = false;
+            mt_timer = 0;
+            Debug.Log("Out of matching list");
         }
     }
 
@@ -89,6 +115,16 @@ public class ServerTestPanel : MonoBehaviour
     {
         if (Client.Instance.isConnect) { return; }
         launcher.Connect(ipAdr.text, port.text);
+    }
+
+    public void OnDisConnectClicked()
+    {
+        if (!Client.Instance.isConnect)
+        {
+            return;
+        }
+        Client.Instance.Disconnect();
+        Debug.Log("Is disconnecting succeed = " + !Client.Instance.client.Connected);
     }
 
     public void OnSendClicked()

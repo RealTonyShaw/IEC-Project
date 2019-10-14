@@ -7,6 +7,9 @@ using System;
 
 public class ClientLauncher : MonoBehaviour
 {
+    [Header("Test Only")]
+    public string host;
+    public int port;
 
     public const uint MAX_CONNECT_TIMES = 3;
     public bool AutoConnect = false;
@@ -16,19 +19,19 @@ public class ClientLauncher : MonoBehaviour
     private int ping = 0;
     private long lastSend = 0;
     private static ClientLauncher clientLauncher;
-    public static ClientLauncher Instant
+    public static ClientLauncher Instance
     {
         get
         {
             return clientLauncher;
         }
     }
+    
 
     public string message = "";
 
     public void SendMsg(string msg)
-    {
-        UnityEngine.Debug.Log(string.Format("Begin send to server {0}", msg));
+    {    
         DataSync.Chatting(msg);
     }
 
@@ -36,8 +39,8 @@ public class ClientLauncher : MonoBehaviour
     {
         if (AutoConnect)
         {
-            Client.Instance.Host = "127.0.0.1";
-            Client.Instance.port = 4089;
+            Client.Instance.Host = host;
+            Client.Instance.port = port;
             for (int i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
             {
                 Client.Instance.Connect();
@@ -76,6 +79,11 @@ public class ClientLauncher : MonoBehaviour
 
     public void Update()
     {
+        if (Input.GetMouseButtonDown(0))
+        {
+            UnityEngine.Debug.Log("What ????");
+            DataSync.Chatting("What ????");
+        }
         eventHandler.Update();
     }
 

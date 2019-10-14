@@ -74,7 +74,7 @@ namespace ClientBase
                 bytes = lenBytes.Concat(strBytes).ToArray();
             else
                 bytes = bytes.Concat(lenBytes).Concat(strBytes).ToArray();
-            Debug.Log(GetDesc());
+            //Debug.Log(GetDesc());
             return;
         }
 

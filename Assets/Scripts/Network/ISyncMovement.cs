@@ -27,9 +27,9 @@ public interface ISyncMovement
     /// 位置小同步，用于同步单位的加速度。
     /// </summary>
     /// <param name="instant">时刻，即单位处于该状态时的时刻</param>
-    /// <param name="acceleration">加速度，取值为-1,0,1，分别表示加速，倒退和不变</param>
-    /// <param name="angularAcceleration">角加速度，取值为-1,0,1，分别表示左转，不变和右转</param>
-    void SyncAcceleration(long instant, int acceleration, int angularAcceleration);
+    /// <param name="verticalAcceleration">前后方向的加速度，取值为-1,0,1，分别表示加速，不变和后退</param>
+    /// <param name="horizontalAcceleration">左右方向的加速度，取值为-1,0,1，分别表示向左，不动和向右</param>
+    void SyncAcceleration(long instant, int verticalAcceleration, int horizontalAcceleration);
 
     /// <summary>
     /// 同步摄像机正方向。该同步从小同步中独立出来，以便操作。
