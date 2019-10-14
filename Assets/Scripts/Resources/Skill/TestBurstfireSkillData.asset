@@ -44,3 +44,4 @@ MonoBehaviour:
   AccuracyHeatupSpeed: 15
   Prefabs:
   - {fileID: 5374365597475199403, guid: 47e076646753541ac89ee2c6a42d22aa, type: 3}
+  - {fileID: 1879272669879180, guid: 15b9dd0ff0b73454aad08fc61f1d3084, type: 3}
