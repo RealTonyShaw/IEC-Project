@@ -79,8 +79,7 @@ public class SyncMovement : ISyncMovement
     }
 
     public void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
-    {
-        Debug.Log("ID " + unit.attributes.ID + " :recv transform");
+    {        
         this.lastTransformInstant = instant;
         this.lastPosition = position;
         this.lastVelocity = speed * forward;
@@ -110,8 +109,7 @@ public class SyncMovement : ISyncMovement
         if (recv_Cam)
         {
             // cameraForward
-            mover.CameraForward = lastCameraForward;
-                //Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
+            mover.CameraForward = Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
         }
     }
 
