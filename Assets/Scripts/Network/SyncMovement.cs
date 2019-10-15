@@ -80,7 +80,7 @@ public class SyncMovement : ISyncMovement
             unit.transform.rotation = Quaternion.Slerp(unit.transform.rotation, tRot, 2f * dt);
         }
 
-        if (recv_T)
+        if (recv_Ac)
         {
             // cameraForward
             mover.CameraForward = Vector3.Slerp(mover.CameraForward, tCamFwd, 2f * dt);
