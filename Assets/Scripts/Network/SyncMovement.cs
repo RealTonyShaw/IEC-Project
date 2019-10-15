@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SyncMovement : ISyncMovement
 {
-
+    const float Ms2Sec = 0.001f;
     Unit unit;
     bool recv_Ac = false;
     bool recv_T = false;
@@ -32,6 +32,10 @@ public class SyncMovement : ISyncMovement
     {
         AccelerationData data = new AccelerationData(instant, v, h, camFwd);
         AcData.Buffer(data);
+        if (!recv_Ac)
+        {
+            AcData.Buffer(data);
+        }
         // 直接同步角加速度和加速度
         mover.H = h;
         mover.V = v;
@@ -42,7 +46,6 @@ public class SyncMovement : ISyncMovement
         tCamFwd = drot * camFwd;
         if (!recv_Ac)
         {
-            AcData.Buffer(data);
             recv_Ac = true;
         }
     }
@@ -51,6 +54,10 @@ public class SyncMovement : ISyncMovement
     {
         TransformData data = new TransformData(instant, position, rotation, rotation * Vector3.forward * speed);
         tData.Buffer(data);
+        if (!recv_T)
+        {
+            tData.Buffer(data);
+        }
         // 推测姿态
         Quaternion rot1 = tData.Get(1).rot;
         Quaternion rot2 = rotation;
@@ -58,7 +65,6 @@ public class SyncMovement : ISyncMovement
         tRot = rotation * drot;
         if (!recv_T)
         {
-            tData.Buffer(data);
             recv_T = true;
         }
 
@@ -73,7 +79,7 @@ public class SyncMovement : ISyncMovement
             TransformData d1, d2;
             d1 = tData.Get(1);
             d2 = tData.Get(0);
-            Vector3 tpos = HermiteInterpolate(d1.instant, d1.pos, d1.v, d2.instant, d2.pos, d2.v, Gamef.SystemTimeInMillisecond);
+            Vector3 tpos = HermiteInterpolate(d1.instant * Ms2Sec, d1.pos, d1.v, d2.instant * Ms2Sec, d2.pos, d2.v, Gamef.SystemTime);
             // 修改 unit 的位置
             unit.transform.position = Vector3.Lerp(unit.transform.position, tpos, 5f * dt);
             // rotation
@@ -87,7 +93,7 @@ public class SyncMovement : ISyncMovement
         }
     }
 
-    Vector3 HermiteInterpolate(long t1, Vector3 p1, Vector3 v1, long t2, Vector3 p2, Vector3 v2, long t)
+    Vector3 HermiteInterpolate(float t1, Vector3 p1, Vector3 v1, float t2, Vector3 p2, Vector3 v2, float t)
     {
         Vector3 res;
         res.x = interpolate.Hermite(t1, p1.x, v1.x, t2, p2.x, v2.x, t);
