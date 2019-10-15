@@ -157,6 +157,7 @@ public static class DataSync
         protocol.AddFloat(speed);
 
         Client.Instance.Send(protocol);
+        Debug.Log(string.Format("Send pos {0}, rot {1}, speed {2}, instant {3}", position, rotation.eulerAngles, speed, instant));
     }
 
     //public static void SyncCameraForward(Vector3 cameraFwd)
@@ -184,7 +185,6 @@ public static class DataSync
     /// <param name="v">垂直轴的值 Vertical Axis</param>
     public static void SyncMobileControlAxes(Unit unit, long instant, int h, int v, Vector3 cameraFwd)
     {
-
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMobileControlAxes);
         protocol.AddInt((int)instant);//instant
         protocol.AddByte((byte)unit.attributes.ID);//unit id

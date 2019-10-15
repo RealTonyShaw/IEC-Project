@@ -61,6 +61,8 @@ public class SyncMovement : ISyncMovement
             tData.Buffer(data);
             recv_T = true;
         }
+
+        Debug.Log(string.Format("Sync pos {0}, rot {1}, speed {2}, instant {3}", position, rotation.eulerAngles, speed, instant));
     }
 
     public void Update(float dt)
@@ -128,8 +130,8 @@ public class SyncMovement : ISyncMovement
         public T Buffer(T obj)
         {
             list.Insert(0, obj);
-            T res = list[bufferedTimes - 1];
-            list.RemoveAt(bufferedTimes - 1);
+            T res = list[bufferedTimes];
+            list.RemoveAt(bufferedTimes);
             return res;
         }
     }
