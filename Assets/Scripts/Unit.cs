@@ -17,9 +17,10 @@ public partial class Unit : MonoBehaviour
     public Transform SpawnTransform;
     public UnitName unitName;
     public AnimatorController animatorController;
+    public float DestroyDelay = 3f;
     public UnitAttributes attributes;
-    public Canvas unitCanvas;
-    public Transform unitCamera;
+    //public Canvas unitCanvas;
+    //public Transform unitCamera;
     private float runtimeAccuracy;
     // 射击精确度
     public float RuntimeAccuracy
@@ -251,7 +252,7 @@ public partial class Unit : MonoBehaviour
                     {
                         sendDeathRequest = true;
                         Death();
-                        // send death request
+                        DataSync.DestroyObj((byte)attributes.ID);
                     }
             }
         }
@@ -280,16 +281,17 @@ public partial class Unit : MonoBehaviour
             LogOffBuff(buffs[0]);
         Debug.Log(gameObject.name + " has died.");
         DeathEvnt.Trigger();
-        Gamef.Destroy(gameObject);
         //注销单位
         lock (GameDB.unitPool)
             Gamef.UnitClear(this);
+        StartCoroutine(DelayedDestroy());
     }
 
-    IEnumerator DelayedDisable()
+    IEnumerator DelayedDestroy()
     {
-        yield return new WaitForSeconds(10f);
-        gameObject.SetActive(false);
+        yield return new WaitForSeconds(DestroyDelay);
+        Gamef.Destroy(gameObject);
     }
+
     #endregion
 }

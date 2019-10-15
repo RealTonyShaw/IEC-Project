@@ -7,6 +7,7 @@ public enum UnitName
     Unset = 0,
     Player = 1,
     Capsule = 2,
+    Faker = 3,
     MaxIndex,
 }
 
