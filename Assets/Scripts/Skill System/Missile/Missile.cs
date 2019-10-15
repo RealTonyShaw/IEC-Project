@@ -1,6 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Events;
+
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(TrackSystem))]
 public class Missile : MonoBehaviour
@@ -12,17 +15,20 @@ public class Missile : MonoBehaviour
     public LayerMask collidesWith = ~(1 << 10);
     public GameObject spawnEffect;
     public GameObject deathEffect;
+    public float DestroyDelay = 1f;
     public ISkill Skill { get; private set; }
     public int ID { get; private set; } = -1;
 
     public Unit Caster { get; private set; }
     public Unit Enemy { get; private set; }
     Transform enemyTrans;
-
     protected IMissileHitHandler missileHitHandler;
     protected IPhysicalEffectHandler physicalEffectHandler = new PhysicalEffectHandler();
     protected ISpecialEffectHandler specialEffectHandler;
     TrackSystem trackSystem;
+
+    public UnityEvent OnDeath;
+    //public UnityAction<Collider> OnCollision;
 
     protected Rigidbody rb;
 
@@ -213,11 +219,6 @@ public class Missile : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
-    {
-        Debug.Log("Miss!");
-    }
-
     object mutex = new object();
     public void TakeDamage(float damage)
     {
@@ -241,6 +242,13 @@ public class Missile : MonoBehaviour
         if (Enemy != null)
             trackSystem?.StopTracking();
         Gamef.MissileClear(ID);
+        OnDeath.Invoke();
+        StartCoroutine(DelayDestroy());
+    }
+
+    IEnumerator DelayDestroy()
+    {
+        yield return new WaitForSeconds(DestroyDelay);
         Gamef.Destroy(gameObject);
     }
 
@@ -253,6 +261,8 @@ public class Missile : MonoBehaviour
 
     void Move(float dt)
     {
+        if (!IsAlive)
+            return;
         prevPos = transform.position;
         float ds = Skill.Data.Speed * dt;
         // 前方有障碍

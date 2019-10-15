@@ -41,16 +41,20 @@
       "requirement": "optional"
     },
     {
-      "name": "/actions/default/out/Haptic",
-      "type": "vibration"
-    },
-    {
-      "name": "/actions/platformer/in/Move",
+      "name": "/actions/default/in/TouchPadPos",
       "type": "vector2"
     },
     {
-      "name": "/actions/platformer/in/Jump",
+      "name": "/actions/default/in/Trigger",
       "type": "boolean"
+    },
+    {
+      "name": "/actions/default/in/PressPad",
+      "type": "boolean"
+    },
+    {
+      "name": "/actions/default/out/Haptic",
+      "type": "vibration"
     },
     {
       "name": "/actions/buggy/in/Steering",
@@ -77,10 +81,6 @@
   "action_sets": [
     {
       "name": "/actions/default",
-      "usage": "single"
-    },
-    {
-      "name": "/actions/platformer",
       "usage": "single"
     },
     {
@@ -142,7 +142,9 @@
       "/actions/default/in/SkeletonRightHand": "Skeleton (Right)",
       "/actions/default/in/Teleport": "Teleport",
       "/actions/default/out/Haptic": "Haptic",
-      "/actions/platformer/in/Jump": "Jump"
+      "/actions/default/in/TouchPadPos": "Touch Pad Pos",
+      "/actions/default/in/Trigger": "Trigger",
+      "/actions/default/in/PressPad": "Press Pad"
     }
   ]
 }

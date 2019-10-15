@@ -133,10 +133,11 @@ public partial class UnitAttributes
         }
         set
         {
-            float pre = Mathf.Clamp(value, 0, MaxShieldPoint);
-            sheildPoint_current = pre;
+            float pre = sheildPoint_current;
+            float cur = Mathf.Clamp(value, 0, MaxShieldPoint);
+            sheildPoint_current = cur;
             //设置参数
-            EventMgr.SPChangeEventInfo info = new EventMgr.SPChangeEventInfo(unit, pre, sheildPoint_current);
+            EventMgr.SPChangeEventInfo info = new EventMgr.SPChangeEventInfo(unit, pre, cur);
             //触发事件
             EventMgr.SPChangeEvent.OnTrigger(info);
         }

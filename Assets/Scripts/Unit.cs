@@ -17,9 +17,10 @@ public partial class Unit : MonoBehaviour
     public Transform SpawnTransform;
     public UnitName unitName;
     public AnimatorController animatorController;
+    public float DestroyDelay = 3f;
     public UnitAttributes attributes;
-    public Canvas unitCanvas;
-    public Transform unitCamera;
+    //public Canvas unitCanvas;
+    //public Transform unitCamera;
     private float runtimeAccuracy;
     // 射击精确度
     public float RuntimeAccuracy
@@ -106,17 +107,17 @@ public partial class Unit : MonoBehaviour
         {
             Debug.LogError(string.Format("Unit {0} is not in Unit layer.", gameObject.name));
         }
-        if (GameCtrl.IsOnlineGame)
+        if (GameCtrl.IsOnlineGame && attributes.ID == -1)
         {
-            // do nothing
-            if (!isInitAttr)
-            {
-                Debug.LogError("Init Error: " + gameObject.name + " initialization failed");
-            }
+            Debug.LogError("ID not set!!!!");
         }
-        else
+        if (!GameCtrl.IsOnlineGame)
         {
             InitAttributes();
+            if (attributes.name == UnitName.Player)
+            {
+                GameCtrl.PlayerUnit = this;
+            }
         }
     }
 
@@ -131,13 +132,6 @@ public partial class Unit : MonoBehaviour
             attributes.ID = Gamef.UnitBirth(this);
 
         attributes.Init(this);
-        SyncMovement?.Init(this);
-        //测试用
-        if (attributes.name == UnitName.Player)
-        {
-            if (DisplayPlayerProperity.Instance != null)
-                StartCoroutine(DisplayProperity());
-        }
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
             skillTable.Init(this);
@@ -156,13 +150,6 @@ public partial class Unit : MonoBehaviour
             attributes.ID = Gamef.UnitBirth(this, ID);
 
         attributes.Init(this);
-        SyncMovement?.Init(this);
-        //测试用
-        if (attributes.name == UnitName.Player)
-        {
-            if (DisplayPlayerProperity.Instance != null)
-                StartCoroutine(DisplayProperity());
-        }
         // 如果该单位是施法单位，则初始化技能表
         if (attributes.data.IsCaster)
             skillTable.Init(this);
@@ -187,6 +174,7 @@ public partial class Unit : MonoBehaviour
         {
             if (Gamef.SystemTimeInMillisecond - lastSyncUnitStateInstant >= GameDB.SYNC_TRANSFORM_INTERVAL)
             {
+                Debug.Log("Send Hp = " + attributes.SheildPoint + ", Mp = " + attributes.ManaPoint.Value);
                 lastSyncUnitStateInstant = Gamef.SystemTimeInMillisecond;
                 DataSync.SyncHP(this, lastSyncUnitStateInstant, attributes.SheildPoint);
                 DataSync.SyncMP(this, lastSyncUnitStateInstant, attributes.ManaPoint.Value);
@@ -202,15 +190,6 @@ public partial class Unit : MonoBehaviour
     {
         // 执行位置同步
         SyncMovement?.Update(Time.fixedDeltaTime);
-    }
-
-    IEnumerator DisplayProperity()
-    {
-        while (true)
-        {
-            DisplayPlayerProperity.Instance.SetText(attributes.SheildPoint, attributes.MaxShieldPoint, attributes.ManaPoint.Value, attributes.MaxManaPoint.Value);
-            yield return new WaitForSeconds(0.1f);
-        }
     }
 
     #endregion
@@ -273,7 +252,7 @@ public partial class Unit : MonoBehaviour
                     {
                         sendDeathRequest = true;
                         Death();
-                        // send death request
+                        DataSync.DestroyObj((byte)attributes.ID);
                     }
             }
         }
@@ -302,16 +281,17 @@ public partial class Unit : MonoBehaviour
             LogOffBuff(buffs[0]);
         Debug.Log(gameObject.name + " has died.");
         DeathEvnt.Trigger();
-        Gamef.Destroy(gameObject);
         //注销单位
         lock (GameDB.unitPool)
             Gamef.UnitClear(this);
+        StartCoroutine(DelayedDestroy());
     }
 
-    IEnumerator DelayedDisable()
+    IEnumerator DelayedDestroy()
     {
-        yield return new WaitForSeconds(10f);
-        gameObject.SetActive(false);
+        yield return new WaitForSeconds(DestroyDelay);
+        Gamef.Destroy(gameObject);
     }
+
     #endregion
 }

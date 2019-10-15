@@ -14,13 +14,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   LocalPrefab: {fileID: 8572677812863099403, guid: e47df09e3cc012a40a256b961c42b97c,
     type: 3}
-  NetPrefab: {fileID: 8572677812863099403, guid: 5bb2b53e590ce574399014efd7bc7f23,
+  NetPrefab: {fileID: 8572677812863099403, guid: 909ae44c009ee594bbaa3c3e170cb640,
     type: 3}
   tags:
     player: 0
     elf: 0
     devil: 0
-  MaxVelocity: 22
+  MaxVelocity: 42
   MaxTurningVelocity: 60
   MaxSheildPoint: 50
   ShieldPointRegenerationRate: 0.2
@@ -28,4 +28,4 @@ MonoBehaviour:
   MaxManaPoint: 100
   ManaPointRegenerationRate: 10
   IsCaster: 1
-  skills: 01000000020000000300000000000000
+  skills: 05000000020000000300000000000000

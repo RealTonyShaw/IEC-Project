@@ -14,9 +14,10 @@ public class SyncPlayerInput : ISyncPlayerInput
         this.unit = unit;
     }
 
+    // 输入 h v， 输出 v h。之前写反了。
     public void SyncMobileControlAxes(long instant, int h, int v)
     {
-        unit.SyncMovement.SyncAcceleration(instant, h, v);
+        unit.SyncMovement.SyncAcceleration(instant, v, h);
     }
 
     public void SyncCameraFoward(long instant, Vector3 forward)

@@ -33,7 +33,7 @@ MonoBehaviour:
   InnerDamageCoefficient: 1
   MiddleDamageCoefficient: 0.5
   OuterDamageCoefficient: 0.2
-  IsTracking: 0
+  IsTracking: 1
   TrackingConst: 1
   AimingTime: 2
   IsPassive: 0
@@ -44,4 +44,4 @@ MonoBehaviour:
   AccuracyCooldownSpeed: 5
   AccuracyHeatupSpeed: 5
   Prefabs:
-  - {fileID: 5374365597475199403, guid: 597199358daa24c4d9397647318fb58d, type: 3}
+  - {fileID: 5374365597475199403, guid: c53c116b35e8449dbb1032ac2f1035d9, type: 3}
