@@ -20,11 +20,27 @@ public class PlayerAnimController : AnimatorController
 
         unit.StopCastingEvnt.AddListener(StopChannelling);
         unit.StopCastingEvnt.AddListener(StopCasting);
+        unit.DeathEvnt.AddListener(Die);
+    }
+
+    private void Start()
+    {
+        AnimatorControllerParameter[] p =
+        animator.parameters;
+        for (int i = 0; i < p.Length; i++)
+        {
+            Debug.Log("ID " + i + ": " + p[i].name);
+        }
     }
 
     private void Update()
     {
         UpdateFlyMode();
+    }
+
+    void Die()
+    {
+        animator.SetTrigger(paramNames[12]);
     }
 
     private void FixedUpdate()

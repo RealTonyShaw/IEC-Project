@@ -17,7 +17,7 @@ namespace ClientBase
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
             long delta = proto.GetLong(start, ref start);
-            ClientLauncher.Instance.TimeCheck(delta);
+            ClientLauncher.Instance.TimeCheck(delta);            
         }
         public static void Ping(ProtocolBase protocol)
         {
@@ -30,7 +30,6 @@ namespace ClientBase
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
             string str;
-            Debug.Log("Receive msg from server");
             Debug.Log(str = proto.GetString(start, ref start));
             ClientLauncher.Instance.message = str;
         }
@@ -124,6 +123,7 @@ namespace ClientBase
             unit.InitAttributes(unitId);
             if (unitName == UnitName.Player && isLocal)
             {
+                CameraGroupController.Instance.ResetTransform(pos, rot);
                 GameCtrl.PlayerUnit = unit;
             }
         }
@@ -179,11 +179,11 @@ namespace ClientBase
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
-            long instant = proto.GetInt(start, ref start);
-            int id = proto.GetByte(start, ref start);
+            long instant = proto.GetInt(start, ref start);//parse instant
+            int id = proto.GetByte(start, ref start);//parse id
+            int[] hv = ParseHaV(proto.GetByte(start, ref start));//parse h and v
+            Vector3 fwd = ParseVector3(proto, ref start);// parse camera forward
 
-            int[] hv = ParseHaV(proto.GetByte(start, ref start));
-            Vector3 fwd = ParseVector3(proto, ref start);
             Unit unit = Gamef.GetUnit(id);
             unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1]);
             unit.SyncPlayerInput.SyncCameraFoward(instant, fwd);
