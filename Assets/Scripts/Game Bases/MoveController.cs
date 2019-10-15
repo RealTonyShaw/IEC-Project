@@ -42,20 +42,19 @@ public class MoveController : MonoBehaviour
         }
         if (mover == null)
             return;
+
+        mover.V = InputMgr.GetVerticalAxis();
+        mover.H = InputMgr.GetHorizontalAxis();
+        mover.CameraForward = CameraGroupController.Instance.transform.forward;
+
         if (GameCtrl.IsOnlineGame)
         {
             lastSyncA = Gamef.SystemTimeInMillisecond;
             lastSyncT = Gamef.SystemTimeInMillisecond;
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
-            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()), CameraGroupController.Instance.transform.forward);
-            DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
-        }
-        else
-        {
-            mover.V = InputMgr.GetVerticalAxis();
-            mover.H = InputMgr.GetHorizontalAxis();
-            mover.CameraForward = CameraGroupController.Instance.transform.forward;
+            DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(mover.H), Mathf.RoundToInt(mover.V), CameraGroupController.Instance.transform.forward);
+            DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.rotation, rb.velocity.magnitude);
         }
     }
     long lastSyncA;
@@ -89,6 +88,10 @@ public class MoveController : MonoBehaviour
             camFwd = CameraGroupController.Instance.transform.forward;
         }
 
+        mover.V = v;
+        mover.H = h;
+        mover.CameraForward = camFwd;
+
         if (GameCtrl.IsOnlineGame)
         {
             Unit unit = GameCtrl.PlayerUnit;
@@ -104,7 +107,7 @@ public class MoveController : MonoBehaviour
                 {
                     lastSyncT = instant;
                 }
-                DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(InputMgr.GetHorizontalAxis()), Mathf.RoundToInt(InputMgr.GetVerticalAxis()), CameraGroupController.Instance.transform.forward);
+                DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v), CameraGroupController.Instance.transform.forward);
             }
             if (instant - lastSyncT >= 300)
             {
@@ -117,14 +120,8 @@ public class MoveController : MonoBehaviour
                     lastSyncT = instant;
                 }
                 Debug.Log("Send sync transform");
-                DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.forward, unit.transform.up, rb.velocity.magnitude);
+                DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.rotation, rb.velocity.magnitude);
             }
-        }
-        else
-        {
-            mover.V = v;
-            mover.H = h;
-            mover.CameraForward = camFwd;
         }
     }
 
