@@ -157,6 +157,7 @@ namespace ClientBase
             Quaternion rot = ParseQuaternion(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
             unit.SyncMovement.SyncTransform(instant, position, rot, speed);
+            Debug.Log(string.Format("Recv pos {0}, rot {1}, speed {2}, instant {3}", position, rot.eulerAngles, speed, instant));
         }
 
         //public static void SyncCameraForward(ProtocolBase protocol)
