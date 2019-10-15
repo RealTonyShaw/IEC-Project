@@ -21110,15 +21110,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2837455851235651062, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
-        type: 3}
-      propertyPath: m_Name
-      value: Controller
-      objectReference: {fileID: 0}
     - target: {fileID: 3371446225316369919, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: AutoConnect
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3371446225316369919, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
@@ -21129,6 +21124,11 @@ PrefabInstance:
         type: 3}
       propertyPath: port
       value: 22222
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837455851235651062, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
+        type: 3}
+      propertyPath: m_Name
+      value: Controller
       objectReference: {fileID: 0}
     - target: {fileID: 2837455851235651064, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
@@ -21188,7 +21188,7 @@ PrefabInstance:
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: gameScene
-      value: Game
+      value: Ph Game
       objectReference: {fileID: 0}
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
@@ -21198,7 +21198,7 @@ PrefabInstance:
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: Is_Online_Game
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
