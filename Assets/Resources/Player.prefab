@@ -557,7 +557,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6914126989816214263
 RectTransform:
   m_ObjectHideFlags: 0
@@ -822,7 +822,7 @@ RectTransform:
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMax: {x: 0.75, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 10, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -896,8 +896,8 @@ RectTransform:
   m_Father: {fileID: 4716313125746128608}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
+  m_AnchorMin: {x: 0.75, y: 0}
+  m_AnchorMax: {x: 0.75, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -23829,6 +23829,7 @@ MonoBehaviour:
   SpawnTransform: {fileID: 8479456665543203989}
   unitName: 1
   animatorController: {fileID: 7397804601718821625}
+  DestroyDelay: 3
   attributes:
     ID: -1
     unit: {fileID: 0}
@@ -23877,8 +23878,6 @@ MonoBehaviour:
       unit: {fileID: 0}
       value_current: 10
       OriginalValue: 10
-  unitCanvas: {fileID: 0}
-  unitCamera: {fileID: 0}
   IsLocal: 1
   RecvSyncMovement: 1
   RecvSyncUnitState: 1
