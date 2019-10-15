@@ -47979,6 +47979,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GamePanel
       objectReference: {fileID: 0}
+    - target: {fileID: 7285996394081537300, guid: 92ed657dc9863ee4897a5eb2d63095dd,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3879606639531320236, guid: 92ed657dc9863ee4897a5eb2d63095dd,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -48159,14 +48164,19 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8572677813792802292, guid: e47df09e3cc012a40a256b961c42b97c,
+    - target: {fileID: 172698508884239314, guid: e47df09e3cc012a40a256b961c42b97c,
         type: 3}
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8572677812863099396, guid: e47df09e3cc012a40a256b961c42b97c,
+    - target: {fileID: 8796783269598856360, guid: e47df09e3cc012a40a256b961c42b97c,
         type: 3}
-      propertyPath: V
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8796783269598856360, guid: e47df09e3cc012a40a256b961c42b97c,
+        type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
