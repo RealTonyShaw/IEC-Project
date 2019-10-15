@@ -10,7 +10,7 @@ public static partial class Gamef
 
     public static long SystemTimeInMillisecond => GameCtrl.IsOnlineGame ? ClientLauncher.Instance.GetTime() : (long)(Time.time * 1000d);
 
-    public static float SystemTime => SystemTimeInMillisecond / 1000f;
+    public static float SystemTime => SystemTimeInMillisecond * 0.001f;
 
     /// <summary>
     /// 对单位造成伤害
