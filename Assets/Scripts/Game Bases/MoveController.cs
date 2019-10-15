@@ -99,13 +99,13 @@ public class MoveController : MonoBehaviour
             Debug.Log("Send sync acceleration");
             if (instant - lastSyncA >= 33)
             {
-                if (instant - lastSyncT <= 40)
+                if (instant - lastSyncA <= 40)
                 {
-                    lastSyncT += 33;
+                    lastSyncA += 33;
                 }
                 else
                 {
-                    lastSyncT = instant;
+                    lastSyncA = instant;
                 }
                 DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v), CameraGroupController.Instance.transform.forward);
             }
