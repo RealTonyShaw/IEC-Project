@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 public class Skill_TestContinuousSkill : AbstractContinuousSkill
 {
-    private GameObject missilePrefab;
+    private GameObject Prefab;
     private GameObject tmp;
     private float original;
     protected System.Random random;
@@ -29,6 +29,9 @@ public class Skill_TestContinuousSkill : AbstractContinuousSkill
         Debug.Log("哦豁，您成功释放了速度提升技能！");
         original = Caster.attributes.MaxV_bonus;
         Caster.attributes.MaxV_bonus += Data.Params[0];
+        Prefab = Data.Prefabs[0];
+        if (Prefab == null)
+            Debug.LogError("未能找到 Lazer Prefab");
     }
 
     protected override void Stop()
