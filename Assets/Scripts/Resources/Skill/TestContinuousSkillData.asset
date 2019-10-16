@@ -15,7 +15,7 @@ MonoBehaviour:
   Description: "\u8FD9\u91CC\u53EF\u4EE5\u8F93\u5165\u8BF4\u660E"
   SkillName: 1
   SkillType: 2
-  Damage: 10
+  Damage: 0
   RPM: 100
   Params:
   - 1
@@ -33,15 +33,15 @@ MonoBehaviour:
   InnerDamageCoefficient: 1
   MiddleDamageCoefficient: 0.5
   OuterDamageCoefficient: 0.2
-  IsTracking: 1
+  IsTracking: 0
   TrackingConst: 1
   AimingTime: 2
   IsPassive: 0
   Buffs: 
-  Force: 2
+  Force: 0
   Accuracy: 99
   MinAccuracy: 40
   AccuracyCooldownSpeed: 5
   AccuracyHeatupSpeed: 5
   Prefabs:
-  - {fileID: 5374365597475199403, guid: c53c116b35e8449dbb1032ac2f1035d9, type: 3}
+  - {fileID: 1238843893459588, guid: 8461df719dd4f483e97a12d430d0a87d, type: 3}
