@@ -47435,7 +47435,6 @@ GameObject:
   - component: {fileID: 5174529388956396895}
   - component: {fileID: -2216359950321396860}
   - component: {fileID: 5327225505236678127}
-  - component: {fileID: -4712882765340371737}
   m_Layer: 9
   m_Name: Lazer
   m_TagString: Missile
@@ -47579,19 +47578,6 @@ MonoBehaviour:
   - {fileID: 6361296799475552290}
   - {fileID: 5430265898798778246}
   - {fileID: 1362568944714139476}
---- !u!114 &-4712882765340371737
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5374365597475199403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5edd416757d1dca4d9586d2bf13d497f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Prefab: 6
 --- !u!1 &5430265898798778246
 GameObject:
   m_ObjectHideFlags: 0
