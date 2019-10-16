@@ -29,6 +29,7 @@ public class SkillCell : ISkillCell
     AbstractStrafeSkill asskill;
 
     bool isCasting = false;
+    public bool IsCasting => isCasting;
     Unit caster;
     Transform spawnTransform;
 
@@ -141,7 +142,8 @@ public class SkillCell : ISkillCell
             case SkillType.StrafeSkill:
                 // trigger event
                 caster.StartCastingEvnt.Trigger();
-                timer = -deltaT;
+                Debug.Log("Start strafe skill at " + startOrStopInstant + ", in fact " + Gamef.SystemTimeInMillisecond);
+                timer = -1e-5f;
                 break;
 
             case SkillType.BurstfireSkill:

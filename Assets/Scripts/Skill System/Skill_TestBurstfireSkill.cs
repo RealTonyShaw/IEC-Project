@@ -27,7 +27,7 @@ public class Skill_TestBurstfireSkill : AbstractBurstfireSkill, ITracking
         Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
         tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
         Missile missile = tmp.GetComponent<Missile>();
-        missile.Init(Caster, Target, this);
+        missile.Init(Caster, Target, this, new MissileHitBasicHandler(), new FireBallEffectHandler());
         //Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
         Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
         return missile;

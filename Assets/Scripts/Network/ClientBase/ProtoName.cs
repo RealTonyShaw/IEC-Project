@@ -30,6 +30,7 @@
         CancelMatch = 22,
         CanControll = 23,
         SyncCameraForward = 24,
+        SyncAimTarget = 25,
 
         Chatting = 99,
         //SyncAcceleration = 3,

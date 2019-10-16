@@ -11,13 +11,13 @@ public class GameCacheBlock
 {
     // 存储缓存物体的列表。在复用时，优先复用快过期的物体。
     private SortedList<float, CacheUnit> list = new SortedList<float, CacheUnit>();
-
+    public readonly object BlkMutex = new object();
     private struct CacheUnit
     {
         public GameObject obj;
         public float deathTime;
     }
-
+    readonly object listMutex = new object();
     readonly object cacheMutex = new object();
     /// <summary>
     /// 将物体存入缓存块。此方法不会取消激活(Disable)物体。
@@ -28,7 +28,7 @@ public class GameCacheBlock
         CacheUnit cell;
         cell.obj = gameObject;
         float lifeSpan = -1e-5f;
-        lock (list)
+        lock (listMutex)
         {
             // 根据规则设定死亡时间
             // 1st - 4th
@@ -59,15 +59,13 @@ public class GameCacheBlock
             }
             cell.deathTime = Time.time + lifeSpan;
             // 防止 key 冲突
-            lock (cacheMutex)
+            while (list.ContainsKey(cell.deathTime))
             {
-                while (list.ContainsKey(cell.deathTime))
-                {
-                    cell.deathTime += 1e-5f;
-                }
-                list.Add(cell.deathTime, cell);
+                cell.deathTime += 1e-5f;
             }
+            list.Add(cell.deathTime, cell);
         }
+
     }
 
     /// <summary>
@@ -76,7 +74,7 @@ public class GameCacheBlock
     /// <returns>提取到的物体。若缓存为空，则返回null</returns>
     public GameObject Retrieve()
     {
-        lock (list)
+        lock (listMutex)
         {
             if (list.Count > 0)
             {
@@ -93,7 +91,7 @@ public class GameCacheBlock
     /// <returns>提取到的物体。若缓存为空，则返回null</returns>
     public GameObject Pop()
     {
-        lock (list)
+        lock (listMutex)
         {
             if (list.Count > 0)
             {
@@ -101,8 +99,8 @@ public class GameCacheBlock
                 list.RemoveAt(0);
                 return pair.Value.obj;
             }
+            return null;
         }
-        return null;
     }
 
     /// <summary>
@@ -110,7 +108,7 @@ public class GameCacheBlock
     /// </summary>
     public void Refresh()
     {
-        lock (list)
+        lock (listMutex)
         {
             KeyValuePair<float, CacheUnit> pair;
             while (list.Count > 0 && (pair = list.First()).Key < Time.time)

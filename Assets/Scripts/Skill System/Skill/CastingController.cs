@@ -18,6 +18,8 @@ public class CastingController : MonoBehaviour
     public SteamVR_Action_Vector2 padPos;
     public SteamVR_Input_Sources pressPadHandType = SteamVR_Input_Sources.LeftHand;
     public SteamVR_Action_Boolean pressPad;
+    bool expectedCasting = false;
+    readonly object castingMutex = new object();
 
     private void UpdatePlayer(Unit player)
     {
@@ -153,7 +155,14 @@ public class CastingController : MonoBehaviour
             return;
         if (GameCtrl.IsOnlineGame)
         {
-            DataSync.SyncMouseButton0Down(player, Gamef.SystemTimeInMillisecond);
+            lock (castingMutex)
+            {
+                if (!expectedCasting)
+                {
+                    expectedCasting = true;
+                    DataSync.SyncMouseButton0Down(player, Gamef.SystemTimeInMillisecond);
+                }
+            }
         }
         else
         {
@@ -174,7 +183,14 @@ public class CastingController : MonoBehaviour
             return;
         if (GameCtrl.IsOnlineGame)
         {
-            DataSync.SyncMouseButton0Up(player, Gamef.SystemTimeInMillisecond);
+            lock (castingMutex)
+            {
+                if (expectedCasting)
+                {
+                    expectedCasting = false;
+                    DataSync.SyncMouseButton0Up(player, Gamef.SystemTimeInMillisecond);
+                }
+            }
         }
         else
         {

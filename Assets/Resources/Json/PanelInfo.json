@@ -39,6 +39,10 @@
     {
       "panelTypeString": "Register",
       "panelPath": "UIPrefabs/RegisterPanel"
+    },
+    {
+      "panelTypeString": "Loading",
+      "panelPath": "UIPrefabs/LoadingPanel"
     }
   ]
 }

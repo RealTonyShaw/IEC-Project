@@ -22,7 +22,7 @@ MonoBehaviour:
   Speed: 150
   LifeSpan: 4
   Cooldown: 0.2
-  ManaCost: 0
+  ManaCost: 2.5
   ManaCostPerSec: 0
   MissileHP: 5
   IsAOE: 0

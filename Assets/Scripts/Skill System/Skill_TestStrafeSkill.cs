@@ -6,6 +6,8 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
 {
     private GameObject missilePrefab;
     private GameObject tmp;
+    int cnt = 0;
+    object mutex = new object();
 
     public override void AccuracyCooldown(float dt)
     {
