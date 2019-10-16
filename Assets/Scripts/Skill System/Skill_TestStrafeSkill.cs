@@ -28,8 +28,8 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
     {
         Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
         tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
-        if (GameCtrl.IsVR)
-            Gamef.ControllerVibration(0f, 0.1f, 160, 0.5f, Valve.VR.SteamVR_Input_Sources.RightHand);
+        //if (GameCtrl.IsVR)
+        //    Gamef.ControllerVibration(0f, 0.1f, 160, 0.5f, Valve.VR.SteamVR_Input_Sources.RightHand);
         Missile missile = tmp.GetComponent<Missile>();
         missile.Init(Caster, Target, this);
         //Debug.Log("Strafe Accuracy : " + Caster.RuntimeAccuracy);
