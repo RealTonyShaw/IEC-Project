@@ -96,7 +96,6 @@ public class MoveController : MonoBehaviour
         {
             Unit unit = GameCtrl.PlayerUnit;
             long instant = Gamef.SystemTimeInMillisecond;
-            Debug.Log("Send sync acceleration");
             if (instant - lastSyncA >= 33)
             {
                 if (instant - lastSyncA <= 40)
