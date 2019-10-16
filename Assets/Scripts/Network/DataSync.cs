@@ -254,6 +254,16 @@ public static class DataSync
 
         Client.Instance.Send(protocol);
     }
+
+    public static void SyncAimTarget(long instant, int sourceId, int targetId)
+    {
+        ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncAimTarget);
+        protocol.AddInt((int)instant);
+        protocol.AddByte((byte)sourceId);
+        protocol.AddByte((byte)targetId);
+
+        Client.Instance.Send(protocol);
+    }
     #endregion
 
     #region Unit state
