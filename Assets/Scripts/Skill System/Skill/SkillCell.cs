@@ -132,7 +132,7 @@ public class SkillCell : ISkillCell
         {
             return;
         }
-
+        Debug.Log(string.Format("ID {0} skillcell start", caster.attributes.ID));
         if (skill is ISkillCastInstant tmp)
         {
             tmp.SetInstant(startOrStopInstant);
