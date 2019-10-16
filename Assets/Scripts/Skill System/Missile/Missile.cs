@@ -132,9 +132,9 @@ public class Missile : MonoBehaviour
 
 
     /// <summary>
-    /// Enable后重置参数
+    /// Disable后重置参数
     /// </summary>
-    private void OnEnable()
+    private void OnDisable()
     {
         if (isInit)
         {

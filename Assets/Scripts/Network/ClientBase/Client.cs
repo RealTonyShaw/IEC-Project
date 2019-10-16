@@ -94,7 +94,7 @@ namespace ClientBase
         public bool Connect(string _host, string _port)
         {
             try
-            { 
+            {
                 if (int.TryParse(_port, out port))
                 {
                     this.host = _host;
@@ -217,7 +217,8 @@ SocketFlags.None, ReceiveCallback, null);
             {
                 client.Disconnect(true);
                 isConnect = false;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e);
             }
@@ -235,7 +236,8 @@ SocketFlags.None, ReceiveCallback, null);
             }
             try
             {
-                protocol.AppendCrc();
+                //if (ClientLauncher.Instance.EnableCrc)
+                    protocol.AppendCrc();
                 //把传输的信息转化为字节数组A
                 byte[] bytes = protocol.Encode();
                 //把信息长度大小转换成字节数组
@@ -243,7 +245,8 @@ SocketFlags.None, ReceiveCallback, null);
                 //这段话表示连接length和bytes数组，并且length在前
                 byte[] sendBuff = length.Concat(bytes).ToArray();
                 client.Send(sendBuff);
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
                 Debug.Log(e);
                 Debug.Log(e.StackTrace);
