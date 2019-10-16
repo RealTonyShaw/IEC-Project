@@ -26,13 +26,6 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
 
     protected override Missile Shoot()
     {
-        Debug.Log("Try to shoot at " + Gamef.SystemTimeInMillisecond);
-        lock (mutex)
-        {
-            if (cnt < 10)
-                cnt++;
-            else return null;
-        }
         Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
         tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
         if (GameCtrl.IsVR)
