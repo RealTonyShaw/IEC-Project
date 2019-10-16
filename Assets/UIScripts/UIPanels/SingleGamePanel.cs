@@ -51,4 +51,12 @@ public class SingleGamePanel : BasePanel
     {
         GameCtrl.Instance.StartSingleGame();
     }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+        {
+            GameCtrl.Instance.StartSingleGame();
+        }
+    }
 }
