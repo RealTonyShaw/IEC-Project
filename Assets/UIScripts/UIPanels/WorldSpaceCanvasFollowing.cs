@@ -9,6 +9,7 @@ public class WorldSpaceCanvasFollowing : MonoBehaviour
     public Transform Origin = null;
     //public Vector3 localEulerAngles = new Vector3(0f, 225f, 0f);
     public Vector3 localPosition = new Vector3(1f, 0f, 1f);
+    public bool UseInitialLocalPosition = true;
     //private Quaternion localRotation;
     //private float yAxis;
     //private Vector3 preTPos;
@@ -28,6 +29,10 @@ public class WorldSpaceCanvasFollowing : MonoBehaviour
         if (Origin == null)
         {
             Origin = transform.parent;
+        }
+        if (UseInitialLocalPosition)
+        {
+            localPosition = transform.localPosition;
         }
     }
 

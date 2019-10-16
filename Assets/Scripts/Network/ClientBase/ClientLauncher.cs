@@ -1,17 +1,19 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using ClientBase;
-using System.Diagnostics;
+﻿using ClientBase;
 using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
+using UnityEngine;
 
 public class ClientLauncher : MonoBehaviour
 {
     [Header("Test Only")]
     public string host;
     public int port;
-
+    public bool EnableSending = true;
+    public bool EnableCrc16 = true;
+    public bool EnableCrc8 = true;
     public const uint MAX_CONNECT_TIMES = 3;
     public bool AutoConnect = false;
     private ClientBase.EventHandler eventHandler;
@@ -27,49 +29,57 @@ public class ClientLauncher : MonoBehaviour
             return clientLauncher;
         }
     }
-    
+
 
     public string message = "";
 
     public void SendMsg(string msg)
-    {    
+    {
         DataSync.Chatting(msg);
     }
 
     public void InitClient()
     {
-        Thread t = new Thread(() => {
-            if (AutoConnect)
+        Thread t = new Thread(() =>
+        {
+            Client.Instance.Host = host;
+            Client.Instance.port = port;
+            int i = 0;
+            for (i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
             {
-                Client.Instance.Host = host;
-                Client.Instance.port = port;
-                int i = 0;
-                for (i = 0; !Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
-                {
-                    Client.Instance.Connect();
-                }
-                if (i == MAX_CONNECT_TIMES)
-                {
-                    UnityEngine.Debug.Log("Connect times over max connect times");
-                }
+                Client.Instance.Connect();
+            }
+            if (i == MAX_CONNECT_TIMES)
+            {
+                UnityEngine.Debug.Log("Connect times over max connect times");
             }
         });
         t.Start();
-    }    
+    }
 
     public void Awake()
     {
         clientLauncher = this;
     }
 
-    public void Start()
+    private void Start()
     {
+        if (AutoConnect)
+            Launch();
+    }
+
+    bool isLaunched = false;
+    public void Launch()
+    {
+        if (isLaunched)
+            return;
         eventHandler = ClientBase.EventHandler.GetEventHandler();
         client = Client.Instance;
         timeMgr = new TimeMgr();
-        timeMgr.StartTimer();       
+        timeMgr.StartTimer();
         InitClient();
         SendMsg("olleH! revreS");
+        isLaunched = true;
     }
 
     public void Connect(string host, string port)
@@ -86,8 +96,10 @@ public class ClientLauncher : MonoBehaviour
     private float ping_timer = 0;
     private float time_check_freq = 1f;
     private float ping_check = 10f;
-    public void Update()
+    private void Update()
     {
+        if (!isLaunched)
+            return;
         eventHandler.Update();
         timer += Time.deltaTime;
         ping_timer += Time.deltaTime;
@@ -134,7 +146,7 @@ public class ClientLauncher : MonoBehaviour
     /// </summary>
     /// <returns>Instant ticks</returns>
     public long GetTime()
-    {        
+    {
         return timeMgr == null ? 0 : timeMgr.GetTime();
     }
 
@@ -162,7 +174,7 @@ public class ClientLauncher : MonoBehaviour
             return stopwatch.ElapsedMilliseconds + bias;
         }
 
-        
+
         /// <summary>
         /// To check the timer.
         /// </summary>

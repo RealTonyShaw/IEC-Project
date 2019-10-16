@@ -84,8 +84,7 @@ namespace ClientBase
             if (!isInit)
                 return 0xFF;
             res = 0xFF;
-            int bitLength = data.Length * 8, bit = 0;
-            ViewData();
+            int bitLength = data.Length << 3, bit = 0;
             for (int i = 0; i < bitLength; i++)
             {
                 if ((res & 0x80) != 0)
@@ -94,7 +93,6 @@ namespace ClientBase
                 }
                 bit = GetBit(i) == 0 ? 0 : 0x1;
                 res = (byte)((res << 1) | bit);
-                ViewByte(res);
             }
             hasCRC = true;
             return res;

@@ -243,6 +243,17 @@ public static partial class Gamef
     #endregion
 
     #region 游戏指令
+    
+    public static void SetHP_UI_Rate(float rate)
+    {
+        FloatingCanvasRight.Instance.SetRate(rate);
+    }
+
+    public static void SetMP_UI_Rate(float rate)
+    {
+        FloatingCanvasLeft.Instance.SetRate(rate);
+    }
+
     //public static int CreateUnit(GameObject gameObject, Vector3 position, Quaternion rotation)
     //{
     //    Instantiate(gameObject, position, rotation);

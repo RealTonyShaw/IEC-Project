@@ -21118,12 +21118,12 @@ PrefabInstance:
     - target: {fileID: 3371446225316369919, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: AutoConnect
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3371446225316369919, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: host
-      value: 192.168.43.174
+      value: 127.0.0.1
       objectReference: {fileID: 0}
     - target: {fileID: 3371446225316369919, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
@@ -21198,7 +21198,7 @@ PrefabInstance:
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: Is_Online_Game
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
