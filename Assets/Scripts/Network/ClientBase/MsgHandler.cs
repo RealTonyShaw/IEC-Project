@@ -241,6 +241,7 @@ namespace ClientBase
             int sourceId = proto.GetByte(start, ref start);
             int targetId = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(sourceId);
+            Debug.Log(string.Format("Send sync target ID {0} -> ID {1}", sourceId, targetId));
             unit.SyncPlayerCastingState.SyncTarget(instant, Gamef.GetUnit(targetId));
         }
 

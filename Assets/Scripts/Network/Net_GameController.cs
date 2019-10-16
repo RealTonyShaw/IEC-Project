@@ -15,6 +15,14 @@ public partial class GameCtrl
     public void StartCreatePlayer(int playerID)
     {
         Debug.Log("Player ID = " + playerID);
+        if (GameSceneInfo.Instance == null)
+        {
+            Debug.Log("Null instance");
+        }
+        else if (GameSceneInfo.Instance.spawnPoints[playerID] == null)
+        {
+            Debug.Log("Null spawnPoint");
+        }
         Transform t = GameSceneInfo.Instance.spawnPoints[playerID].transform;
         if (GameCtrl.IsOnlineGame)
             DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
