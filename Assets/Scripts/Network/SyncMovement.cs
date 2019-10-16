@@ -8,6 +8,8 @@ public class SyncMovement : ISyncMovement
     Unit unit;
     bool recv_Ac = false;
     bool recv_T = false;
+    int recvAc_cnt = 0;
+    int recvT_cnt = 0;
     ObjectBuffer<AccelerationData> AcData = new ObjectBuffer<AccelerationData>(2);
     ObjectBuffer<TransformData> tData = new ObjectBuffer<TransformData>(2);
     // 埃尔米特插值
@@ -34,7 +36,7 @@ public class SyncMovement : ISyncMovement
         AcData.Buffer(data);
         if (!recv_Ac)
         {
-            AcData.Buffer(data);
+            recvAc_cnt++;
         }
         // 直接同步角加速度和加速度
         mover.H = h;
@@ -44,7 +46,7 @@ public class SyncMovement : ISyncMovement
         Quaternion rot2 = Quaternion.LookRotation(camFwd);
         Quaternion drot = Quaternion.Inverse(rot1) * rot2;
         tCamFwd = drot * camFwd;
-        if (!recv_Ac)
+        if (!recv_Ac && recvAc_cnt >= 2)
         {
             recv_Ac = true;
         }
@@ -56,14 +58,14 @@ public class SyncMovement : ISyncMovement
         tData.Buffer(data);
         if (!recv_T)
         {
-            tData.Buffer(data);
+            recvT_cnt++;
         }
         // 推测姿态
         Quaternion rot1 = tData.Get(1).rot;
         Quaternion rot2 = rotation;
         Quaternion drot = Quaternion.Inverse(rot1) * rot2;
         tRot = rotation * drot;
-        if (!recv_T)
+        if (!recv_T && recvT_cnt >= 2)
         {
             recv_T = true;
         }
