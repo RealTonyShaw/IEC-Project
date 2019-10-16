@@ -32,6 +32,7 @@ public abstract class AbstractStrafeSkill : ISkill, ISkillCastInstant
 
     public void Trigger()
     {
+        Debug.Log(string.Format("ID {0} strafe skill start", Caster.attributes.ID));
         //if (useGivenSeed)
         //{
         //    if (isFirst)

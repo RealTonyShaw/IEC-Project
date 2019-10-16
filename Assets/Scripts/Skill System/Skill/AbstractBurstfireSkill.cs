@@ -31,6 +31,7 @@ public abstract class AbstractBurstfireSkill : ISkill, ISkillCastInstant
 
     public void Trigger()
     {
+        Debug.Log(string.Format("ID {0} burstfire skill start", Caster.attributes.ID));
         //if (useGivenSeed)
         //{
         //    if (isFirst)
