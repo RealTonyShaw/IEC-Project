@@ -21188,12 +21188,12 @@ PrefabInstance:
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: gameScene
-      value: VR Game
+      value: Game
       objectReference: {fileID: 0}
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: Is_VR
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2837455851235651063, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
