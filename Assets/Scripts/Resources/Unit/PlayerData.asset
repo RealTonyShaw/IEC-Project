@@ -20,7 +20,7 @@ MonoBehaviour:
     player: 0
     elf: 0
     devil: 0
-  MaxVelocity: 42
+  MaxVelocity: 22
   MaxTurningVelocity: 60
   MaxSheildPoint: 50
   ShieldPointRegenerationRate: 0.2

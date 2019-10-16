@@ -6,6 +6,8 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
 {
     private GameObject missilePrefab;
     private GameObject tmp;
+    int cnt = 0;
+    object mutex = new object();
 
     public override void AccuracyCooldown(float dt)
     {
@@ -25,7 +27,7 @@ public class Skill_TestStrafeSkill : AbstractStrafeSkill, ITracking
     protected override Missile Shoot()
     {
         Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
-        tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
+        tmp = Gamef.Instantiate(missilePrefab, new Vector3(SpawnTransform.position.x, SpawnTransform.position.y - 1.7f, SpawnTransform.position.z)  , Quaternion.LookRotation(dir));
         if (GameCtrl.IsVR)
             Gamef.ControllerVibration(0f, 0.1f, 160, 0.5f, Valve.VR.SteamVR_Input_Sources.RightHand);
         Missile missile = tmp.GetComponent<Missile>();

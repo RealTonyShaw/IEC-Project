@@ -4,45 +4,20 @@ using UnityEngine;
 
 public class SyncMovement : ISyncMovement
 {
-
+    const float Ms2Sec = 0.001f;
     Unit unit;
-    int recvT_Cnt = 0;
-    bool recv_A = false;
-    bool recv_Cam = false;
-
-    // 保存上上次 Transform 参数
-    long firstTransformInstant = 0;
-    Vector3 firstPosition = Vector3.zero;
-    Quaternion firstRotation = Quaternion.identity;
-    Vector3 firstVelocity = Vector3.zero;
-    Vector3 firstAngularVelocity = Vector3.zero;
-
-    // 保存上次 Transform 参数
-    long lastTransformInstant = 0;
-    Vector3 lastPosition = Vector3.zero;
-    Vector3 lastForward = Vector3.zero;
-    Vector3 lastUp = Vector3.zero;
-    float lastSpeed = 0;
-    Vector3 lastVelocity = Vector3.zero;
-
-    // 保存上次 Acceleration 参数
-    long lastAccelerationInstant = 0;
-    int lastAcceleration = 0;
-    int lastAngularAcceleration = 0;
-
-    // 保存上次 CameraForward 参数
-    long lastCameraForwardInstant = 0;
-    Vector3 lastCameraForward = Vector3.forward;
-
-    // 预测的参数
-    long currentInstant;
-    Vector3 currentPosition;
-    Quaternion currentRotation;
-    Vector3 currentVelocity;
-    Vector3 currentAngularVelocity;
-
+    bool recv_Ac = false;
+    bool recv_T = false;
+    int recvAc_cnt = 0;
+    int recvT_cnt = 0;
+    ObjectBuffer<AccelerationData> AcData = new ObjectBuffer<AccelerationData>(2);
+    ObjectBuffer<TransformData> tData = new ObjectBuffer<TransformData>(2);
     // 埃尔米特插值
     IHermiteInterpolation interpolate = new HermiteInterpolation();
+
+    Quaternion tRot;
+    Vector3 tCamFwd;
+    Vector3 tPos;
 
     // Unit 的组件
     Mover mover;
@@ -56,61 +31,146 @@ public class SyncMovement : ISyncMovement
         rb = unit.GetComponent<Rigidbody>();
     }
 
-    public void SyncAcceleration(long instant, int acceleration, int angularAcceleration)
+    public void SyncAcceleration(long instant, int v, int h, Vector3 camFwd)
     {
-        this.lastAccelerationInstant = instant;
+        AccelerationData data = new AccelerationData(instant, v, h, camFwd);
+        AcData.Buffer(data);
+        if (!recv_Ac)
+        {
+            recvAc_cnt++;
+        }
         // 直接同步角加速度和加速度
-        mover.H = angularAcceleration;
-        mover.V = acceleration;
-        if (!recv_A)
+        mover.H = h;
+        mover.V = v;
+        // 推测 camFwd
+        Quaternion rot1 = Quaternion.LookRotation(AcData.Get(1).fwd);
+        Quaternion rot2 = Quaternion.LookRotation(camFwd);
+        Quaternion drot = Quaternion.Inverse(rot1) * rot2;
+        tCamFwd = drot * camFwd;
+        if (!recv_Ac && recvAc_cnt >= 2)
         {
-            recv_A = true;
+            recv_Ac = true;
         }
     }
 
-    public void SyncCameraForward(long instant, Vector3 cameraForward)
-    {        
-        this.lastCameraForwardInstant = instant;
-        this.lastCameraForward = cameraForward;
-        if (!recv_Cam)
+    public void SyncTransform(long instant, Vector3 position, Quaternion rotation, float speed)
+    {
+        TransformData data = new TransformData(instant, position, rotation, rotation * Vector3.forward * speed);
+        tData.Buffer(data);
+        if (!recv_T)
         {
-            recv_Cam = true;
+            recvT_cnt++;
         }
-    }
-
-    public void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
-    {        
-        this.lastTransformInstant = instant;
-        this.lastPosition = position;
-        this.lastVelocity = speed * forward;
-        this.lastForward = forward;
-        this.lastUp = up;
-        this.lastSpeed = speed;
-        // 直接同步速度
-        rb.velocity = unit.transform.forward * Mathf.Lerp(rb.velocity.magnitude, lastSpeed, 0.5f);
-        recvT_Cnt++;
+        tPos = position + data.v * ((Gamef.SystemTimeInMillisecond - instant) * 1e-3f);
+        // 推测姿态
+        Quaternion rot1 = tData.Get(1).rot;
+        Quaternion rot2 = rotation;
+        Quaternion drot = Quaternion.Inverse(rot1) * rot2;
+        tRot = rotation * drot;
+        if (!recv_T && recvT_cnt >= 2)
+        {
+            recv_T = true;
+        }
     }
 
     public void Update(float dt)
     {
-        if (recvT_Cnt >= 2)
+        if (recv_T)
         {
-            // 对 unit 的三维坐标进行插值
-            this.currentPosition.x = interpolate.Hermite(firstTransformInstant, firstPosition.x, firstVelocity.x, lastTransformInstant, lastPosition.x, lastVelocity.x, Gamef.SystemTimeInMillisecond);
-            this.currentPosition.y = interpolate.Hermite(firstTransformInstant, firstPosition.y, firstVelocity.y, lastTransformInstant, lastPosition.y, lastVelocity.y, Gamef.SystemTimeInMillisecond);
-            this.currentPosition.z = interpolate.Hermite(firstTransformInstant, firstPosition.z, firstVelocity.z, lastTransformInstant, lastPosition.z, lastVelocity.z, Gamef.SystemTimeInMillisecond);
+            //// 对 unit 的三维坐标进行插值
+            //TransformData d1, d2;
+            //d1 = tData.Get(1);
+            //d2 = tData.Get(0);
+            //Vector3 tpos = HermiteInterpolate(d1.instant * Ms2Sec, d1.pos, d1.v, d2.instant * Ms2Sec, d2.pos, d2.v, Gamef.SystemTime);
             // 修改 unit 的位置
-            unit.transform.position = Vector3.Lerp(unit.transform.position, this.currentPosition, 5f * dt);
+            unit.transform.position = Vector3.Lerp(unit.transform.position, tPos, 2f * dt);
             // rotation
-            unit.transform.forward = Vector3.Slerp(this.lastForward, unit.transform.forward, 5f * dt);
-            unit.transform.up = Vector3.Slerp(this.lastUp, unit.transform.up, 5f * dt);
+            unit.transform.rotation = Quaternion.Slerp(unit.transform.rotation, tRot, 2f * dt);
         }
 
-        if (recv_Cam)
+        if (recv_Ac)
         {
             // cameraForward
-            mover.CameraForward = Vector3.Lerp(mover.CameraForward, this.lastCameraForward, 5f * dt);
+            mover.CameraForward = Vector3.Slerp(mover.CameraForward, tCamFwd, 2f * dt);
         }
     }
 
+    Vector3 HermiteInterpolate(float t1, Vector3 p1, Vector3 v1, float t2, Vector3 p2, Vector3 v2, float t)
+    {
+        Vector3 res;
+        res.x = interpolate.Hermite(t1, p1.x, v1.x, t2, p2.x, v2.x, t);
+        res.y = interpolate.Hermite(t1, p1.y, v1.y, t2, p2.y, v2.y, t);
+        res.z = interpolate.Hermite(t1, p1.z, v1.z, t2, p2.z, v2.z, t);
+        return res;
+    }
+
+    private class ObjectBuffer<T>
+    {
+        private readonly List<T> list = new List<T>();
+        private readonly int bufferedTimes;
+        /// <summary>
+        /// 创建一个对象缓存。
+        /// </summary>
+        /// <param name="bufferedTimes">最多缓存的对象个数</param>
+        public ObjectBuffer(int bufferedTimes)
+        {
+            this.bufferedTimes = Mathf.Clamp(bufferedTimes, 1, 99);
+            for (int i = 0; i < bufferedTimes; i++)
+            {
+                list.Add(default);
+            }
+        }
+        /// <summary>
+        /// 获得指定序号的对象。越早被缓存的对象，其序号越大。
+        /// </summary>
+        /// <param name="index">对象的序号</param>
+        /// <returns>对应的对象</returns>
+        public T Get(int index)
+        {
+            return list[Mathf.Clamp(index, 0, bufferedTimes - 1)];
+        }
+
+        /// <summary>
+        /// 将对象缓存。缓存已满时，最早的缓存对象会被丢弃。
+        /// </summary>
+        /// <param name="obj">对象</param>
+        /// <returns>被丢弃的对象</returns>
+        public T Buffer(T obj)
+        {
+            list.Insert(0, obj);
+            T res = list[bufferedTimes];
+            list.RemoveAt(bufferedTimes);
+            return res;
+        }
+    }
+
+    private struct AccelerationData
+    {
+        public long instant;
+        public Vector3 fwd;
+        public int v;
+        public int h;
+        public AccelerationData(long instant, int v, int h, Vector3 fwd)
+        {
+            this.instant = instant;
+            this.v = v;
+            this.h = h;
+            this.fwd = fwd;
+        }
+    }
+
+    private struct TransformData
+    {
+        public long instant;
+        public Vector3 pos;
+        public Quaternion rot;
+        public Vector3 v;
+        public TransformData(long instant, Vector3 pos, Quaternion rot, Vector3 v)
+        {
+            this.instant = instant;
+            this.pos = pos;
+            this.rot = rot;
+            this.v = v;
+        }
+    }
 }

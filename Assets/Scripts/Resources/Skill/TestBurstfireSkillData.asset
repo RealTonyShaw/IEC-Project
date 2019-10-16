@@ -21,14 +21,14 @@ MonoBehaviour:
   Range: 50
   Speed: 30
   LifeSpan: 4
-  Cooldown: 1
+  Cooldown: 2
   ManaCost: 25
   ManaCostPerSec: 0
   MissileHP: 5
   IsAOE: 1
-  InnerBlastRadius: 0
-  MiddleBlastRadius: 0
-  OuterBlastRadius: 0
+  InnerBlastRadius: 3
+  MiddleBlastRadius: 4.2
+  OuterBlastRadius: 5.5
   InnerDamageCoefficient: 1
   MiddleDamageCoefficient: 0.5
   OuterDamageCoefficient: 0.2
@@ -37,11 +37,11 @@ MonoBehaviour:
   AimingTime: 2
   IsPassive: 0
   Buffs: 
-  Force: 100
-  Accuracy: 85
-  MinAccuracy: 40
+  Force: 300
+  Accuracy: 98
+  MinAccuracy: 70
   AccuracyCooldownSpeed: 5
-  AccuracyHeatupSpeed: 15
+  AccuracyHeatupSpeed: 20
   Prefabs:
   - {fileID: 5374365597475199403, guid: 47e076646753541ac89ee2c6a42d22aa, type: 3}
   - {fileID: 1879272669879180, guid: 15b9dd0ff0b73454aad08fc61f1d3084, type: 3}

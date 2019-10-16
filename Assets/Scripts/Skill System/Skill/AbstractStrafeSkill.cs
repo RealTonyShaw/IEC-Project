@@ -32,19 +32,19 @@ public abstract class AbstractStrafeSkill : ISkill, ISkillCastInstant
 
     public void Trigger()
     {
-        if (useGivenSeed)
-        {
-            if (isFirst)
-            {
-                isFirst = false;
-                Missile missile = Shoot();
-                if (missile == null)
-                    return;
-                float dx = Data.Speed * (Gamef.SystemTimeInMillisecond - instant) / 1000f;
-                missile.transform.Translate(Vector3.forward * dx);
-                return;
-            }
-        }
+        //if (useGivenSeed)
+        //{
+        //    if (isFirst)
+        //    {
+        //        isFirst = false;
+        //        Missile missile = Shoot();
+        //        if (missile == null)
+        //            return;
+        //        float dx = Data.Speed * (Gamef.SystemTimeInMillisecond - instant) / 1000f;
+        //        missile.transform.Translate(Vector3.forward * dx);
+        //        return;
+        //    }
+        //}
         Shoot();
     }
 
@@ -52,13 +52,13 @@ public abstract class AbstractStrafeSkill : ISkill, ISkillCastInstant
 
     protected System.Random random;
     private long instant;
-    private bool useGivenSeed = false;
-    private bool isFirst = true;
+    //private bool useGivenSeed = false;
+    //private bool isFirst = true;
     public void SetInstant(long instant)
     {
         this.instant = instant;
         random = new System.Random((int)instant);
-        useGivenSeed = true;
-        isFirst = true;
+        //useGivenSeed = true;
+        //isFirst = true;
     }
 }

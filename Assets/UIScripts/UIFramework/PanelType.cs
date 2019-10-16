@@ -13,5 +13,6 @@ public enum PanelType
     AboutUs,
     PlayerInfo,
     ComplaintToUs,
-    Register
+    Register,
+    Loading
 }

@@ -44,7 +44,6 @@ namespace ClientBase
             int ispass = proto.GetByte(start, ref start);
             if (ispass == 1)
             {
-                //int id = proto.GetByte(start, ref start);
                 Debug.Log("Login success");
                 Client.Instance.pl_info.isLogin = true;
                 //Login
@@ -88,7 +87,6 @@ namespace ClientBase
             proto.GetNameX(start, ref start);
             Client.Instance.pl_info.id_game = proto.GetByte(start, ref start);
 
-            Debug.Log("Start game!!! Loading scene!");
             //Loading
             GameCtrl.Instance.StartLoadingGameScene();
         }
@@ -97,7 +95,6 @@ namespace ClientBase
         {
             //...
             GameCtrl.Instance.StartCreatePlayer(Client.Instance.pl_info.id_game);
-            Debug.Log("You can controll the player now!!!");
         }
 
         #endregion
@@ -154,23 +151,10 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             Vector3 position = ParseVector3(proto, ref start);
-            Vector3 forward = ParseVector3(proto, ref start);
-            Vector3 up = ParseVector3(proto, ref start);
+            Quaternion rot = ParseQuaternion(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
-            unit.SyncMovement.SyncTransform(instant, position, forward, up, speed);
+            unit.SyncMovement.SyncTransform(instant, position, rot, speed);
         }
-
-        //public static void SyncCameraForward(ProtocolBase protocol)
-        //{
-        //    int start = 0;
-        //    ProtocolBytes proto = (ProtocolBytes)protocol;
-        //    proto.GetNameX(start, ref start);
-        //    long instant = proto.GetInt(start, ref start);
-        //    int id = proto.GetByte(start, ref start);
-        //    Unit unit = Gamef.GetUnit(id);
-        //    Vector3 fwd = ParseVector3(proto, ref start);
-        //    unit.SyncMovement.SyncCameraForward(instant, fwd);
-        //}
         #endregion
 
         #region Input
@@ -185,8 +169,7 @@ namespace ClientBase
             Vector3 fwd = ParseVector3(proto, ref start);// parse camera forward
 
             Unit unit = Gamef.GetUnit(id);
-            unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1]);
-            unit.SyncPlayerInput.SyncCameraFoward(instant, fwd);
+            unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1], fwd); 
         }
 
         public static void SyncSwitchSkill(ProtocolBase protocol)
@@ -249,6 +232,18 @@ namespace ClientBase
             unit.SyncPlayerCastingState.SyncStop(instant, skillIndex);
         }
 
+        public static void SyncAimTarget(ProtocolBase protocol)
+        {
+            int start = 0;
+            ProtocolBytes proto = (ProtocolBytes)protocol;
+            proto.GetNameX(start, ref start);
+            long instant = proto.GetInt(start, ref start);
+            int sourceId = proto.GetByte(start, ref start);
+            int targetId = proto.GetByte(start, ref start);
+            Unit unit = Gamef.GetUnit(sourceId);
+            unit.SyncPlayerCastingState.SyncTarget(instant, Gamef.GetUnit(targetId));
+        }
+
         #endregion
 
         #region Unit State
@@ -261,7 +256,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             float val = proto.GetFloat(start, ref start);
-            Debug.Log("ID " + id + " : recv sync hp = " + val);
+
             unit.SyncUnitState.SyncHP(instant, val);
         }
 
@@ -274,7 +269,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             float val = proto.GetFloat(start, ref start);
-            Debug.Log("ID " + id + " : recv sync mp = " + val);
+
             unit.SyncUnitState.SyncMP(instant, val);
         }
         #endregion

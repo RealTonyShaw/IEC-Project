@@ -162,7 +162,7 @@ public class ObjectPool<T> : IEnumerable<T>
     /// <returns>对象</returns>
     public T GetObject(int id)
     {
-        return blks[id & BLK_MASK].cells[id & OFFSET_MASK].content;
+        return id == -1 ? default : blks[id & BLK_MASK].cells[id & OFFSET_MASK].content;
     }
     /// <summary>
     /// 检查ID是否被占用

@@ -7,12 +7,13 @@ using UnityEngine;
 /// </summary>
 public class PlayerBulletSpawnControl : MonoBehaviour
 {
+    public Mover mover;
     public Transform spawnParent;
     private void Update()
     {
         if (spawnParent != null)
         {
-            spawnParent.rotation = CameraGroupController.Instance.transform.rotation;
+            spawnParent.forward = mover.CameraForward;
         }
     }
 }
