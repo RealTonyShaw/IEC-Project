@@ -83,15 +83,23 @@ public class ClientLauncher : MonoBehaviour
     }
 
     private float timer = 0;
+    private float ping_timer = 0;
     private float time_check_freq = 1f;
+    private float ping_check = 10f;
     public void Update()
     {
         eventHandler.Update();
         timer += Time.deltaTime;
+        ping_timer += Time.deltaTime;
         if (timer >= 1 / time_check_freq)
         {
             timer = 0;
             DataSync.SyncTimeCheck();
+        }
+        if (ping_timer >= 1 / ping_check)
+        {
+            ping_timer = 0;
+            Ping();
         }
     }
 
@@ -101,6 +109,7 @@ public class ClientLauncher : MonoBehaviour
     public void Ping()
     {
         lastSend = timeMgr == null ? 0 : timeMgr.GetTime();
+        DataSync.Ping();
     }
     /// <summary>
     /// When ping back call this methods to calculate pings.
