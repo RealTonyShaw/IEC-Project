@@ -8,7 +8,7 @@ public partial class GameCtrl
     AsyncOperation ao;
     public void StartLoadingGameScene()
     {
-        ao = SceneManager.LoadSceneAsync(gameScene);
+        ao = SceneManager.LoadSceneAsync("Ph Game");
         EventMgr.UpdateEvent.AddListener(_checkIsDone);
     }
 
@@ -16,15 +16,27 @@ public partial class GameCtrl
     {
         Debug.Log("Player ID = " + playerID);
         Transform t = GameSceneInfo.Instance.spawnPoints[playerID].transform;
-
-        DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
+        if (GameCtrl.IsOnlineGame)
+            DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
+        else
+        {
+            UnitData data = Gamef.LoadUnitData(UnitName.Player);
+            Unit unit = Gamef.Instantiate(data.LocalPrefab, t.position, t.rotation).GetComponent<Unit>();
+            CameraGroupController.Instance.ResetTransform(t.position, t.rotation);
+            GameCtrl.PlayerUnit = unit;
+        }
     }
 
     private void _checkIsDone()
     {
         if (ao.isDone)
         {
-            DataSync.CanControll();
+            if (IsOnlineGame)
+                DataSync.CanControll();
+            else
+            {
+                StartCreatePlayer(0);
+            }
             EventMgr.UpdateEvent.RemoveListener(_checkIsDone);
         }
     }

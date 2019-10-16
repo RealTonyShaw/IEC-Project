@@ -58,7 +58,7 @@ namespace ClientBase
             proto.AddInt((int)protoName);
             return proto;
         }
-        
+
         public override int GetNumber()
         {
             return GetByte(0);
@@ -334,13 +334,15 @@ namespace ClientBase
             if (bytes.Length > 144)
             {
                 CRC16 crc = new CRC16(bytes, false);
-                crc.CRC_16();
+                if (ClientLauncher.Instance.EnableCrc16)
+                    crc.CRC_16();
                 bytes = crc.AppendCRC();
             }
             else
             {
                 CRC8 crc = new CRC8(bytes, false);
-                crc.CRC_8();
+                if (ClientLauncher.Instance.EnableCrc8)
+                    crc.CRC_8();
                 bytes = crc.AppendCRC();
             }
         }

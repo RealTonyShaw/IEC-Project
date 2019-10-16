@@ -116,6 +116,18 @@ public partial class GameCtrl : MonoBehaviour
         CheckInputForSkillTable();
 
         EventMgr.UpdateEvent.OnTrigger();
+
+        UpdateMP_HP_UI();
+    }
+
+    void UpdateMP_HP_UI()
+    {
+        if (PlayerUnit != null)
+        {
+            UnitAttributes attr = PlayerUnit.attributes;
+            Gamef.SetHP_UI_Rate(attr.SheildPoint / attr.MaxShieldPoint);
+            Gamef.SetMP_UI_Rate(attr.ManaPoint.Value / attr.MaxManaPoint.Value);
+        }
     }
 
     #endregion
