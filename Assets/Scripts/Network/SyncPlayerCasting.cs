@@ -1,9 +1,6 @@
 ﻿using System;
+using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 public class SyncPlayerCasting : ISyncPlayerCastingState
 {
@@ -15,30 +12,14 @@ public class SyncPlayerCasting : ISyncPlayerCastingState
 
     public void SyncStart(long instant, int skillIndex)
     {
-        // get system time. MUST make sure that the system time would not tremble.
-        long sysTime = Gamef.SystemTimeInMillisecond;
-        StartCasting cast = new StartCasting(unit, skillIndex, instant);
-        
-        // 施法事件还未发生
-        if (sysTime < instant)
-        {
-            Gamef.DelayedExecution(cast.Start, (instant - sysTime) / 1000f);
-        }
-        else if (sysTime >= instant)
-        {
-            cast.Start();
-        }
-        else
-        {
-            cast.Start();
-        }
+        Debug.Log("ID " + unit.attributes.ID + ": " + "try to start skill " + skillIndex + " at " + instant);
+        Gamef.StartCoroutine(TryStart(instant, skillIndex));
     }
 
     public void SyncStop(long instant, int skillIndex)
     {
-        unit.SkillTable.SwitchCell(skillIndex);
-        unit.SkillTable.CurrentCell.SetInstant(instant);
-        unit.SkillTable.CurrentCell.Stop();
+        Debug.Log("ID " + unit.attributes.ID + ": " + "try to stop skill " + skillIndex + " at " + instant);
+        Gamef.StartCoroutine(TryStop(instant, skillIndex));
     }
 
     public void SyncTarget(long instant, Unit target)
@@ -53,24 +34,52 @@ public class SyncPlayerCasting : ISyncPlayerCastingState
         }
     }
 
-    private class StartCasting
+    IEnumerator TryStop(long instant, int skillIndex)
     {
-        readonly Unit unit;
-        readonly int skillIndex;
-        readonly long instant;
-        public StartCasting(Unit unit, int skillIndex, long instant)
+        long time = Gamef.SystemTimeInMillisecond;
+        while (true)
         {
-            this.unit = unit;
-            this.skillIndex = skillIndex;
-            this.instant = instant;
+            if (unit.SkillTable.CurrentIndex == skillIndex && unit.SkillTable.CurrentCell.IsCasting)
+            {
+                Debug.Log("ID " + unit.attributes.ID + ": " + "stop skill " + skillIndex + " at " + Gamef.SystemTimeInMillisecond);
+                unit.SkillTable.CurrentCell.SetInstant(instant);
+                unit.SkillTable.CurrentCell.Stop();
+                break;
+            }
+            else
+            {
+                if (Gamef.SystemTimeInMillisecond - time > 33)
+                {
+                    break;
+                }
+                else
+                    yield return new WaitForEndOfFrame();
+            }
         }
+    }
 
-        public void Start()
+    IEnumerator TryStart(long instant, int skillIndex)
+    {
+        long time = Gamef.SystemTimeInMillisecond;
+        while (true)
         {
-            unit.SkillTable.SwitchCell(skillIndex);
-            // 设置施法时刻
-            unit.SkillTable.CurrentCell.SetInstant(instant);
-            unit.SkillTable.CurrentCell.Start();
+            if (unit.SkillTable.CurrentIndex == skillIndex && !unit.SkillTable.CurrentCell.IsCasting)
+            {
+                Debug.Log("ID " + unit.attributes.ID + ": " + "start skill " + skillIndex + " at " + Gamef.SystemTimeInMillisecond);
+                // 设置施法时刻
+                unit.SkillTable.CurrentCell.SetInstant(instant);
+                unit.SkillTable.CurrentCell.Start();
+                break;
+            }
+            else
+            {
+                if (Gamef.SystemTimeInMillisecond - time > 33)
+                {
+                    break;
+                }
+                else
+                    yield return new WaitForEndOfFrame();
+            }
         }
     }
 }
