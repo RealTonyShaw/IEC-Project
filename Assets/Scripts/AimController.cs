@@ -23,7 +23,12 @@ public class AimController : MonoBehaviour
                 if (GameCtrl.IsOnlineGame)
                 {
                     // sync target
-                    
+                    if (GameCtrl.PlayerUnit != null)
+                    {
+                        int id = value == null ? -1 : value.attributes.ID;
+                        DataSync.SyncAimTarget(ClientLauncher.Instance.GetTime(),
+                        GameCtrl.PlayerUnit.attributes.ID, id);
+                    }
                 }
             }
         }
