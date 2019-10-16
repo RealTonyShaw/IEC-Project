@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpecialEffectHandler : ISpecialEffectHandler
 {
-    public void CreateDestroyEffect(Unit caster, Missile missile, GameObject prefab)
+    public void CreateDestroyEffect(Collider other, Missile missile, GameObject prefab)
     {
         if (prefab != null)
             Gamef.Instantiate(prefab, missile.transform.position, missile.transform.rotation);

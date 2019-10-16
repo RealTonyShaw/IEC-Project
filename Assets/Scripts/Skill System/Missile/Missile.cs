@@ -132,9 +132,9 @@ public class Missile : MonoBehaviour
 
 
     /// <summary>
-    /// Enable后重置参数
+    /// Disable后重置参数
     /// </summary>
-    private void OnEnable()
+    private void OnDisable()
     {
         if (isInit)
         {
@@ -171,6 +171,7 @@ public class Missile : MonoBehaviour
         if (timer >= Skill.Data.LifeSpan)
         {
             missileHitHandler.Fade(this);
+            specialEffectHandler.CreateDestroyEffect(null, this, deathEffect);
             Death();
         }
     }
@@ -199,6 +200,7 @@ public class Missile : MonoBehaviour
                     if (otherObj != Caster.gameObject)
                     {
                         missileHitHandler.HitUnit(this, otherObj.GetComponent<Unit>());
+                        specialEffectHandler.CreateDestroyEffect(other, this, deathEffect);
                         if (!Skill.Data.IsAOE && otherRig != null)
                         {
                             physicalEffectHandler.CreateImpulse(Skill.Data, transform.position, transform.forward, otherRig);
@@ -207,9 +209,11 @@ public class Missile : MonoBehaviour
                     break;
                 case Layer.Missile:
                     missileHitHandler.HitMissile(this, otherObj.GetComponent<Missile>());
+                    specialEffectHandler.CreateDestroyEffect(other, this, deathEffect);
                     break;
                 default:
                     missileHitHandler.HitTerrain(this);
+                    specialEffectHandler.CreateDestroyEffect(other, this, deathEffect);
                     if (!Skill.Data.IsAOE && otherRig != null)
                     {
                         physicalEffectHandler.CreateImpulse(Skill.Data, transform.position, transform.forward, otherRig);
@@ -238,7 +242,6 @@ public class Missile : MonoBehaviour
     protected virtual void Death()
     {
         IsAlive = false;
-        specialEffectHandler.CreateDestroyEffect(Caster, this, deathEffect);
         if (Enemy != null)
             trackSystem?.StopTracking();
         Gamef.MissileClear(ID);

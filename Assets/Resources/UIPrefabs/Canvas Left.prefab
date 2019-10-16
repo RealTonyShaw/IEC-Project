@@ -70,7 +70,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.541
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -88,6 +88,7 @@ GameObject:
   - component: {fileID: 1593188841017880722}
   - component: {fileID: 1593188841017880723}
   - component: {fileID: 4680515489489404428}
+  - component: {fileID: 1347813463849073915}
   m_Layer: 5
   m_Name: Canvas Left
   m_TagString: Untagged
@@ -188,42 +189,74 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Origin: {fileID: 0}
-  localPosition: {x: -0.1007999, y: 0.002427358, z: 0.2373657}
-  normalConst: 11
-  tangentialConst: 4
+  localPosition: {x: 0, y: 0, z: 0}
+  UseInitialLocalPosition: 1
+  normalConst: 3
+  tangentialConst: 1
   SpeedCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
       time: -0.23694992
       value: 0
-      inSlope: 0.008071068
-      outSlope: 0.008071068
+      inSlope: 0.0072944537
+      outSlope: 0.0072944537
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
-      outWeight: 0.24422827
+      outWeight: 0.22294733
     - serializedVersion: 3
-      time: 21.189789
-      value: 0.10939611
-      inSlope: 0.0019448595
-      outSlope: 0.0019448595
+      time: 7.1991506
+      value: 0.025732834
+      inSlope: 0.00087309425
+      outSlope: 0.00087309425
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.59334224
-      outWeight: 0.31028116
+      outWeight: 0.39115155
     - serializedVersion: 3
-      time: 50
-      value: 0.13
-      inSlope: 0.00049752626
-      outSlope: 0.00049752626
+      time: 17.77884
+      value: 0.029421117
+      inSlope: 0.00012604099
+      outSlope: 0.00012604099
       tangentMode: 0
       weightedMode: 0
-      inWeight: 0.41951922
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 30
+      value: 0.03
+      inSlope: 0.000063317195
+      outSlope: 0.000063317195
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.3570877
       outWeight: 0.33333334
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1347813463849073915
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1593188841017880721}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7955886093328914c9c176857945fce4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tRate: 1
+  cRate: 1
+  speed: 1
+  fillImages:
+  - {fileID: 3644261208977225958}
+  - {fileID: 9145920810838055630}
+  - {fileID: 755263703511094743}
+  - {fileID: 1355697028737090316}
+  - {fileID: 8123449467865566066}
+  - {fileID: 5043218443069129107}
 --- !u!1 &2092263983790687057
 GameObject:
   m_ObjectHideFlags: 0
@@ -444,7 +477,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1137,7 +1170,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -1287,7 +1320,7 @@ MonoBehaviour:
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

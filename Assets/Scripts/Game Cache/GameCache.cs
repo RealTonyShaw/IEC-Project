@@ -30,7 +30,7 @@ public class GameObjectCache
     {
         if (isInit)
             return;
-        for (int i = 0; i < blocks.Length; i++)
+        for (int i = 0; i < PREFAB_NUM; i++)
         {
             blocks[i] = new GameCacheBlock();
         }
@@ -44,14 +44,17 @@ public class GameObjectCache
     {
         if (Time.time - LastRefreshTime > 0.2f)
         {
+            Debug.Log("start refreshing");
             LastRefreshTime = Time.time;
-            for (int i = 0; i < blocks.Length; i++)
+            for (int i = 0; i < PREFAB_NUM; i++)
             {
                 if (blocks[i] != null)
                 {
-                    blocks[i].Refresh();
+                    lock (blocks[i].BlkMutex)
+                        blocks[i].Refresh();
                 }
             }
+            Debug.Log("finish refreshing");
         }
     }
 
@@ -81,7 +84,7 @@ public class GameObjectCache
         }
         int index = (int)reusablePrefab.Prefab;
         //命中
-        lock (blocks[index])
+        lock (blocks[index].BlkMutex)
         {
             GameObject obj = blocks[index].Pop();
             if (obj != null)
@@ -110,11 +113,11 @@ public class GameObjectCache
             return;
         }
         int index = (int)reusablePrefab.Prefab;
-        lock (blocks[index])
+        lock (blocks[index].BlkMutex)
         {
             blocks[index].Cache(gameObject);
-            gameObject.transform.SetParent(GameDB.Instance.ReusableObjectPool);
         }
+        gameObject.transform.SetParent(GameDB.Instance.ReusableObjectPool);
     }
 }
 
