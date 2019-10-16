@@ -153,7 +153,8 @@ public class CastingController : MonoBehaviour
             return;
         if (GameCtrl.IsOnlineGame)
         {
-            DataSync.SyncMouseButton0Down(player, Gamef.SystemTimeInMillisecond);
+            if (!skillTable.CurrentCell.IsCasting)
+                DataSync.SyncMouseButton0Down(player, Gamef.SystemTimeInMillisecond);
         }
         else
         {
@@ -174,7 +175,8 @@ public class CastingController : MonoBehaviour
             return;
         if (GameCtrl.IsOnlineGame)
         {
-            DataSync.SyncMouseButton0Up(player, Gamef.SystemTimeInMillisecond);
+            if (skillTable.CurrentCell.IsCasting)
+                DataSync.SyncMouseButton0Up(player, Gamef.SystemTimeInMillisecond);
         }
         else
         {

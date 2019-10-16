@@ -25,4 +25,9 @@ public interface ISkillTable
     /// </summary>
     /// <returns>技能槽位，1、2 或者 3 号技能槽位</returns>
     ISkillCell CurrentCell { get; }
+
+    /// <summary>
+    /// 获得现在玩家技能槽位的序号，可能是 1、2、3
+    /// </summary>
+    int CurrentIndex { get; }
 }

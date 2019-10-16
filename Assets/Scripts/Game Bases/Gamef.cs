@@ -222,6 +222,11 @@ public static partial class Gamef
         GameCtrl.Instance.DelayedExecution(action, time);
     }
 
+    public static void StartCoroutine(IEnumerator coroutine)
+    {
+        GameCtrl.Instance.StartCoroutine(coroutine);
+    }
+
     /// <summary>
     /// 触发(手柄)震动效果。(仅适用于VR游戏)
     /// </summary>

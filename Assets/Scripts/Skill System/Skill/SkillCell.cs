@@ -29,6 +29,7 @@ public class SkillCell : ISkillCell
     AbstractStrafeSkill asskill;
 
     bool isCasting = false;
+    public bool IsCasting => isCasting;
     Unit caster;
     Transform spawnTransform;
 

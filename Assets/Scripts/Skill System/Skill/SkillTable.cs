@@ -12,6 +12,7 @@ public class SkillTable : ISkillTable
 
     public ISkill CurrentSkill => SkillCells[currentSkillNum - 1].CurrentSkill;
     public ISkillCell CurrentCell => SkillCells[currentSkillNum - 1];
+    public int CurrentIndex => currentSkillNum;
 
     public void Init(Unit caster)
     {
@@ -33,48 +34,14 @@ public class SkillTable : ISkillTable
 
     public void SwitchCell(int cellIndex)
     {
-        // 判定切换前技能是否与切换后技能相同，如果不同则为 true，即可以重置精确度
-        bool flag = false;
-        switch (cellIndex)
+        if (currentSkillNum == cellIndex)
         {
-            case 1:
-                // 如果切换前的技能还在施放，应该立即停止该技能
-                if (currentSkillNum != 1)
-                {
-                    SkillCells[currentSkillNum - 1].Stop();
-                    flag = true;
-                }
-                currentSkillNum = 1;
-                if (flag)
-                    SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
-                flag = false;
-                Debug.Log("切换至技能 1");
-                break;
-            case 2:
-                if (currentSkillNum != 2)
-                {
-                    SkillCells[currentSkillNum - 1].Stop();
-                    flag = true;
-                }
-                currentSkillNum = 2;
-                if (flag)
-                    SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
-                flag = false;
-                Debug.Log("切换至技能 2");
-                break;
-            case 3:
-                if (currentSkillNum != 3)
-                {
-                    SkillCells[currentSkillNum - 1].Stop();
-                    flag = true;
-                }
-                currentSkillNum = 3;
-                if (flag)
-                    SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
-                flag = false;
-                Debug.Log("切换至技能 3");
-                break;
+            return;
         }
+        // 如果切换前的技能还在施放，应该立即停止该技能
+        SkillCells[currentSkillNum - 1].Stop();
+        currentSkillNum = cellIndex;
+        SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
     }
 
     private void SetUnitInitAccuracy(float accuracy)
