@@ -18,10 +18,9 @@ public interface ISyncMovement
     /// </summary>
     /// <param name="instant">时刻（毫秒），即单位处于该状态的时刻</param>
     /// <param name="position">位置</param>
-    /// <param name="forward">单位的正方向</param>
-    /// <param name="up">单位的上方向</param>
+    /// <param name="rotation">姿态</param>
     /// <param name="speed">速率</param>
-    void SyncTransform(long instant, Vector3 position, Vector3 forward, Vector3 up, float speed);
+    void SyncTransform(long instant, Vector3 position, Quaternion rotation, float speed);
 
     /// <summary>
     /// 位置小同步，用于同步单位的加速度。
@@ -29,14 +28,8 @@ public interface ISyncMovement
     /// <param name="instant">时刻，即单位处于该状态时的时刻</param>
     /// <param name="verticalAcceleration">前后方向的加速度，取值为-1,0,1，分别表示加速，不变和后退</param>
     /// <param name="horizontalAcceleration">左右方向的加速度，取值为-1,0,1，分别表示向左，不动和向右</param>
-    void SyncAcceleration(long instant, int verticalAcceleration, int horizontalAcceleration);
-
-    /// <summary>
-    /// 同步摄像机正方向。该同步从小同步中独立出来，以便操作。
-    /// </summary>
-    /// <param name="instant">时刻</param>
     /// <param name="cameraForward">摄像机正方向</param>
-    void SyncCameraForward(long instant, Vector3 cameraForward);
+    void SyncAcceleration(long instant, int verticalAcceleration, int horizontalAcceleration, Vector3 cameraForward);
 
     /// <summary>
     /// 初始化同步类。

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 8133517299980383501}
   - component: {fileID: 8133517299980383500}
   - component: {fileID: 8133517299980383539}
+  - component: {fileID: 6715270585464373044}
   m_Layer: 0
   m_Name: HPRecoveryEffect
   m_TagString: Untagged
@@ -93,3 +94,15 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &6715270585464373044
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8133517299980383538}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4af135431aecc43959bda1673072d81e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

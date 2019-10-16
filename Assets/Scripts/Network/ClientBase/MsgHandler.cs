@@ -154,23 +154,10 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             Vector3 position = ParseVector3(proto, ref start);
-            Vector3 forward = ParseVector3(proto, ref start);
-            Vector3 up = ParseVector3(proto, ref start);
+            Quaternion rot = ParseQuaternion(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
-            unit.SyncMovement.SyncTransform(instant, position, forward, up, speed);
+            unit.SyncMovement.SyncTransform(instant, position, rot, speed);
         }
-
-        //public static void SyncCameraForward(ProtocolBase protocol)
-        //{
-        //    int start = 0;
-        //    ProtocolBytes proto = (ProtocolBytes)protocol;
-        //    proto.GetNameX(start, ref start);
-        //    long instant = proto.GetInt(start, ref start);
-        //    int id = proto.GetByte(start, ref start);
-        //    Unit unit = Gamef.GetUnit(id);
-        //    Vector3 fwd = ParseVector3(proto, ref start);
-        //    unit.SyncMovement.SyncCameraForward(instant, fwd);
-        //}
         #endregion
 
         #region Input
@@ -185,8 +172,7 @@ namespace ClientBase
             Vector3 fwd = ParseVector3(proto, ref start);// parse camera forward
 
             Unit unit = Gamef.GetUnit(id);
-            unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1]);
-            unit.SyncPlayerInput.SyncCameraFoward(instant, fwd);
+            unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1], fwd);
         }
 
         public static void SyncSwitchSkill(ProtocolBase protocol)

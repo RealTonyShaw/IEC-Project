@@ -141,7 +141,7 @@ public static class DataSync
     #endregion
 
     #region Sync Movement
-    public static void SyncTransform(Unit unit, long instant, Vector3 position, Vector3 forward, Vector3 up, float speed)
+    public static void SyncTransform(Unit unit, long instant, Vector3 position, Quaternion rotation, float speed)
     {
         //8 bits
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncTransform);
@@ -151,30 +151,13 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);
         //96 bits
         AppendVector3(protocol, position);
-        //96 bits
-        AppendVector3(protocol, forward);
-        //96 bits
-        AppendVector3(protocol, up);
+        //128 bits
+        AppendQuaternion(protocol, rotation);
         //32 bits
         protocol.AddFloat(speed);
 
         Client.Instance.Send(protocol);
     }
-
-    //public static void SyncCameraForward(Vector3 cameraFwd)
-    //{
-    //    ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncCameraForward);
-    //    AppendVector3(protocol, cameraFwd);
-    //    Client.Instance.Send(protocol);
-    //}
-
-    //public static void SyncAcceleration(Unit unit, long instant, int acceleration, int angularAcceleration, Vector3 cameraForward)
-    //{
-    //    ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncAcceleration);
-    //    protocol.AddLong(instant);
-    //    protocol.AddShort((short)unit.GetInstanceID());
-    //    protocol.AddInt(acceleration);
-    //}
     #endregion
 
     #region SyncInput
@@ -186,7 +169,6 @@ public static class DataSync
     /// <param name="v">垂直轴的值 Vertical Axis</param>
     public static void SyncMobileControlAxes(Unit unit, long instant, int h, int v, Vector3 cameraFwd)
     {
-
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMobileControlAxes);
         protocol.AddInt((int)instant);//instant
         protocol.AddByte((byte)unit.attributes.ID);//unit id
