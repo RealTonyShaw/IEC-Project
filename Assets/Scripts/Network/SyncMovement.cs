@@ -67,8 +67,6 @@ public class SyncMovement : ISyncMovement
         {
             recv_T = true;
         }
-
-        Debug.Log(string.Format("Sync pos {0}, rot {1}, speed {2}, instant {3}", position, rotation.eulerAngles, speed, instant));
     }
 
     public void Update(float dt)

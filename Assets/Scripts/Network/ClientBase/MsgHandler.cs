@@ -157,20 +157,7 @@ namespace ClientBase
             Quaternion rot = ParseQuaternion(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
             unit.SyncMovement.SyncTransform(instant, position, rot, speed);
-            Debug.Log(string.Format("Recv pos {0}, rot {1}, speed {2}, instant {3}", position, rot.eulerAngles, speed, instant));
         }
-
-        //public static void SyncCameraForward(ProtocolBase protocol)
-        //{
-        //    int start = 0;
-        //    ProtocolBytes proto = (ProtocolBytes)protocol;
-        //    proto.GetNameX(start, ref start);
-        //    long instant = proto.GetInt(start, ref start);
-        //    int id = proto.GetByte(start, ref start);
-        //    Unit unit = Gamef.GetUnit(id);
-        //    Vector3 fwd = ParseVector3(proto, ref start);
-        //    unit.SyncMovement.SyncCameraForward(instant, fwd);
-        //}
         #endregion
 
         #region Input
