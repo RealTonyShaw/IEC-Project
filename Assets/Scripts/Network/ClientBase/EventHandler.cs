@@ -27,7 +27,7 @@ namespace ClientBase
         private Dictionary<int, ProtocolProcessor> proDic = new Dictionary<int, ProtocolProcessor>();
         private Dictionary<int, string> proStrDic = new Dictionary<int, string>();
 
-        private List<ProtoName> onceListeners = new List<ProtoName>();
+        private Dictionary<ProtoName, ProtocolProcessor> onceListeners = new Dictionary<ProtoName, ProtocolProcessor>();
         private List<ProtoName> listeners = new List<ProtoName>();
 
 
@@ -36,9 +36,16 @@ namespace ClientBase
         /// </summary>
         /// <param name="name">name of the listener</param>
         /// <param name="callBack">the call back function</param>
-        public void AddOnceListener(ProtoName name)
+        public void AddOnceListener(ProtoName _name, ProtocolProcessor callBack)
         {
-            onceListeners.Add(name);
+            if (onceListeners.Keys.Contains(_name))
+            {
+                onceListeners[_name] += callBack;
+            }
+            else
+            {
+                onceListeners.Add(_name, callBack);
+            }            
         }
 
         /// <summary>
@@ -66,7 +73,10 @@ namespace ClientBase
         /// <param name="proto">the proto name of the listener</param>
         public void DelOnceListener(ProtoName proto)
         {
-            onceListeners.Remove(proto);
+            if (onceListeners.ContainsKey(proto))
+            {
+                onceListeners.Remove(proto);
+            }            
         }
 
         private Queue<ProtocolBase> protocols = new Queue<ProtocolBase>();
@@ -84,6 +94,7 @@ namespace ClientBase
             MsgHandler msg = new MsgHandler();
             MethodInfo[] mi = msg.GetType().GetMethods();
             Dictionary<string, int> proDicStr = SF.GetEnumNameAndNum(typeof(ProtoName));
+            //Debug.Log(string.Format("Method info count = {0}, Enum count = {1}", mi.Length, proDicStr.Count));
             foreach (MethodInfo m in mi)
             {
                 if (proDicStr.ContainsKey(m.Name))
@@ -107,7 +118,7 @@ namespace ClientBase
             }
         }
 
-        private int perFrame = 2;
+        private int perFrame = 100;
 
         /// <summary>
         /// Set the handle frame of protocols.
@@ -152,12 +163,20 @@ namespace ClientBase
         {
             int number = protocol.GetNumber();
             ProtoName pn = (ProtoName)number;
-            Debug.Log("Handle" + pn.ToString());
-            if (proDic.ContainsKey(number))
+            Debug.Log("Accept" + pn.ToString());
+            //Debug.Log("Contain key" + pn.ToString() + " " + proDic.ContainsKey(number));
+            //Debug.Log("Contain listener" + pn.ToString() + " " + listeners.Contains(pn));
+            if (proDic.ContainsKey(number))//&& listeners.Contains(pn)
             {
-                if (listeners.Contains(pn)) { }
-                else if (onceListeners.Contains(pn)) { onceListeners.Remove(pn); }                                
-                proDic[number](protocol);
+                    proDic[number](protocol);
+                    Debug.Log("Handle listener" + pn.ToString());                                         
+            }
+            //Debug.Log("Contain once listener" + pn.ToString() + " " + onceListeners.ContainsKey(pn));
+            if (onceListeners.ContainsKey(pn))
+            {
+                onceListeners[pn](protocol);
+                onceListeners.Remove(pn);
+                Debug.Log("Handle once listener" + pn.ToString());
             }
         }
     }

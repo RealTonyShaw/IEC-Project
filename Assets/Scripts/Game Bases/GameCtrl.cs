@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Valve.VR;
 
 public partial class GameCtrl : MonoBehaviour
 {
@@ -23,24 +20,45 @@ public partial class GameCtrl : MonoBehaviour
     #region 实时公有信息
     //private UnitInfo _mainChara;
     private static Unit _playerUnit = null;
+    public static EventPublisher<Unit> PlayerUnitChangeEvent = new EventPublisher<Unit>();
     public static Unit PlayerUnit
     {
         get
         {
-            if (_playerUnit == null)
-            {
-                _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
-            }
+            //if (_playerUnit == null)
+            //{
+            //    _playerUnit = GameObject.FindGameObjectWithTag("Player")?.GetComponent<Unit>();
+            //    PlayerUnitChangeEvent.OnTrigger(_playerUnit);
+            //}
             return _playerUnit;
+        }
+
+        set
+        {
+            _playerUnit = value;
+            PlayerUnitChangeEvent.OnTrigger(_playerUnit);
         }
     }
     public static bool IsOnlineGame = false;
+    public static bool IsVR = true;
+    public bool Is_VR = true;
+    public bool Is_Online_Game = false;
 
     public Transform PlayerCamera
     {
         get; set;
     }
     #endregion
+
+    public SteamVR_Action_Vibration hapticSignal;
+    public bool check = false;
+    public string gameScene;
+
+    public void StartSingleGame()
+    {
+        if (check)
+            SceneManager.LoadSceneAsync(gameScene);
+    }
 
     /// <summary>
     /// 延迟执行动作。
@@ -62,6 +80,8 @@ public partial class GameCtrl : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        IsOnlineGame = Is_Online_Game;
+        IsVR = Is_VR;
         EventMgr.initEvent.OnAwake();
         EventMgr.UpdateEvent.AddListener(InputMgr.CheckHotKey);
         //InputMgr.BindHotKey(TestHotKey, KeyCode.F);
@@ -80,8 +100,13 @@ public partial class GameCtrl : MonoBehaviour
         if (BuildDataPath)
             Build();
 
-        //加载游戏场景
-        SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
+        ////加载游戏场景
+        //if (check)
+        //{
+        //    SceneManager.LoadSceneAsync(gameScene);
+        //}
+        //else
+        //    SceneManager.LoadSceneAsync(GameDB.MyScene.GameScene);
 
         //SceneManager.LoadSceneAsync("Demo_Exterior");
     }

@@ -19,7 +19,7 @@ MonoBehaviour:
   RPM: 500
   Params: []
   Range: 50
-  Speed: 70
+  Speed: 75
   LifeSpan: 3
   Cooldown: 0.2
   ManaCost: 3.2

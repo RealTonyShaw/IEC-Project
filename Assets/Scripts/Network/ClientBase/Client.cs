@@ -11,7 +11,7 @@ namespace ClientBase
 {
     public class Client
     {
-        public const int MAX_BUFFER_SIZE = 1024;
+        public const int MAX_BUFFER_SIZE = 128 * 1024;
         private static Client instance;
         public bool isConnect = false;
         public Socket client;
@@ -24,6 +24,8 @@ namespace ClientBase
         public int port = -1;
 
         private byte[] buffer = new byte[MAX_BUFFER_SIZE];
+
+        public PlayerInfo pl_info = new PlayerInfo();
 
         private string host;
         public string Host
@@ -61,7 +63,7 @@ namespace ClientBase
                 return;
             if (client != null)
             {
-                Console.WriteLine("There is a connection");
+                Console.WriteLine("There is a connection, reconnect?");
             }
             if (client != null && client.Connected)
             {
@@ -75,15 +77,38 @@ namespace ClientBase
                 IPEndPoint iPEndPoint = new IPEndPoint(ip, port);
                 client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.Connect(iPEndPoint);
-                isConnect = true;
                 client.BeginReceive(buffer, start, MAX_BUFFER_SIZE - start,
                     SocketFlags.None, ReceiveCallback, null);
+                //isConnect = client.Connected;
+                isConnect = true;
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.Log(e);
+                Debug.Log(e.StackTrace);
             }
-            Debug.Log("It seems that the connection has been built.");
+            if (client.Connected)
+                Debug.Log("It seems that the connection has been built.");
+        }
+
+        public bool Connect(string _host, string _port)
+        {
+            try
+            { 
+                if (int.TryParse(_port, out port))
+                {
+                    this.host = _host;
+                    Connect();
+                    return client.Connected;
+                }
+                return false;
+            }
+            catch (Exception e)
+            {
+                Debug.Log(e.Message);
+                Debug.Log(e.StackTrace);
+                return false;
+            }
         }
 
         /// <summary>
@@ -95,12 +120,15 @@ namespace ClientBase
             try
             {
                 start += client.EndReceive(ar);
+
                 DataProcessor();
+
                 client.BeginReceive(buffer, start, MAX_BUFFER_SIZE - start,
-        SocketFlags.None, ReceiveCallback, null);
+SocketFlags.None, ReceiveCallback, null);
             }
             catch (Exception e)
             {
+                isConnect = false;
                 Console.WriteLine(e);
             }
         }
@@ -111,13 +139,16 @@ namespace ClientBase
         /// </summary>
         private void DataProcessor()
         {
+            //isConnect = client.Connected;
             //如果小于存储长度的数据长度，则返回
             if (start < sizeof(short))
                 return;
             length = BitConverter.ToInt16(buffer, 0);
+
             //如果没接收完毕返回
             if (start < SF.SHORT_SIZE + length)
                 return;
+
             ProtocolBase protocol = proto.Decode(buffer, SF.SHORT_SIZE, length);
 
             //Debug.Log();
@@ -134,24 +165,25 @@ namespace ClientBase
             else
             {
                 CRC8 crc8 = new CRC8(protocol.Encode(), CRC_op.Judge);
-                Debug.Log("CRC8");
+                //Debug.Log("CRC8");
                 cor = crc8.IsCorrect();
             }
 
             if (cor)
             {
                 //Add handler and handle.
-                Debug.Log(protocol.GetName() + " is cor");
+                //Debug.Log(protocol.GetName() + " is cor");
                 EventHandler.GetEventHandler().AddProtocol(protocol);
             }
             else
             {
-                Debug.Log("CRC failed");
+                //Debug.Log("CRC failed");
             }
 
             //Operations for protocol
             int count = start - SF.SHORT_SIZE - length;
-            Array.Copy(buffer, start, buffer, 0, count);
+            Array.Copy(buffer, length + SF.SHORT_SIZE, buffer, 0, count);
+            //Debug.Log(string.Format("start = {0}, count = {1}, length = {2}", start, count, length));
             start = count;
             if (count > 0)
                 DataProcessor();
@@ -172,6 +204,7 @@ namespace ClientBase
             {
                 return;
             }
+            Connect();
         }
 
         public void Disconnect()
@@ -196,15 +229,25 @@ namespace ClientBase
         public void Send(ProtocolBase protocol)
         {
             if (!isConnect)
-                return;
-            protocol.AppendCrc();
-            //把传输的信息转化为字节数组A
-            byte[] bytes = protocol.Encode();
-            //把信息长度大小转换成字节数组
-            byte[] length = BitConverter.GetBytes((short)bytes.Length);
-            //这段话表示连接length和bytes数组，并且length在前
-            byte[] sendBuff = length.Concat(bytes).ToArray();
-            client.Send(sendBuff);
+            {
+                Debug.Log("Try to send but failed : isConnect = false");
+                //return;
+            }
+            try
+            {
+                protocol.AppendCrc();
+                //把传输的信息转化为字节数组A
+                byte[] bytes = protocol.Encode();
+                //把信息长度大小转换成字节数组
+                byte[] length = BitConverter.GetBytes((short)bytes.Length);
+                //这段话表示连接length和bytes数组，并且length在前
+                byte[] sendBuff = length.Concat(bytes).ToArray();
+                client.Send(sendBuff);
+            } catch (Exception e)
+            {
+                Debug.Log(e);
+                Debug.Log(e.StackTrace);
+            }
         }
     }
 }
