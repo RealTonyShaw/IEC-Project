@@ -39,8 +39,9 @@ MonoBehaviour:
   IsPassive: 0
   Buffs: 
   Force: 0
-  Accuracy: 85
+  Accuracy: 99
   MinAccuracy: 40
   AccuracyCooldownSpeed: 5
   AccuracyHeatupSpeed: 5
-  Prefabs: []
+  Prefabs:
+  - {fileID: 8133517299980383538, guid: e37a36c8117974bc2bf592f8b205b5a8, type: 3}
