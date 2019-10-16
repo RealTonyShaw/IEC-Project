@@ -81,7 +81,7 @@ public class GameObjectCache
         }
         int index = (int)reusablePrefab.Prefab;
         //命中
-        lock (blocks[index])
+        lock (blocks[index].BlkMutex)
         {
             GameObject obj = blocks[index].Pop();
             if (obj != null)
@@ -110,7 +110,7 @@ public class GameObjectCache
             return;
         }
         int index = (int)reusablePrefab.Prefab;
-        lock (blocks[index])
+        lock (blocks[index].BlkMutex)
         {
             blocks[index].Cache(gameObject);
             gameObject.transform.SetParent(GameDB.Instance.ReusableObjectPool);
