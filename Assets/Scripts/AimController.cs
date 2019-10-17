@@ -26,7 +26,8 @@ public class AimController : MonoBehaviour
                     // sync target
                     if (GameCtrl.PlayerUnit != null)
                     {
-                        int id = value == null ? -1 : value.attributes.ID;
+                        int id = (value == null) ? -1 : value.attributes.ID;
+                        Debug.Log(string.Format("Send sync target ID {0} -> ID {1}", GameCtrl.PlayerUnit.attributes.ID, id));
                         DataSync.SyncAimTarget(Gamef.SystemTimeInMillisecond,
                         GameCtrl.PlayerUnit.attributes.ID, id);
                     }

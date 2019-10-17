@@ -9784,7 +9784,6 @@ GameObject:
   - component: {fileID: 5174529388956396895}
   - component: {fileID: -2216359950321396860}
   - component: {fileID: 4376506332692770083}
-  - component: {fileID: 7509641350043507608}
   m_Layer: 9
   m_Name: Ice ball
   m_TagString: Missile
@@ -9926,19 +9925,6 @@ MonoBehaviour:
   - {fileID: 6500057871442631773}
   - {fileID: 9202152960613092184}
   - {fileID: 438117215284616321}
---- !u!114 &7509641350043507608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5374365597475199403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5edd416757d1dca4d9586d2bf13d497f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Prefab: 1
 --- !u!1 &6500057871442631773
 GameObject:
   m_ObjectHideFlags: 0

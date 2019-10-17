@@ -6,6 +6,7 @@ using DG.Tweening;
 
 public partial class RegisterPanel : BasePanel
 {
+    public InputField host;
     public InputField userName;
     public InputField password;
     public InputField repeatPw;
@@ -47,5 +48,10 @@ public partial class RegisterPanel : BasePanel
     public void OnButtonClickUp(Transform transform)
     {
         transform.DOScale(new Vector3(1, 1, 1), 0.5f);
+    }
+
+    public void OnHostEdited()
+    {
+        ClientLauncher.Instance.host = host.text;
     }
 }

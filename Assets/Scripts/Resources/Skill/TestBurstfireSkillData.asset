@@ -15,14 +15,14 @@ MonoBehaviour:
   Description: "\u8FD9\u91CC\u53EF\u4EE5\u8F93\u5165\u8BF4\u660E"
   SkillName: 2
   SkillType: 1
-  Damage: 30
+  Damage: 20
   RPM: 100
   Params: []
   Range: 50
-  Speed: 30
-  LifeSpan: 4
-  Cooldown: 2
-  ManaCost: 25
+  Speed: 33
+  LifeSpan: 6
+  Cooldown: 2.6
+  ManaCost: 35
   ManaCostPerSec: 0
   MissileHP: 5
   IsAOE: 1
@@ -32,8 +32,8 @@ MonoBehaviour:
   InnerDamageCoefficient: 1
   MiddleDamageCoefficient: 0.5
   OuterDamageCoefficient: 0.2
-  IsTracking: 0
-  TrackingConst: 1
+  IsTracking: 1
+  TrackingConst: 2.2
   AimingTime: 2
   IsPassive: 0
   Buffs: 

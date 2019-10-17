@@ -2,7 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Valve.VR;
+//using Valve.VR;
 
 public partial class GameCtrl : MonoBehaviour
 {
@@ -40,9 +40,9 @@ public partial class GameCtrl : MonoBehaviour
         }
     }
     public static bool IsOnlineGame = false;
-    public static bool IsVR = true;
-    public bool Is_VR = true;
-    public bool Is_Online_Game = false;
+    //public static bool IsVR = true;
+    //public bool Is_VR = true;
+    //public bool Is_Online_Game = false;
 
     public Transform PlayerCamera
     {
@@ -50,14 +50,14 @@ public partial class GameCtrl : MonoBehaviour
     }
     #endregion
 
-    public SteamVR_Action_Vibration hapticSignal;
+    //public SteamVR_Action_Vibration hapticSignal;
     public bool check = false;
     public string gameScene;
 
     public void StartSingleGame()
     {
         if (check)
-            SceneManager.LoadSceneAsync(gameScene);
+            SceneManager.LoadSceneAsync("Game");
     }
 
     /// <summary>
@@ -80,14 +80,8 @@ public partial class GameCtrl : MonoBehaviour
     private void Awake()
     {
         Instance = this;
-        IsOnlineGame = Is_Online_Game;
-        IsVR = Is_VR;
         EventMgr.initEvent.OnAwake();
         EventMgr.UpdateEvent.AddListener(InputMgr.CheckHotKey);
-        //InputMgr.BindHotKey(TestHotKey, KeyCode.F);
-        //InputMgr.BindHotKey(TestCasting, KeyCode.T);
-
-        //BindHotKey4Skill();
     }
 
     private void Start()

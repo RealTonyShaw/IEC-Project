@@ -4,6 +4,9 @@ using UnityEngine;
 
 public partial class MultiGamePanel
 {
+    bool isListening = false;
+    string uName;
+    string key;
     public void OnSignInClick()
     {
         if (userName.text == null || userName.text.Length < 1)
@@ -14,6 +17,27 @@ public partial class MultiGamePanel
         {
             return;
         }
-        DataSync.Login(userName.text, password.text);
+        uName = userName.text;
+        key = password.text;
+        if (ClientLauncher.IsConnected)
+        {
+            TryLogIn();
+        }
+        else if (!isListening)
+        {
+            ClientLauncher.Instance.OnConnected.AddListener(TryLogIn);
+            isListening = true;
+            ClientLauncher.Instance.Launch();
+        }
+    }
+
+    void TryLogIn()
+    {
+        if (isListening)
+        {
+            ClientLauncher.Instance.OnConnected.RemoveListener(TryLogIn);
+            isListening = false;
+        }
+        DataSync.Login(uName, key);
     }
 }

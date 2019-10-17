@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public partial class MultiGamePanel : BasePanel
 {
+    public InputField host;
     public InputField userName;
     public InputField password;
     public Transform trans;
@@ -57,6 +58,11 @@ public partial class MultiGamePanel : BasePanel
     public void OnButtonClickUp(Transform transform)
     {
         transform.DOScale(new Vector3(1, 1, 1), 0.5f);
+    }
+
+    public void OnHostChanged()
+    {
+        ClientLauncher.Instance.host = host.text;
     }
 
     public void OnRegisterClick()

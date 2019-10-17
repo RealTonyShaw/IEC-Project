@@ -17,7 +17,7 @@ namespace ClientBase
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
             long delta = proto.GetLong(start, ref start);
-            ClientLauncher.Instance.TimeCheck(delta);            
+            ClientLauncher.Instance.TimeCheck(delta);
         }
         public static void Ping(ProtocolBase protocol)
         {
@@ -169,7 +169,7 @@ namespace ClientBase
             Vector3 fwd = ParseVector3(proto, ref start);// parse camera forward
 
             Unit unit = Gamef.GetUnit(id);
-            unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1], fwd); 
+            unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1], fwd);
         }
 
         public static void SyncSwitchSkill(ProtocolBase protocol)
@@ -204,7 +204,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             unit.SyncPlayerInput.SyncMouseButton0Up(instant);
-        }        
+        }
         #endregion
 
         #region Player Casting State
@@ -240,7 +240,12 @@ namespace ClientBase
             long instant = proto.GetInt(start, ref start);
             int sourceId = proto.GetByte(start, ref start);
             int targetId = proto.GetByte(start, ref start);
+            if (targetId == 255)
+            {
+                targetId = -1;
+            }
             Unit unit = Gamef.GetUnit(sourceId);
+            Debug.Log(string.Format("Send sync target ID {0} -> ID {1}", sourceId, targetId));
             unit.SyncPlayerCastingState.SyncTarget(instant, Gamef.GetUnit(targetId));
         }
 
