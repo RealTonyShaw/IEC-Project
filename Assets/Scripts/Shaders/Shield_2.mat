@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shield
-  m_Shader: {fileID: 4800000, guid: dd1051191e7d9e94c9f6bdf6360e71b0, type: 3}
+  m_Name: Shield_2
+  m_Shader: {fileID: 4800000, guid: a33199ee773922941bc0019013b2d64a, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -55,15 +55,12 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ScanMap:
-        m_Texture: {fileID: 0}
+    - _ScaleTex:
+        m_Texture: {fileID: 2800000, guid: aa127dd35ebcfc5479df8f5d6f78d231, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _ShieldMap:
-        m_Texture: {fileID: 2800000, guid: 260a78b52cc44b14a9eb78c5628537ae, type: 3}
-        m_Scale: {x: 11, y: 8}
-        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Attenuation: 1
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
@@ -75,19 +72,12 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _ScanFrequency: 1
-    - _ScanFresnelPow: 10
-    - _ScanFresnelScale: 0
-    - _ScanScale: 0
-    - _ShieldFresnelPow: 10
-    - _ShieldFresnelScale: 0
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _VertexScale: 0.13
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Color: {r: 2.6282723, g: 1.680033, b: 0.08678263, a: 0.8666667}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _ScanCol: {r: 0.07943217, g: 0.8515601, b: 0.99056596, a: 0.015686275}
-    - _ShieldCol: {r: 0.032395888, g: 0.9535474, b: 0.9811321, a: 0.09411765}
