@@ -35,10 +35,6 @@ public partial class GameCtrl : MonoBehaviour
 
         set
         {
-            if (_playerUnit != value && value != null)
-            {
-                Crosshair.Instance.Resume();
-            }
             _playerUnit = value;
             PlayerUnitChangeEvent.OnTrigger(_playerUnit);
         }

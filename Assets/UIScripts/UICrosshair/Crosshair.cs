@@ -5,7 +5,6 @@ using UnityEditor;
 public class Crosshair : MonoBehaviour
 {
     public static Crosshair Instance { get; private set; }
-
     public float height = 10f;
     public float width = 2f;
     public float defaultSpread = 10f;
@@ -26,15 +25,15 @@ public class Crosshair : MonoBehaviour
     }
 
     bool enableDrawing = true;
-    public void Pause()
-    {
-        enableDrawing = false;
-    }
+    //public void Pause()
+    //{
+    //    enableDrawing = false;
+    //}
 
-    public void Resume()
-    {
-        enableDrawing = true;
-    }
+    //public void Resume()
+    //{
+    //    enableDrawing = true;
+    //}
 
     public void SetDefaultAccuracy(float accuracy)
     {

@@ -274,7 +274,6 @@ public partial class Unit : MonoBehaviour
         attributes.isAlive = false;
         if (GameCtrl.PlayerUnit == this)
         {
-            Crosshair.Instance.Pause();
             DeathPanel.Instance.BeginDeath();
         }
         if (GameCtrl.IsOnlineGame && IsLocal)

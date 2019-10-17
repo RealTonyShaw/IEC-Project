@@ -4133,6 +4133,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GaussianBlurAnim: {fileID: 1158242744}
   DeathPanelAlphaAnim: {fileID: 236800782}
+  CrossHairFadeAnim: {fileID: 1197492890}
 --- !u!1001 &240235513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -23068,9 +23069,9 @@ GameObject:
   m_Component:
   - component: {fileID: 1197492885}
   - component: {fileID: 1197492888}
-  - component: {fileID: 1197492887}
   - component: {fileID: 1197492886}
   - component: {fileID: 1197492889}
+  - component: {fileID: 1197492890}
   m_Layer: 5
   m_Name: CrosshairPanel
   m_TagString: Untagged
@@ -23111,18 +23112,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   aimingCrosshair: {fileID: 1360438234}
---- !u!225 &1197492887
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1197492884}
-  m_Enabled: 1
-  m_Alpha: 0.6
-  m_Interactable: 0
-  m_BlocksRaycasts: 0
-  m_IgnoreParentGroups: 0
 --- !u!222 &1197492888
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23145,12 +23134,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   height: 30
   width: 3
-  defaultSpread: 10
+  defaultSpread: 30
   color: {r: 1, g: 0, b: 0, a: 0.78431374}
   resizeable: 1
   resizedSpread: 20
   resizeSpeed: 7
   distantConst: 600
+--- !u!111 &1197492890
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1197492884}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: bbe485236321e7440b4c282cf803cd0a, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: bbe485236321e7440b4c282cf803cd0a, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 0
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1001 &1200406224
 PrefabInstance:
   m_ObjectHideFlags: 0

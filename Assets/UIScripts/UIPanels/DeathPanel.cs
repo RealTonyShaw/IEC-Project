@@ -7,6 +7,7 @@ public class DeathPanel : MonoBehaviour
     public static DeathPanel Instance { get; private set; }
     public Animation GaussianBlurAnim;
     public Animation DeathPanelAlphaAnim;
+    public Animation CrossHairFadeAnim;
 
     private void Awake()
     {
@@ -17,5 +18,6 @@ public class DeathPanel : MonoBehaviour
     {
         GaussianBlurAnim.Play();
         DeathPanelAlphaAnim.Play();
+        CrossHairFadeAnim.Play();
     }
 }
