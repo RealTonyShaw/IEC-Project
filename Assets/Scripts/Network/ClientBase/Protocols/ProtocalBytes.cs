@@ -334,15 +334,13 @@ namespace ClientBase
             if (bytes.Length > 144)
             {
                 CRC16 crc = new CRC16(bytes, false);
-                if (ClientLauncher.Instance.EnableCrc16)
-                    crc.CRC_16();
+                crc.CRC_16();
                 bytes = crc.AppendCRC();
             }
             else
             {
                 CRC8 crc = new CRC8(bytes, false);
-                if (ClientLauncher.Instance.EnableCrc8)
-                    crc.CRC_8();
+                crc.CRC_8();
                 bytes = crc.AppendCRC();
             }
         }

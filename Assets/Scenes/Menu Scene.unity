@@ -21118,7 +21118,7 @@ PrefabInstance:
     - target: {fileID: 3371446225316369919, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}
       propertyPath: AutoConnect
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3371446225316369919, guid: 43ab7c1c6639e8b4c9852492fe5a8679,
         type: 3}

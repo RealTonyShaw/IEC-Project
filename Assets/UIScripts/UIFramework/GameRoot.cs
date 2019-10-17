@@ -10,12 +10,15 @@ public class GameRoot : MonoBehaviour
         UIManager.Instance.PushPanel(PanelType.Start);
     }
 
+    bool isEnter = false;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-        {
-            UIManager.Instance.PopPanel(PanelType.Start);
-            UIManager.Instance.PushPanel(PanelType.MainMenu);
-        }
+        if (!isEnter)
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            {
+                isEnter = true;
+                UIManager.Instance.PopPanel(PanelType.Start);
+                UIManager.Instance.PushPanel(PanelType.MainMenu);
+            }
     }
 }

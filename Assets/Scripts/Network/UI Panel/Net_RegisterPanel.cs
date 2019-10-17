@@ -4,6 +4,10 @@ using UnityEngine;
 
 public partial class RegisterPanel
 {
+    bool isListening = false;
+    string uName;
+    string key;
+
     public void OnConfirmClick()
     {
         if (userName.text == null || userName.text.Length < 1)
@@ -19,7 +23,27 @@ public partial class RegisterPanel
             Debug.Log("Differance password");
             return;
         }
-        Debug.Log("Reg");
-        DataSync.Register(userName.text, password.text);
+        uName = userName.text;
+        key = password.text;
+        if (ClientLauncher.IsConnected)
+        {
+            TryReg();
+        }
+        else if (!isListening)
+        {
+            ClientLauncher.Instance.OnConnected.AddListener(TryReg);
+            isListening = true;
+            ClientLauncher.Instance.Launch();
+        }
+    }
+
+    void TryReg()
+    {
+        if (isListening)
+        {
+            ClientLauncher.Instance.OnConnected.RemoveListener(TryReg);
+            isListening = false;
+        }
+        DataSync.Login(uName, key);
     }
 }
