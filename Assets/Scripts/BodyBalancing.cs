@@ -8,7 +8,7 @@ public class BodyBalancing : MonoBehaviour
 {
     //空气阻尼
     public const float AIR_DAMP = 0.5f;
-    public const float Z_ROT_CONST = 1f;
+    public const float Z_ROT_CONST = 2f;
     //重力加速度
     public const float GRAVITY_CONST = 9.81f;
     public const float RECI_GRAVITY_CONST = 1 / GRAVITY_CONST;
