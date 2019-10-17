@@ -286,7 +286,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Center: {x: 0.08, y: 0, z: 0}
 --- !u!1 &4585825985778401086
 GameObject:
@@ -23341,7 +23341,7 @@ MonoBehaviour:
   SpawnTransform: {fileID: 8479456665543203989}
   unitName: 1
   animatorController: {fileID: 7397804601718821625}
-  DestroyDelay: 3
+  DestroyDelay: 6
   attributes:
     ID: -1
     unit: {fileID: 0}
@@ -23390,6 +23390,7 @@ MonoBehaviour:
       unit: {fileID: 0}
       value_current: 10
       OriginalValue: 10
+  runtimeAccuracy: 0
   IsLocal: 0
   RecvSyncMovement: 1
   RecvSyncUnitState: 1

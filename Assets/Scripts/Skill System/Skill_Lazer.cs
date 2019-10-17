@@ -9,7 +9,7 @@ public class Skill_Lazer : AbstractStrafeSkill, ITracking
 
     public override void AccuracyCooldown(float dt)
     {
-        this.Caster.RuntimeAccuracy += 0f;
+        this.Caster.RuntimeAccuracy += Data.AccuracyCooldownSpeed * dt;
     }
 
     public Unit Target { get; set; } = null;

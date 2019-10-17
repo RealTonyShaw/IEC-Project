@@ -4,27 +4,59 @@ using UnityEditor;
 
 public class Crosshair : MonoBehaviour
 {
+    public static Crosshair Instance { get; private set; }
+
     public float height = 10f;
     public float width = 2f;
     public float defaultSpread = 10f;
     public Color color = Color.grey;
-    public bool resizeable = false;
+    public bool resizeable = true;
     public float resizedSpread = 20f;
     public float resizeSpeed = 3f;
+    public float distantConst = 20f;
 
     float spread;
-    bool resizing = false;
+    bool resizing = true;
 
     void Awake()
     {
+        Instance = this;
         //set spread
         spread = defaultSpread;
+    }
+
+    bool enableDrawing = true;
+    public void Pause()
+    {
+        enableDrawing = false;
+    }
+
+    public void Resume()
+    {
+        enableDrawing = true;
+    }
+
+    public void SetDefaultAccuracy(float accuracy)
+    {
+        float angle = 100 - accuracy;
+        float spread = distantConst * Mathf.Tan(angle * Mathf.Deg2Rad);
+        defaultSpread = spread;
+    }
+
+    public void SetAccuracy(float accuracy)
+    {
+        float angle = 100 - accuracy;
+        float spread = distantConst * Mathf.Tan(angle * Mathf.Deg2Rad) + defaultSpread;
+        resizedSpread = spread;
     }
 
     void Update()
     {
         //for demonstration purposes
-        if (Input.GetMouseButton(0)) { resizing = true; } else { resizing = false; }
+        //if (Input.GetMouseButton(0)) { resizing = true; } else { resizing = false; }
+
+        if (!enableDrawing)
+            return;
         if (resizeable)
         {
             if (resizing)
@@ -39,12 +71,14 @@ public class Crosshair : MonoBehaviour
             }
 
             //clamp spread
-            spread = Mathf.Clamp(spread, defaultSpread, resizedSpread);
+            //spread = Mathf.Clamp(spread, defaultSpread, resizedSpread);
         }
     }
 
     void OnGUI()
     {
+        if (!enableDrawing)
+            return;
         Texture2D texture = new Texture2D(1, 1);
         texture.SetPixel(0, 0, color);
         texture.wrapMode = TextureWrapMode.Repeat;

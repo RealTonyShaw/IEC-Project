@@ -21,7 +21,7 @@ MonoBehaviour:
   Range: 50
   Speed: 33
   LifeSpan: 6
-  Cooldown: 2.6
+  Cooldown: 3
   ManaCost: 35
   ManaCostPerSec: 0
   MissileHP: 5
@@ -41,7 +41,7 @@ MonoBehaviour:
   Accuracy: 98
   MinAccuracy: 70
   AccuracyCooldownSpeed: 5
-  AccuracyHeatupSpeed: 20
+  AccuracyHeatupSpeed: 22
   Prefabs:
   - {fileID: 5374365597475199403, guid: 47e076646753541ac89ee2c6a42d22aa, type: 3}
   - {fileID: 1879272669879180, guid: 15b9dd0ff0b73454aad08fc61f1d3084, type: 3}

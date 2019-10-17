@@ -28,6 +28,7 @@ public class ClientLauncher : MonoBehaviour
     }
 
     public static bool IsConnected => Client.Instance.isConnect;
+    public static int PlayerID => Client.Instance.pl_info.id_game;
 
     public string message = "";
 
