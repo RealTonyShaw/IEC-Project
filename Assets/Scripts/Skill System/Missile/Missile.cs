@@ -265,7 +265,9 @@ public class Missile : MonoBehaviour
     void Move(float dt)
     {
         if (!IsAlive)
+        {
             return;
+        }
         prevPos = transform.position;
         float ds = Skill.Data.Speed * dt;
         // 前方有障碍
@@ -274,7 +276,7 @@ public class Missile : MonoBehaviour
             // 障碍为施法者，忽略该障碍
             if (hit.collider.attachedRigidbody != null && hit.collider.attachedRigidbody.gameObject == Caster.gameObject)
             {
-                transform.Translate(Vector3.forward * ds);
+                rb.MovePosition(transform.position + transform.forward * ds);
             }
             // 否则，可能撞上该障碍物
             else
@@ -286,7 +288,7 @@ public class Missile : MonoBehaviour
         // 前方没有障碍
         else
         {
-            transform.Translate(Vector3.forward * ds);
+            rb.MovePosition(transform.position + transform.forward * ds);
         }
     }
 

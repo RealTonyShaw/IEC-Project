@@ -342,7 +342,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2262820836752315817}
   m_LocalRotation: {x: -0, y: -0, z: -8.917563e-18, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.89}
+  m_LocalPosition: {x: 0, y: 0, z: 0.593}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7602420653492553621}
@@ -421,7 +421,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.6
   m_Center: {x: 0.08, y: 0, z: 0}
 --- !u!1 &4585825985778401086
 GameObject:
@@ -755,6 +755,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1329885709985441677}
   - component: {fileID: 2300100499924439265}
+  - component: {fileID: 5388133353454855757}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -785,11 +786,24 @@ CapsuleCollider:
   m_GameObject: {fileID: 5927931761891853151}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.5954799
   m_Height: 2
   m_Direction: 0
   m_Center: {x: 0.4, y: -8.0353424e-10, z: 6.70094e-17}
+--- !u!135 &5388133353454855757
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5927931761891853151}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1
+  m_Center: {x: 0.17, y: 0, z: 0}
 --- !u!1 &6469778355372123774
 GameObject:
   m_ObjectHideFlags: 0
@@ -23830,7 +23844,7 @@ MonoBehaviour:
   SpawnTransform: {fileID: 8479456665543203989}
   unitName: 1
   animatorController: {fileID: 7397804601718821625}
-  DestroyDelay: 3
+  DestroyDelay: 6
   attributes:
     ID: -1
     unit: {fileID: 0}
@@ -23879,6 +23893,7 @@ MonoBehaviour:
       unit: {fileID: 0}
       value_current: 10
       OriginalValue: 10
+  runtimeAccuracy: 0
   IsLocal: 1
   RecvSyncMovement: 1
   RecvSyncUnitState: 1

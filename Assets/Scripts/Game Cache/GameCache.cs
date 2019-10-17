@@ -34,7 +34,7 @@ public class GameObjectCache
         {
             blocks[i] = new GameCacheBlock();
         }
-        EventMgr.UpdateEvent.AddListener(RefreshBlocks);
+        //EventMgr.UpdateEvent.AddListener(RefreshBlocks);
         isInit = true;
     }
 
@@ -75,7 +75,9 @@ public class GameObjectCache
 
     public static GameObject Instantiate(GameObject gameObject, Vector3 position, Quaternion rotation, Transform parent)
     {
-        GameObject res = null;
+        GameObject res = Object.Instantiate(gameObject, position, rotation, parent);
+        return res;
+        res = null;
         ReusablePrefab reusablePrefab = gameObject.GetComponent<ReusablePrefab>();
         if (reusablePrefab == null)
         {
@@ -105,8 +107,10 @@ public class GameObjectCache
 
     public static void Destroy(GameObject gameObject)
     {
-        ReusablePrefab reusablePrefab = gameObject.GetComponent<ReusablePrefab>();
         gameObject.SetActive(false);
+        Object.Destroy(gameObject, DESTROY_DELAY);
+        return;
+        ReusablePrefab reusablePrefab = gameObject.GetComponent<ReusablePrefab>();
         if (reusablePrefab == null)
         {
             Object.Destroy(gameObject, DESTROY_DELAY);

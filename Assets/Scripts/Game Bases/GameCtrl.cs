@@ -56,8 +56,7 @@ public partial class GameCtrl : MonoBehaviour
 
     public void StartSingleGame()
     {
-        if (check)
-            SceneManager.LoadSceneAsync("Game");
+        StartLoadingGameScene();
     }
 
     /// <summary>
@@ -112,6 +111,7 @@ public partial class GameCtrl : MonoBehaviour
         EventMgr.UpdateEvent.OnTrigger();
 
         UpdateMP_HP_UI();
+        UpdateCrosshair();
     }
 
     void UpdateMP_HP_UI()
@@ -124,6 +124,13 @@ public partial class GameCtrl : MonoBehaviour
         }
     }
 
+    void UpdateCrosshair()
+    {
+        if (PlayerUnit != null)
+        {
+            Crosshair.Instance.SetAccuracy(PlayerUnit.RuntimeAccuracy);
+        }
+    }
     #endregion
 
     private void Build()

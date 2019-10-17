@@ -8,7 +8,7 @@ public partial class GameCtrl
     AsyncOperation ao;
     public void StartLoadingGameScene()
     {
-        ao = SceneManager.LoadSceneAsync("Ph Game");
+        ao = SceneManager.LoadSceneAsync("Game");
         EventMgr.UpdateEvent.AddListener(_checkIsDone);
     }
 
@@ -28,10 +28,7 @@ public partial class GameCtrl
             DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
         else
         {
-            UnitData data = Gamef.LoadUnitData(UnitName.Player);
-            Unit unit = Gamef.Instantiate(data.LocalPrefab, t.position, t.rotation).GetComponent<Unit>();
-            CameraGroupController.Instance.ResetTransform(t.position, t.rotation);
-            GameCtrl.PlayerUnit = unit;
+            Gamef.CreateLocalUnit(UnitName.Player, t.position, t.rotation);
         }
     }
 
