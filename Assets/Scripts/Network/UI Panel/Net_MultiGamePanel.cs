@@ -7,8 +7,9 @@ public partial class MultiGamePanel
     bool isListening = false;
     string uName;
     string key;
-    public void OnSignInClick()
+    public void OnSignInClick(AudioSource audioSource)
     {
+        audioSource.Play();
         if (userName.text == null || userName.text.Length < 1)
         {
             return;

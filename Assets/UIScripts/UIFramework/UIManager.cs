@@ -32,6 +32,7 @@ public class UIManager
     private UIManager()
     {
         ParseJsonInfo();
+        ParseBasePanelInfo();
     }
 
     //panelStack为实现面板切换的数据结构
@@ -40,6 +41,7 @@ public class UIManager
     private Stack<BasePanel> panelStack = new Stack<BasePanel>();
     private Dictionary<PanelType, BasePanel> panelDict = new Dictionary<PanelType, BasePanel>();
     private Dictionary<PanelType, string> panelPathDict = new Dictionary<PanelType, string>();
+    private Dictionary<PanelType, GameObject> panelObjectDict = new Dictionary<PanelType, GameObject>();
 
     /// <summary>
     /// 将面板入栈
@@ -89,23 +91,24 @@ public class UIManager
         BasePanel panel;
         if (!panelDict.TryGetValue(panelType, out panel) || panel == null)
         {
-            string path;
-            if (!panelPathDict.TryGetValue(panelType, out path))
-            {
-                Debug.Log("error!");
-            }
-            GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(path));
-            insPanel.transform.SetParent(CanvasTransform, false);
-            if (panel == null)
-            {
-                panel = insPanel.GetComponent<BasePanel>();
-                panelDict[panelType] = panel;
-            }
-            else
-            {
-                panel = insPanel.GetComponent<BasePanel>();
-                panelDict.Add(panelType, panel);
-            }
+            //string path;
+            //if (!panelPathDict.TryGetValue(panelType, out path))
+            //{
+            //    Debug.Log("error!");
+            //}
+            //GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(path));
+            //insPanel.transform.SetParent(CanvasTransform, false);
+            //if (panel == null)
+            //{
+            //    panel = insPanel.GetComponent<BasePanel>();
+            //    panelDict[panelType] = panel;
+            //}
+            //else
+            //{
+            //    panel = insPanel.GetComponent<BasePanel>();
+            //    panelDict.Add(panelType, panel);
+            //}
+            Debug.Log("error!");
         }
         return panel;
     }
@@ -120,6 +123,17 @@ public class UIManager
         foreach (PanelInfoItem panelInfoItem in panelInfoRoot.panelInfo)
         {
             panelPathDict.Add(panelInfoItem.panelType, panelInfoItem.panelPath);
+        }
+    }
+
+    private void ParseBasePanelInfo()
+    {
+        foreach(KeyValuePair<PanelType, string> keyValuePair in panelPathDict)
+        {
+            GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(keyValuePair.Value));
+            insPanel.transform.SetParent(CanvasTransform, false);
+            panelDict.Add(keyValuePair.Key, insPanel.GetComponent<BasePanel>());
+            panelObjectDict.Add(keyValuePair.Key, insPanel);
         }
     }
 
