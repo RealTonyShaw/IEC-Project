@@ -21,7 +21,6 @@ public class GameRoot : MonoBehaviour
     }
 
     bool isInit = false;
-
     bool isEnter = false;
     private void Update()
     {
