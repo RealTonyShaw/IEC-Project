@@ -17,6 +17,7 @@ public class Player : Unit
             SwitchSkillEvnt.AddListener(SwitchSkill);
             StartCastingEvnt.AddListener(Cooldown);
         }
+        OnHit.AddListener(triggerShield);
     }
 
     void Cooldown()
@@ -31,20 +32,14 @@ public class Player : Unit
         FloatingCanvasLeft.Instance.Switch2Skill(index);
     }
 
+    void triggerShield()
+    {
+        shieldColorController.Trigger();
+    }
+
     public override void Death()
     {
         base.Death();
         Shield.SetActive(false);
-    }
-
-    float lastHP = 0f;
-    protected override void Update()
-    {
-        base.Update();
-        if (lastHP > attributes.SheildPoint + 1e-2f)
-        {
-            shieldColorController.Trigger();
-        }
-        lastHP = attributes.SheildPoint;
     }
 }

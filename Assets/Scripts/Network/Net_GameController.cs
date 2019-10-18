@@ -8,8 +8,11 @@ public partial class GameCtrl
     AsyncOperation ao;
     public void StartLoadingGameScene()
     {
-        ao = SceneManager.LoadSceneAsync("Game");
-        EventMgr.UpdateEvent.AddListener(_checkIsDone);
+        Gamef.DelayedExecution(delegate
+        {
+            ao = SceneManager.LoadSceneAsync("Game");
+            EventMgr.UpdateEvent.AddListener(_checkIsDone);
+        }, 0.5f);
     }
 
     public void StartCreatePlayer(int playerID)

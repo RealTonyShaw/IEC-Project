@@ -8,9 +8,8 @@ public partial class RegisterPanel
     string uName;
     string key;
 
-    public void OnConfirmClick(AudioSource audioSource)
+    public void OnConfirmClick()
     {
-        audioSource.Play();
         if (userName.text == null || userName.text.Length < 1)
         {
             return;
@@ -45,6 +44,6 @@ public partial class RegisterPanel
             ClientLauncher.Instance.OnConnected.RemoveListener(TryReg);
             isListening = false;
         }
-        DataSync.Login(uName, key);
+        DataSync.Register(uName, key);
     }
 }

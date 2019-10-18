@@ -153,6 +153,7 @@ namespace ClientBase
             Vector3 position = ParseVector3(proto, ref start);
             Quaternion rot = ParseQuaternion(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
+            Debug.Log(string.Format("unit {0} recv sync position {1}", unit.attributes.ID, position));
             unit.SyncMovement.SyncTransform(instant, position, rot, speed);
         }
         #endregion
@@ -169,6 +170,7 @@ namespace ClientBase
             Vector3 fwd = ParseVector3(proto, ref start);// parse camera forward
 
             Unit unit = Gamef.GetUnit(id);
+            Debug.Log(string.Format("unit {0} recv ac cam = {1} h = {2} v = {3}", unit.attributes.ID, fwd, hv[0], hv[1]));
             unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1], fwd);
         }
 
@@ -192,6 +194,7 @@ namespace ClientBase
             long instant = proto.GetInt(start, ref start);
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
+            Debug.Log(string.Format("unit {0} recv btn down casting at {1}, in fact {2}", unit.attributes.ID, instant, Gamef.SystemTimeInMillisecond));
             unit.SyncPlayerInput.SyncMouseButton0Down(instant);
         }
 
@@ -203,6 +206,7 @@ namespace ClientBase
             long instant = proto.GetInt(start, ref start);
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
+            Debug.Log(string.Format("unit {0} recv btn up casting at {1}, in fact {2}", unit.attributes.ID, instant, Gamef.SystemTimeInMillisecond));
             unit.SyncPlayerInput.SyncMouseButton0Up(instant);
         }
         #endregion

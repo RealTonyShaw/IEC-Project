@@ -156,11 +156,12 @@ public class ClientLauncher : MonoBehaviour
     }
 
 
+
     public class TimeMgr
     {
         private bool isStart = false;
         //private int instant = 0;
-        private long bias;
+        private long bias = 0;
         private Stopwatch stopwatch = new Stopwatch();
 
         public TimeMgr() { }

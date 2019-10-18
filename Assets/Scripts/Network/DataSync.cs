@@ -143,6 +143,7 @@ public static class DataSync
     #region Sync Movement
     public static void SyncTransform(Unit unit, long instant, Vector3 position, Quaternion rotation, float speed)
     {
+        Debug.Log(string.Format("unit {0} send position {1}", unit.attributes.ID, position));
         //8 bits
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncTransform);
         //32 bits
@@ -174,7 +175,7 @@ public static class DataSync
         protocol.AddByte((byte)unit.attributes.ID);//unit id
         protocol.AddByte(PackHaV(h, v));//h and v
         AppendVector3(protocol, cameraFwd);// camera forward
-
+        Debug.Log(string.Format("unit {0} send ac cam = {1} h = {2} v = {3}", unit.attributes.ID, cameraFwd, h, v));
         Client.Instance.Send(protocol);
     }
 
@@ -198,6 +199,7 @@ public static class DataSync
     /// <param name="instant">发生时刻</param>
     public static void SyncMouseButton0Down(Unit unit, long instant)
     {
+        Debug.Log(string.Format("unit {0} send btn down casting at {1}", unit.attributes.ID, instant));
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Down);//16 bits
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 
@@ -210,6 +212,7 @@ public static class DataSync
     /// <param name="instant">发生时刻</param>
     public static void SyncMouseButton0Up(Unit unit, long instant)
     {
+        Debug.Log(string.Format("unit {0} send btn up casting at {1}", unit.attributes.ID, instant));
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.SyncMouseButton0Up);//16 bits
         protocol.AddInt((int)instant);//32 bits
         protocol.AddByte((byte)unit.attributes.ID); ;//8 bits 

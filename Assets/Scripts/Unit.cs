@@ -48,6 +48,7 @@ public partial class Unit : MonoBehaviour
     public readonly MyActionEvent DeathEvnt = new MyActionEvent();
     public readonly MyActionEvent TakeDmgEvnt = new MyActionEvent();
     public readonly MyActionEvent<int> SwitchSkillEvnt = new MyActionEvent<int>();
+    public readonly MyActionEvent OnHit = new MyActionEvent();
 
     [Header("Network Synchronization")]
     public bool IsLocal = true;
@@ -207,6 +208,7 @@ public partial class Unit : MonoBehaviour
     /// <param name="amount">伤害值</param>
     public virtual void TakeDamage(float amount)
     {
+        OnHit.Trigger();
         if (!IsLocal || !attributes.isAlive)
             return;
         if (amount < 0)

@@ -57,7 +57,11 @@ public class MoveController : MonoBehaviour
             DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.rotation, rb.velocity.magnitude);
         }
     }
+    [SerializeField]
+    long instant;
+    [SerializeField]
     long lastSyncA;
+    [SerializeField]
     long lastSyncT;
     private void Update()
     {
@@ -91,11 +95,10 @@ public class MoveController : MonoBehaviour
         mover.V = v;
         mover.H = h;
         mover.CameraForward = camFwd;
-
         if (GameCtrl.IsOnlineGame)
         {
             Unit unit = GameCtrl.PlayerUnit;
-            long instant = Gamef.SystemTimeInMillisecond;
+            instant = Gamef.SystemTimeInMillisecond;
             if (instant - lastSyncA >= 33)
             {
                 if (instant - lastSyncA <= 40)
