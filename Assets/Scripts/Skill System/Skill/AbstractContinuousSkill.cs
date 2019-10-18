@@ -41,7 +41,7 @@ public abstract class AbstractContinuousSkill : ISkill
     private bool isStarted = false;
     public void Trigger()
     {
-        Debug.Log(string.Format("ID {0} continuous skill start", Caster.attributes.ID));
+        Debug.Log(string.Format("ID {0} continuous skill start at {1}", Caster.attributes.ID, Gamef.SystemTimeInMillisecond));
         if (isStarted)
         {
             Stop();
