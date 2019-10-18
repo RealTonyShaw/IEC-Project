@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1360264774519884354}
   - component: {fileID: 1165568060191446756}
   - component: {fileID: 1164878051019217428}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: glowFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4750,7 +4750,7 @@ GameObject:
   - component: {fileID: 1360533605462245676}
   - component: {fileID: 1165499253216291290}
   - component: {fileID: 1165715906912772810}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: flarespikes_wide
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9438,7 +9438,7 @@ GameObject:
   - component: {fileID: 1403920850407365170}
   - component: {fileID: 2169021743923497135}
   - component: {fileID: 1059859894723092987}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Laser_Blue_Medium_Impact
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14567,7 +14567,7 @@ GameObject:
   - component: {fileID: 1368696836958706154}
   - component: {fileID: 1166344959713824820}
   - component: {fileID: 1164308991830880104}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: decal
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19252,7 +19252,7 @@ GameObject:
   - component: {fileID: 1368894002374879020}
   - component: {fileID: 1166329236682866994}
   - component: {fileID: 1164860160027630244}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: flarespikes_Thin
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -23937,7 +23937,7 @@ GameObject:
   - component: {fileID: 1360326505385082020}
   - component: {fileID: 1166355413118976658}
   - component: {fileID: 1165593792211385922}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: glow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28676,7 +28676,7 @@ GameObject:
   - component: {fileID: 1360105814925238446}
   - component: {fileID: 1166282042740994586}
   - component: {fileID: 1164850641162904346}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: decals_component
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -33431,7 +33431,7 @@ GameObject:
   - component: {fileID: 1368797322589722412}
   - component: {fileID: 1166299446243071208}
   - component: {fileID: 1164856495649001536}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: smokePuff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -38035,7 +38035,7 @@ GameObject:
   - component: {fileID: 1360247884540460930}
   - component: {fileID: 1165986568559238196}
   - component: {fileID: 1165057151608401224}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: impactSparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42747,7 +42747,7 @@ GameObject:
   - component: {fileID: 1360346563914582648}
   - component: {fileID: 1166089263899111458}
   - component: {fileID: 1165154266787280116}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: decal_heatedStrike
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47752,7 +47752,7 @@ GameObject:
   - component: {fileID: 6362757310153353110}
   - component: {fileID: 6556431057012600776}
   - component: {fileID: 6522920738648883760}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: laserOuter
   m_TagString: FX
   m_Icon: {fileID: 0}
@@ -52563,7 +52563,7 @@ GameObject:
   - component: {fileID: 6362947497713772480}
   - component: {fileID: 6521810890698544132}
   - component: {fileID: 6523460579033678094}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: glow
   m_TagString: FX
   m_Icon: {fileID: 0}
@@ -57302,7 +57302,7 @@ GameObject:
   - component: {fileID: 6364592867714371778}
   - component: {fileID: 6356244702774371972}
   - component: {fileID: 6346525726184811858}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: laserInner
   m_TagString: FX
   m_Icon: {fileID: 0}
@@ -57381,7 +57381,7 @@ GameObject:
   - component: {fileID: 6522252938549653768}
   - component: {fileID: 6523268813109138048}
   - component: {fileID: 6474654019807601778}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Laser_Blue_Medium_Projectile
   m_TagString: FX
   m_Icon: {fileID: 0}
@@ -62215,6 +62215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2177493552299207347}
   - component: {fileID: 3023821341992535850}
+  - component: {fileID: 5195146027048072430}
   m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
@@ -62249,3 +62250,18 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5195146027048072430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500057871442631773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca17bb29228a6e441a6b2b022f22fee1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missile: {fileID: 5174529388956396895}
+  unit: {fileID: 0}
+  rb: {fileID: 1696344433964705949}

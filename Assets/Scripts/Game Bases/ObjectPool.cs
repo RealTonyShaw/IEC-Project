@@ -296,35 +296,12 @@ public class ObjectPool<T> : IEnumerable<T>
         int RetrieveZeros(ulong tp)
         {
             int cnt = 0;
-            if ((tp & 0xffffffff) == 0)
-            {
-                cnt |= 32;
-                tp >>= 32;
-            }
-            if ((tp & 0xffff) == 0)
-            {
-                cnt |= 16;
-                tp >>= 16;
-            }
-            if ((tp & 0xff) == 0)
-            {
-                cnt |= 8;
-                tp >>= 8;
-            }
-            if ((tp & 0xf) == 0)
-            {
-                cnt |= 4;
-                tp >>= 4;
-            }
-            if ((tp & 0x3) == 0)
-            {
-                cnt |= 2;
-                tp >>= 2;
-            }
-            if ((tp & 0x1) == 0)
-            {
-                cnt |= 1;
-            }
+            if ((tp & 0xffffffff) == 0) { cnt |= 32; tp >>= 32; }
+            if ((tp & 0xffff) == 0) { cnt |= 16; tp >>= 16; }
+            if ((tp & 0xff) == 0) { cnt |= 8; tp >>= 8; }
+            if ((tp & 0xf) == 0) { cnt |= 4; tp >>= 4; }
+            if ((tp & 0x3) == 0) { cnt |= 2; tp >>= 2; }
+            if ((tp & 0x1) == 0) { cnt |= 1; }
             return cnt;
         }
 
