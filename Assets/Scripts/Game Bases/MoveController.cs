@@ -1,5 +1,5 @@
 ﻿using UnityEngine;
-using Valve.VR;
+//using Valve.VR;
 
 public class MoveController : MonoBehaviour
 {
@@ -9,9 +9,9 @@ public class MoveController : MonoBehaviour
         private set;
     }
 
-    public SteamVR_Input_Sources handType;
-    public SteamVR_Action_Vector2 PadPos;
-    public SteamVR_Action_Boolean pressPad;
+    //public SteamVR_Input_Sources handType;
+    //public SteamVR_Action_Vector2 PadPos;
+    //public SteamVR_Action_Boolean pressPad;
 
     public Vector3 EyePosition => mover.EyeTransform.position;
     public Vector3 EyeEulerAngles => mover.EyeTransform.eulerAngles;
@@ -66,27 +66,27 @@ public class MoveController : MonoBehaviour
 
         float h, v;
         Vector3 camFwd;
-        if (GameCtrl.IsVR)
-        {
-            if (GetPressPad())
-            {
-                Vector2 pos = PadPos.GetAxis(handType);
-                h = Mathf.Clamp(pos.x * 5f, -1f, 1f);
-                v = Mathf.Clamp(pos.y * 5f, -1f, 1f);
-            }
-            else
-            {
-                h = 0f;
-                v = 0f;
-            }
-            camFwd = CameraGroupController.Instance.transform.forward;
-        }
-        else
-        {
-            h = InputMgr.GetHorizontalAxis();
-            v = InputMgr.GetVerticalAxis();
-            camFwd = CameraGroupController.Instance.transform.forward;
-        }
+        //if (GameCtrl.IsVR)
+        //{
+        //    if (GetPressPad())
+        //    {
+        //        Vector2 pos = PadPos.GetAxis(handType);
+        //        h = Mathf.Clamp(pos.x * 5f, -1f, 1f);
+        //        v = Mathf.Clamp(pos.y * 5f, -1f, 1f);
+        //    }
+        //    else
+        //    {
+        //        h = 0f;
+        //        v = 0f;
+        //    }
+        //    camFwd = CameraGroupController.Instance.transform.forward;
+        //}
+        //else
+        //{
+        h = InputMgr.GetHorizontalAxis();
+        v = InputMgr.GetVerticalAxis();
+        camFwd = CameraGroupController.Instance.transform.forward;
+        //}
 
         mover.V = v;
         mover.H = h;
@@ -118,14 +118,13 @@ public class MoveController : MonoBehaviour
                 {
                     lastSyncT = instant;
                 }
-                Debug.Log("Send sync transform");
                 DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.rotation, rb.velocity.magnitude);
             }
         }
     }
 
-    bool GetPressPad()
-    {
-        return pressPad.GetState(handType);
-    }
+    //bool GetPressPad()
+    //{
+    //    return pressPad.GetState(handType);
+    //}
 }

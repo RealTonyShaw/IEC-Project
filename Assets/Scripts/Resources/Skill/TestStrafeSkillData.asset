@@ -19,12 +19,12 @@ MonoBehaviour:
   RPM: 500
   Params: []
   Range: 50
-  Speed: 75
+  Speed: 85
   LifeSpan: 3
   Cooldown: 0.2
   ManaCost: 3.2
   ManaCostPerSec: 0
-  MissileHP: 5
+  MissileHP: 1
   IsAOE: 0
   InnerBlastRadius: 0
   MiddleBlastRadius: 0
@@ -33,7 +33,7 @@ MonoBehaviour:
   MiddleDamageCoefficient: 0.5
   OuterDamageCoefficient: 0.2
   IsTracking: 1
-  TrackingConst: 1
+  TrackingConst: 1.8
   AimingTime: 2
   IsPassive: 0
   Buffs: 

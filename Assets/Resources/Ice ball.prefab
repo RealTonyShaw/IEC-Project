@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 327517176983330492}
   - component: {fileID: 327517176964051268}
   - component: {fileID: 327517176965126004}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4804,7 +4804,7 @@ GameObject:
   - component: {fileID: 327517176983322682}
   - component: {fileID: 327517176964050624}
   - component: {fileID: 327517176965118424}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Impact - Ice Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9489,6 +9489,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2803984021414108034}
+  - component: {fileID: 2810373215682230747}
+  - component: {fileID: 6300181249404194993}
   m_Layer: 9
   m_Name: Iceball Death
   m_TagString: Missile
@@ -9512,6 +9514,137 @@ Transform:
   m_Father: {fileID: 7667612411013193384}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!82 &2810373215682230747
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438117215284616321}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 8300000, guid: 5a4c8ef3fbc214f98b3bed8d3e87ef5f, type: 3}
+  m_PlayOnAwake: 1
+  m_Volume: 0.6
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 2
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: -0.085463114
+      outSlope: -0.085463114
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 1
+    - serializedVersion: 3
+      time: 0.09398871
+      value: 0.9358711
+      inSlope: -1.6146736
+      outSlope: -1.6146736
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.9617819
+    - serializedVersion: 3
+      time: 0.31080958
+      value: 0.34469604
+      inSlope: -1.5661889
+      outSlope: -1.5661889
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.017007772
+    - serializedVersion: 3
+      time: 1
+      value: 0.002
+      inSlope: -0.49724436
+      outSlope: -0.49724436
+      tangentMode: 34
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0.07554054
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!114 &6300181249404194993
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 438117215284616321}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b86089ff1274caebc8c1d34c9ea46b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 2810373215682230747}
+  defaultVolume: 0.6
+  volumeRange: 0.08
+  defaultPitch: 1
+  pitchRange: 0.2
 --- !u!1 &1902247098702738766
 GameObject:
   m_ObjectHideFlags: 0
@@ -9650,7 +9783,6 @@ GameObject:
   - component: {fileID: 1696344433964705949}
   - component: {fileID: 5174529388956396895}
   - component: {fileID: -2216359950321396860}
-  - component: {fileID: 1592800862023580017}
   - component: {fileID: 4376506332692770083}
   m_Layer: 9
   m_Name: Ice ball
@@ -9744,19 +9876,6 @@ MonoBehaviour:
   trackingAbility: 0
   focusDistance: 5
   target: {fileID: 0}
---- !u!114 &1592800862023580017
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5374365597475199403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5edd416757d1dca4d9586d2bf13d497f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Prefab: 1
 --- !u!114 &4376506332692770083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9816,6 +9935,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2177493552299207347}
   - component: {fileID: 3023821341992535850}
+  - component: {fileID: 1763350768220820748}
   m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
@@ -9850,6 +9970,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1763350768220820748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500057871442631773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca17bb29228a6e441a6b2b022f22fee1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missile: {fileID: 5174529388956396895}
+  unit: {fileID: 0}
+  rb: {fileID: 1696344433964705949}
 --- !u!1 &8046118086020601775
 GameObject:
   m_ObjectHideFlags: 0
@@ -9860,6 +9995,7 @@ GameObject:
   m_Component:
   - component: {fileID: 720144363519865971}
   - component: {fileID: 1207504670890010946}
+  - component: {fileID: 8587956924043309762}
   m_Layer: 9
   m_Name: audio source
   m_TagString: Untagged
@@ -9893,14 +10029,14 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 2e7b54021c6c34b309e65837e5a0f304, type: 3}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.6
   m_Pitch: 1
   Loop: 0
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
   Priority: 128
-  DopplerLevel: 1
+  DopplerLevel: 0
   MinDistance: 1
   MaxDistance: 500
   Pan2D: 0
@@ -9995,6 +10131,23 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8587956924043309762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8046118086020601775}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 94b86089ff1274caebc8c1d34c9ea46b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  audioSource: {fileID: 1207504670890010946}
+  defaultVolume: 0.6
+  volumeRange: 0.08
+  defaultPitch: 1
+  pitchRange: 0.2
 --- !u!1 &9202152960613092184
 GameObject:
   m_ObjectHideFlags: 0
@@ -10006,7 +10159,7 @@ GameObject:
   - component: {fileID: 9202152960612808610}
   - component: {fileID: 9202152960628049164}
   - component: {fileID: 9202152960628731708}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Projectile - Ice Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14636,7 +14789,7 @@ GameObject:
   - component: {fileID: 9202152960612796288}
   - component: {fileID: 9202152960628049726}
   - component: {fileID: 9202152960628683054}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19371,7 +19524,7 @@ GameObject:
   - component: {fileID: 9202152960612803408}
   - component: {fileID: 9202152960628005840}
   - component: {fileID: 9202152960628744678}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using Valve.VR;
+//using Valve.VR;
 
 public static partial class Gamef
 {
@@ -146,6 +146,26 @@ public static partial class Gamef
     }
 
     /// <summary>
+    /// 创建单位。仅适用于单机。
+    /// </summary>
+    /// <param name="unitName"></param>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
+    public static void CreateLocalUnit(UnitName unitName, Vector3 position, Quaternion rotation)
+    {
+        if (GameCtrl.IsOnlineGame)
+            return;
+        UnitData unitData = Gamef.LoadUnitData(unitName);
+        GameObject prefab = unitData.LocalPrefab;
+        GameObject gameObj = Gamef.Instantiate(prefab, position, rotation);
+        if (unitName == UnitName.Player)
+        {
+            CameraGroupController.Instance.ResetTransform(position, rotation);
+            GameCtrl.PlayerUnit = gameObj.GetComponent<Unit>();
+        }
+    }
+
+    /// <summary>
     /// 通过ID获得单位
     /// </summary>
     /// <param name="unitID">单位ID</param>
@@ -222,22 +242,38 @@ public static partial class Gamef
         GameCtrl.Instance.DelayedExecution(action, time);
     }
 
-    /// <summary>
-    /// 触发(手柄)震动效果。(仅适用于VR游戏)
-    /// </summary>
-    /// <param name="secondsFromNow">延迟触发时长(即等待多长时间再触发震动)</param>
-    /// <param name="durationSeconds">震动持续时间</param>
-    /// <param name="frequency">频率, 如160</param>
-    /// <param name="amplitude">强度, 如0.5</param>
-    /// <param name="inputSource">输入源，一般为LeftHand或者RightHand</param>
-    public static void ControllerVibration(float secondsFromNow, float durationSeconds, float frequency, float amplitude, SteamVR_Input_Sources inputSource)
+    public static void StartCoroutine(IEnumerator coroutine)
     {
-        GameCtrl.Instance.hapticSignal.Execute(secondsFromNow, durationSeconds, frequency, amplitude, inputSource);
+        GameCtrl.Instance.StartCoroutine(coroutine);
     }
+
+    ///// <summary>
+    ///// 触发(手柄)震动效果。(仅适用于VR游戏)
+    ///// </summary>
+    ///// <param name="secondsFromNow">延迟触发时长(即等待多长时间再触发震动)</param>
+    ///// <param name="durationSeconds">震动持续时间</param>
+    ///// <param name="frequency">频率, 如160</param>
+    ///// <param name="amplitude">强度, 如0.5</param>
+    ///// <param name="inputSource">输入源，一般为LeftHand或者RightHand</param>
+    //public static void ControllerVibration(float secondsFromNow, float durationSeconds, float frequency, float amplitude, SteamVR_Input_Sources inputSource)
+    //{
+    //    GameCtrl.Instance.hapticSignal.Execute(secondsFromNow, durationSeconds, frequency, amplitude, inputSource);
+    //}
 
     #endregion
 
     #region 游戏指令
+
+    public static void SetHP_UI_Rate(float rate)
+    {
+        FloatingCanvasRight.Instance.SetRate(rate);
+    }
+
+    public static void SetMP_UI_Rate(float rate)
+    {
+        FloatingCanvasLeft.Instance.SetRate(rate);
+    }
+
     //public static int CreateUnit(GameObject gameObject, Vector3 position, Quaternion rotation)
     //{
     //    Instantiate(gameObject, position, rotation);

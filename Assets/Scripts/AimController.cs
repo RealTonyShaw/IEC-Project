@@ -9,6 +9,7 @@ public class AimController : MonoBehaviour
     {
         get; private set;
     }
+    [SerializeField]
     Unit targetForStrafeSkill = null;
     /// <summary>
     /// 连射型技能的追踪目标
@@ -23,7 +24,13 @@ public class AimController : MonoBehaviour
                 if (GameCtrl.IsOnlineGame)
                 {
                     // sync target
-                    
+                    if (GameCtrl.PlayerUnit != null)
+                    {
+                        int id = (value == null) ? -1 : value.attributes.ID;
+                        Debug.Log(string.Format("Send sync target ID {0} -> ID {1}", GameCtrl.PlayerUnit.attributes.ID, id));
+                        DataSync.SyncAimTarget(Gamef.SystemTimeInMillisecond,
+                        GameCtrl.PlayerUnit.attributes.ID, id);
+                    }
                 }
             }
         }
@@ -72,8 +79,7 @@ public class AimController : MonoBehaviour
     {
         Instance = this;
     }
-
-
+    
     // Update is called once per frame
     void Update()
     {
@@ -86,6 +92,6 @@ public class AimController : MonoBehaviour
         {
             TargetForBurstfireSkill = null;
         }
-        targetForStrafeSkill = tmp;
+        TargetForStrafeSkill = tmp;
     }
 }

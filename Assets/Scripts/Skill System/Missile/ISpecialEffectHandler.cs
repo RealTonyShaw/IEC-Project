@@ -15,8 +15,8 @@ public interface ISpecialEffectHandler
     /// <summary>
     /// 创建一个指定 Missile 的死亡特效
     /// </summary>
-    /// <param name="caster">该 Missile 的施放者</param>
+    /// <param name="other">导致 Missile 死亡的 Collider。null表示自爆</param>
     /// <param name="missile">指定的 Missile 对象</param>
     /// <param name="prefab">特效的 prefab</param>
-    void CreateDestroyEffect(Unit caster, Missile missile, GameObject prefab);
+    void CreateDestroyEffect(Collider other, Missile missile, GameObject prefab);
 }

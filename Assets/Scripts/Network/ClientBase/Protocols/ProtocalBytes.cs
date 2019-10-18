@@ -58,7 +58,7 @@ namespace ClientBase
             proto.AddInt((int)protoName);
             return proto;
         }
-        
+
         public override int GetNumber()
         {
             return GetByte(0);

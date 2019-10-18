@@ -17,6 +17,7 @@ public class SyncMovement : ISyncMovement
 
     Quaternion tRot;
     Vector3 tCamFwd;
+    Vector3 tPos;
 
     // Unit 的组件
     Mover mover;
@@ -60,6 +61,7 @@ public class SyncMovement : ISyncMovement
         {
             recvT_cnt++;
         }
+        tPos = position + data.v * ((Gamef.SystemTimeInMillisecond - instant) * 1e-3f);
         // 推测姿态
         Quaternion rot1 = tData.Get(1).rot;
         Quaternion rot2 = rotation;
@@ -75,13 +77,13 @@ public class SyncMovement : ISyncMovement
     {
         if (recv_T)
         {
-            // 对 unit 的三维坐标进行插值
-            TransformData d1, d2;
-            d1 = tData.Get(1);
-            d2 = tData.Get(0);
-            Vector3 tpos = HermiteInterpolate(d1.instant * Ms2Sec, d1.pos, d1.v, d2.instant * Ms2Sec, d2.pos, d2.v, Gamef.SystemTime);
+            //// 对 unit 的三维坐标进行插值
+            //TransformData d1, d2;
+            //d1 = tData.Get(1);
+            //d2 = tData.Get(0);
+            //Vector3 tpos = HermiteInterpolate(d1.instant * Ms2Sec, d1.pos, d1.v, d2.instant * Ms2Sec, d2.pos, d2.v, Gamef.SystemTime);
             // 修改 unit 的位置
-            unit.transform.position = Vector3.Lerp(unit.transform.position, tpos, 5f * dt);
+            unit.transform.position = Vector3.Lerp(unit.transform.position, tPos, 2f * dt);
             // rotation
             unit.transform.rotation = Quaternion.Slerp(unit.transform.rotation, tRot, 2f * dt);
         }

@@ -9,4 +9,6 @@ public enum PrefabName
     fireBall,
     黑魔爆球,
     FireballDeathEffect,
+    SpeedTrail,
+    Laser,
 }

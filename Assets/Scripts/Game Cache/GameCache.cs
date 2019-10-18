@@ -30,11 +30,11 @@ public class GameObjectCache
     {
         if (isInit)
             return;
-        for (int i = 0; i < blocks.Length; i++)
+        for (int i = 0; i < PREFAB_NUM; i++)
         {
             blocks[i] = new GameCacheBlock();
         }
-        EventMgr.UpdateEvent.AddListener(RefreshBlocks);
+        //EventMgr.UpdateEvent.AddListener(RefreshBlocks);
         isInit = true;
     }
 
@@ -44,14 +44,17 @@ public class GameObjectCache
     {
         if (Time.time - LastRefreshTime > 0.2f)
         {
+            Debug.Log("start refreshing");
             LastRefreshTime = Time.time;
-            for (int i = 0; i < blocks.Length; i++)
+            for (int i = 0; i < PREFAB_NUM; i++)
             {
                 if (blocks[i] != null)
                 {
-                    blocks[i].Refresh();
+                    lock (blocks[i].BlkMutex)
+                        blocks[i].Refresh();
                 }
             }
+            Debug.Log("finish refreshing");
         }
     }
 
@@ -72,7 +75,9 @@ public class GameObjectCache
 
     public static GameObject Instantiate(GameObject gameObject, Vector3 position, Quaternion rotation, Transform parent)
     {
-        GameObject res = null;
+        GameObject res = Object.Instantiate(gameObject, position, rotation, parent);
+        return res;
+        res = null;
         ReusablePrefab reusablePrefab = gameObject.GetComponent<ReusablePrefab>();
         if (reusablePrefab == null)
         {
@@ -81,7 +86,7 @@ public class GameObjectCache
         }
         int index = (int)reusablePrefab.Prefab;
         //命中
-        lock (blocks[index])
+        lock (blocks[index].BlkMutex)
         {
             GameObject obj = blocks[index].Pop();
             if (obj != null)
@@ -102,19 +107,21 @@ public class GameObjectCache
 
     public static void Destroy(GameObject gameObject)
     {
-        ReusablePrefab reusablePrefab = gameObject.GetComponent<ReusablePrefab>();
         gameObject.SetActive(false);
+        Object.Destroy(gameObject, DESTROY_DELAY);
+        return;
+        ReusablePrefab reusablePrefab = gameObject.GetComponent<ReusablePrefab>();
         if (reusablePrefab == null)
         {
             Object.Destroy(gameObject, DESTROY_DELAY);
             return;
         }
         int index = (int)reusablePrefab.Prefab;
-        lock (blocks[index])
+        lock (blocks[index].BlkMutex)
         {
             blocks[index].Cache(gameObject);
-            gameObject.transform.SetParent(GameDB.Instance.ReusableObjectPool);
         }
+        gameObject.transform.SetParent(GameDB.Instance.ReusableObjectPool);
     }
 }
 

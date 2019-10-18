@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UnityEngine;
 
 namespace ClientBase
 {
@@ -13,6 +14,8 @@ namespace ClientBase
         private bool hasCRC = false;
         public ushort res = 0xFFFF;
         public const ushort poly = 0x1021;
+        static bool isBuild = false;
+        static ushort[] p = new ushort[65536];
 
         public CRC16()
         {
@@ -40,7 +43,7 @@ namespace ClientBase
             res = 0xFFFF;
             hasCRC = false;
         }
-        
+
         /// <summary>
         /// 
         /// </summary>
@@ -67,6 +70,9 @@ namespace ClientBase
 
         public ushort CRC_16()
         {
+            //hasCRC = true;
+            //if (!ClientLauncher.Instance.EnableCrc16)
+            //    return 0x0;
             if (!isInit)
                 return 0xFFFF;
             res = 0x0;
@@ -122,7 +128,7 @@ namespace ClientBase
             if (hasCRC)
             {
                 data[data.Length - 2] = (byte)(data[data.Length - 2] | (res >> 8));
-                data[data.Length - 1] = (byte)(data[data.Length - 1] |  res);
+                data[data.Length - 1] = (byte)(data[data.Length - 1] | res);
             }
             return data;
         }

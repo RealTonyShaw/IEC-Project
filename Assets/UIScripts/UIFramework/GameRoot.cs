@@ -7,15 +7,24 @@ public class GameRoot : MonoBehaviour
     private void Start()
     {
         UIManager.Instance.UIStackClean();
-        UIManager.Instance.PushPanel(PanelType.Start);
+        StartCoroutine(DelayPush(PanelType.Start, 2f));
     }
 
+    IEnumerator DelayPush(PanelType type, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        UIManager.Instance.PushPanel(type);
+    }
+
+    bool isEnter = false;
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-        {
-            UIManager.Instance.PopPanel(PanelType.Start);
-            UIManager.Instance.PushPanel(PanelType.MainMenu);
-        }
+        if (!isEnter)
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            {
+                isEnter = true;
+                UIManager.Instance.PopPanel(PanelType.Start);
+                UIManager.Instance.PushPanel(PanelType.MainMenu);
+            }
     }
 }

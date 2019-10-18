@@ -21,6 +21,7 @@ public partial class Unit : MonoBehaviour
     public UnitAttributes attributes;
     //public Canvas unitCanvas;
     //public Transform unitCamera;
+    [SerializeField]
     private float runtimeAccuracy;
     // 射击精确度
     public float RuntimeAccuracy
@@ -157,6 +158,8 @@ public partial class Unit : MonoBehaviour
 
     private void Update()
     {
+        if (!attributes.isAlive)
+            return;
         //回复 护盾值
         attributes.SheildPoint += attributes.SPRegenerationRate.Value * Time.deltaTime;
 
@@ -201,7 +204,7 @@ public partial class Unit : MonoBehaviour
     /// <param name="amount">伤害值</param>
     public void TakeDamage(float amount)
     {
-        if (!IsLocal)
+        if (!IsLocal || !attributes.isAlive)
             return;
         if (amount < 0)
         {
@@ -218,7 +221,7 @@ public partial class Unit : MonoBehaviour
     /// <param name="amount">回复量</param>
     public void BeHealed(float amount)
     {
-        if (!IsLocal)
+        if (!IsLocal || !attributes.isAlive)
             return;
         if (amount < 0)
         {
@@ -248,18 +251,17 @@ public partial class Unit : MonoBehaviour
             lock (deathRequestMutex)
             {
                 if (!sendDeathRequest)
-                    if (IsLocal && info.CurrentValue <= 0)
+                    if (IsLocal && info.CurrentValue <= 1e-3f)
                     {
                         sendDeathRequest = true;
                         Death();
-                        DataSync.DestroyObj((byte)attributes.ID);
                     }
             }
         }
-        else
+        else if (!GameCtrl.IsOnlineGame)
         {
             //SP过低，死亡
-            if (info.CurrentValue <= 0)
+            if (info.CurrentValue <= 1e-3f)
                 Death();
         }
 
@@ -269,9 +271,18 @@ public partial class Unit : MonoBehaviour
     {
         if (!attributes.isAlive)
             return;
+        attributes.isAlive = false;
+        if (GameCtrl.PlayerUnit == this)
+        {
+            DeathPanel.Instance.BeginDeath();
+        }
+        if (GameCtrl.IsOnlineGame && IsLocal)
+        {
+            DataSync.SyncHP(this, Gamef.SystemTimeInMillisecond, 0f);
+            DataSync.DestroyObj((byte)attributes.ID);
+        }
         if (attributes.data.IsCaster)
             skillTable.CurrentCell.Stop();
-        attributes.isAlive = false;
         if (attributes.SheildPoint > 0f)
         {
             attributes.SheildPoint = 0f;
@@ -291,6 +302,16 @@ public partial class Unit : MonoBehaviour
     {
         yield return new WaitForSeconds(DestroyDelay);
         Gamef.Destroy(gameObject);
+        if (GameCtrl.IsOnlineGame && IsLocal && attributes.name == UnitName.Player)
+        {
+            Transform t = GameSceneInfo.Instance.spawnPoints[ClientLauncher.PlayerID].transform;
+            DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
+        }
+        else if (!GameCtrl.IsOnlineGame)
+        {
+            Transform t = GameSceneInfo.Instance.spawnPoints[0].transform;
+            Gamef.CreateLocalUnit(UnitName.Player, t.position, t.rotation);
+        }
     }
 
     #endregion
