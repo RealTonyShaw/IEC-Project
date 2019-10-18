@@ -7,7 +7,7 @@ public class UpdateShieldColor : MonoBehaviour
     [Range(-1000, 1000)]
     public float m_ColorUpdateSpeed;
 
-    private Color mainColor;
+    private Color mainColor = Color.blue;
     private Material magicMaterial;
 
     private float tempColor, startColorValue = 0.6025f, endColorValue = 1.7982f;
@@ -18,7 +18,7 @@ public class UpdateShieldColor : MonoBehaviour
     {
         color = new float[3];
         magicMaterial = GetComponent<Renderer>().material;
-        mainColor = magicMaterial.GetColor("_Color");
+        //mainColor = magicMaterial.GetColor("_Color");
         color[0] = mainColor.r;
         color[1] = mainColor.g;
         color[2] = mainColor.b;

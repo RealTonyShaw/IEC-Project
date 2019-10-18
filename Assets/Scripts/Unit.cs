@@ -156,7 +156,7 @@ public partial class Unit : MonoBehaviour
             skillTable.Init(this);
     }
 
-    private void Update()
+    protected virtual void Update()
     {
         if (!attributes.isAlive)
             return;
@@ -202,7 +202,7 @@ public partial class Unit : MonoBehaviour
     /// 单位受伤
     /// </summary>
     /// <param name="amount">伤害值</param>
-    public void TakeDamage(float amount)
+    public virtual void TakeDamage(float amount)
     {
         if (!IsLocal || !attributes.isAlive)
             return;
@@ -219,7 +219,7 @@ public partial class Unit : MonoBehaviour
     /// 单位回复护盾护盾
     /// </summary>
     /// <param name="amount">回复量</param>
-    public void BeHealed(float amount)
+    public virtual void BeHealed(float amount)
     {
         if (!IsLocal || !attributes.isAlive)
             return;
@@ -267,7 +267,7 @@ public partial class Unit : MonoBehaviour
 
     }
 
-    public void Death()
+    public virtual void Death()
     {
         if (!attributes.isAlive)
             return;
