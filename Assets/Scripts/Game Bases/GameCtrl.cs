@@ -18,6 +18,9 @@ public partial class GameCtrl : MonoBehaviour
     #endregion
 
     #region 实时公有信息
+    public LogoPanel logoPanel;
+    public GameObject loadingPanel;
+
     //private UnitInfo _mainChara;
     private static Unit _playerUnit = null;
     public static EventPublisher<Unit> PlayerUnitChangeEvent = new EventPublisher<Unit>();
@@ -51,13 +54,12 @@ public partial class GameCtrl : MonoBehaviour
     #endregion
 
     //public SteamVR_Action_Vibration hapticSignal;
-    public bool check = false;
-    public string gameScene;
-
     public void StartSingleGame()
     {
         StartLoadingGameScene();
     }
+
+
 
     /// <summary>
     /// 延迟执行动作。

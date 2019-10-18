@@ -94,6 +94,7 @@ GameObject:
   - component: {fileID: 8286902130442813992}
   - component: {fileID: 8891741097192642241}
   - component: {fileID: 7014420349508521063}
+  - component: {fileID: 6499423403984255298}
   m_Layer: 5
   m_Name: StartPanel
   m_TagString: Untagged
@@ -167,7 +168,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8286902130442813995}
   m_Enabled: 1
-  m_Alpha: 0
+  m_Alpha: 1
   m_Interactable: 0
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0
@@ -198,7 +199,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   canvasGroup: {fileID: 8286902130442813993}
   audioSource: {fileID: 7014420349508521063}
-  endVolume: 1
   text: {fileID: 8286902129916523709}
 --- !u!82 &7014420349508521063
 AudioSource:
@@ -296,3 +296,19 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!111 &6499423403984255298
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8286902130442813995}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: e9994412abc342b4fb91a231fa9ae15e, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: e9994412abc342b4fb91a231fa9ae15e, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
