@@ -36,7 +36,7 @@ public class LogoPanel : MonoBehaviour
         {
             anim.clip = FadeOutClip;
             anim.Play();
-            StartCoroutine(DelayDisable(FadeOutClip.length + 0.2f));
+            StartCoroutine(DelayDisable(1.8f));
         }
     }
 

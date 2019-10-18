@@ -10,7 +10,6 @@ public partial class RegisterPanel : BasePanel
     public InputField userName;
     public InputField password;
     public InputField repeatPw;
-
     public Transform trans;
 
     public override void OnEnter()
@@ -35,9 +34,10 @@ public partial class RegisterPanel : BasePanel
         trans.DOScale(new Vector3(0, 0, 0), 2f);
     }
 
-    public void OnExitClick()
+    public void OnExitClick(AudioSource audioSource)
     {
         UIManager.Instance.PopPanel(PanelType.Register);
+        audioSource.Play();
     }
 
     public void OnButtonClickDown(Transform transform)

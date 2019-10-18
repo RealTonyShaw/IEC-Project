@@ -8,8 +8,9 @@ public partial class RegisterPanel
     string uName;
     string key;
 
-    public void OnConfirmClick()
+    public void OnConfirmClick(AudioSource audioSource)
     {
+        audioSource.Play();
         if (userName.text == null || userName.text.Length < 1)
         {
             return;

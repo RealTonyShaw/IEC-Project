@@ -30,9 +30,10 @@ public class SetUpGamePanel : BasePanel
         trans.DORotate(new Vector3(0, 180, 0), 2, RotateMode.FastBeyond360);
     }
 
-    public void OnExitClick()
+    public void OnExitClick(AudioSource audioSource)
     {
         UIManager.Instance.PopPanel(PanelType.SetUpGame);
+        audioSource.Play();
     }
 
     public void OnButtonClickDown(Transform transform)
