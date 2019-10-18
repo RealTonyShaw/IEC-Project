@@ -47,6 +47,7 @@ public partial class Unit : MonoBehaviour
     public readonly MyActionEvent StopCastingEvnt = new MyActionEvent();
     public readonly MyActionEvent DeathEvnt = new MyActionEvent();
     public readonly MyActionEvent TakeDmgEvnt = new MyActionEvent();
+    public readonly MyActionEvent<int> SwitchSkillEvnt = new MyActionEvent<int>();
 
     [Header("Network Synchronization")]
     public bool IsLocal = true;
@@ -115,11 +116,13 @@ public partial class Unit : MonoBehaviour
         if (!GameCtrl.IsOnlineGame)
         {
             InitAttributes();
-            if (attributes.name == UnitName.Player)
-            {
-                GameCtrl.PlayerUnit = this;
-            }
         }
+        MyStart();
+    }
+
+    protected virtual void MyStart()
+    {
+
     }
 
     private bool isInitAttr = false;

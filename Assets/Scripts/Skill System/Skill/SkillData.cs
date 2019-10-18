@@ -10,6 +10,7 @@ public class SkillData : ScriptableObject
     [Header("Description")]
     [TextArea(1, 3)]
     public string Description = "这里可以输入说明";
+    public Sprite Icon;
     [Header("Basic Info")]
     public SkillName SkillName;
     public SkillType SkillType;

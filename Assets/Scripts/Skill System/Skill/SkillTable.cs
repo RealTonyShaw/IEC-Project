@@ -42,6 +42,7 @@ public class SkillTable : ISkillTable
         SkillCells[currentSkillNum - 1].Stop();
         currentSkillNum = cellIndex;
         SetUnitInitAccuracy(SkillCells[currentSkillNum - 1].CurrentSkill.Data.Accuracy);
+        caster.SwitchSkillEvnt.Trigger(cellIndex);
     }
 
     private void SetUnitInitAccuracy(float accuracy)
