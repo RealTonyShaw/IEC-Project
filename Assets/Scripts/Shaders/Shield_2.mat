@@ -7,10 +7,10 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Cloth
-  m_Shader: {fileID: 4800000, guid: 9c74c3122c804c04d86446c476b6fdc8, type: 3}
-  m_ShaderKeywords: _EMISSION
-  m_LightmapFlags: 1
+  m_Name: Shield_2
+  m_Shader: {fileID: 4800000, guid: a33199ee773922941bc0019013b2d64a, type: 3}
+  m_ShaderKeywords: 
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -35,10 +35,6 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
-    - _DissolveMap:
-        m_Texture: {fileID: 2800000, guid: ccb2545f0a1b98248ae14305439c4e13, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - _EmissionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -59,16 +55,18 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _ScaleTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 3, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - _Attenuation: 1
     - _BumpScale: 1
-    - _ColorFactor: 0.91
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DissolveEdge: 0.862
-    - _DissolveThreshold: 0
     - _DstBlend: 0
     - _GlossMapScale: 1
-    - _Glossiness: 0
+    - _Glossiness: 0.5
     - _GlossyReflections: 1
     - _Metallic: 0
     - _Mode: 0
@@ -78,10 +76,8 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _UVSec: 0
+    - _VertexScale: 0.05
     - _ZWrite: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.987, b: 0.94, a: 1}
-    - _Diffuse: {r: 1, g: 0.9882353, b: 0.9411765, a: 1}
-    - _DissolveColor: {r: 0.9764706, g: 0.20784314, b: 0.10980392, a: 0.72156864}
-    - _DissolveEdgeColor: {r: 0.96862745, g: 0.9179728, b: 0.08627451, a: 1}
+    - _Color: {r: 0.6623413, g: 3.6842732, b: 4.3259163, a: 0.32156864}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
