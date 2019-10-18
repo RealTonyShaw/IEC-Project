@@ -91,25 +91,9 @@ public class UIManager
         BasePanel panel;
         if (!panelDict.TryGetValue(panelType, out panel) || panel == null)
         {
-            //string path;
-            //if (!panelPathDict.TryGetValue(panelType, out path))
-            //{
-            //    Debug.Log("error!");
-            //}
-            //GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(path));
-            //insPanel.transform.SetParent(CanvasTransform, false);
-            //if (panel == null)
-            //{
-            //    panel = insPanel.GetComponent<BasePanel>();
-            //    panelDict[panelType] = panel;
-            //}
-            //else
-            //{
-            //    panel = insPanel.GetComponent<BasePanel>();
-            //    panelDict.Add(panelType, panel);
-            //}
             Debug.Log("error!");
         }
+        panelObjectDict[panelType].transform.SetParent(CanvasTransform, false);
         return panel;
     }
 
@@ -131,7 +115,6 @@ public class UIManager
         foreach(KeyValuePair<PanelType, string> keyValuePair in panelPathDict)
         {
             GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(keyValuePair.Value));
-            insPanel.transform.SetParent(CanvasTransform, false);
             panelDict.Add(keyValuePair.Key, insPanel.GetComponent<BasePanel>());
             panelObjectDict.Add(keyValuePair.Key, insPanel);
         }
@@ -143,5 +126,15 @@ public class UIManager
     public void UIStackClean()
     {
         panelStack.Clear();
+    }
+
+    public void RestartDictionary()
+    {
+        foreach (KeyValuePair<PanelType, string> keyValuePair in panelPathDict)
+        {
+            GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(keyValuePair.Value));
+            panelDict[keyValuePair.Key] = insPanel.GetComponent<BasePanel>();
+            panelObjectDict[keyValuePair.Key] = insPanel;
+        }
     }
 }
