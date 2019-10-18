@@ -24,6 +24,7 @@
 			#pragma vertex vert
 			#pragma fragment frag
  
+			float4 _Color;
 			float _ScaleAttenuation;
 			float _VertexScale;
 			sampler2D _ScaleTex;
@@ -73,6 +74,9 @@
 					discard;
 				}
 				color.a *= e;
+				color.r = _Color.r;
+				color.g = _Color.g;
+				color.b = _Color.b;
 				return color;
 			}
 			ENDCG
