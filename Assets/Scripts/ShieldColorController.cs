@@ -47,15 +47,12 @@ public class ShieldColorController : MonoBehaviour
     public void Trigger()
     {
         stopTime = Time.time + TriggerTime - 1e-3f;
-        StartCoroutine(flashTrigger());
-    }
-
-    IEnumerator flashTrigger()
-    {
         TargetColor = TriggerColor;
-        yield return new WaitForSeconds(TriggerTime);
-        if (Time.time >= stopTime)
-            TargetColor = DefaultColor;
+        Gamef.DelayedExecution(delegate
+        {
+            if (Time.time >= stopTime)
+                TargetColor = DefaultColor;
+        }, TriggerTime);
     }
 
     Vector4 retrieveV4(Color c)
