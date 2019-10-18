@@ -7,7 +7,13 @@ public class GameRoot : MonoBehaviour
     private void Start()
     {
         UIManager.Instance.UIStackClean();
-        UIManager.Instance.PushPanel(PanelType.Start);
+        StartCoroutine(DelayPush(PanelType.Start, 2f));
+    }
+
+    IEnumerator DelayPush(PanelType type, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        UIManager.Instance.PushPanel(type);
     }
 
     bool isEnter = false;
