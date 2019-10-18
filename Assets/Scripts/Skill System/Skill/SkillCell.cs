@@ -236,20 +236,20 @@ public class SkillCell : ISkillCell
                 }
             }
             // 精确度恢复
-            switch (skill.Data.SkillType)
-            {
-                case SkillType.StrafeSkill:
-                    asskill.AccuracyCooldown(Time.deltaTime);
-                    break;
-                case SkillType.BurstfireSkill:
-                    abskill.AccuracyCooldown(Time.deltaTime);
-                    break;
-                case SkillType.ContinuousSkill:
-                    // do nothing
-                    break;
-                default:
-                    break;
-            }
+            //switch (skill.Data.SkillType)
+            //{
+            //    case SkillType.StrafeSkill:
+            //        asskill.AccuracyCooldown(Time.deltaTime);
+            //        break;
+            //    case SkillType.BurstfireSkill:
+            //        abskill.AccuracyCooldown(Time.deltaTime);
+            //        break;
+            //    case SkillType.ContinuousSkill:
+            //        // do nothing
+            //        break;
+            //    default:
+            //        break;
+            //}
 
         }
         // 如果技能正在施法

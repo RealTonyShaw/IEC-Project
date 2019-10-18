@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 327517176983330492}
   - component: {fileID: 327517176964051268}
   - component: {fileID: 327517176965126004}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4804,7 +4804,7 @@ GameObject:
   - component: {fileID: 327517176983322682}
   - component: {fileID: 327517176964050624}
   - component: {fileID: 327517176965118424}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Impact - Ice Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9784,7 +9784,6 @@ GameObject:
   - component: {fileID: 5174529388956396895}
   - component: {fileID: -2216359950321396860}
   - component: {fileID: 4376506332692770083}
-  - component: {fileID: 7509641350043507608}
   m_Layer: 9
   m_Name: Ice ball
   m_TagString: Missile
@@ -9926,19 +9925,6 @@ MonoBehaviour:
   - {fileID: 6500057871442631773}
   - {fileID: 9202152960613092184}
   - {fileID: 438117215284616321}
---- !u!114 &7509641350043507608
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5374365597475199403}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5edd416757d1dca4d9586d2bf13d497f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Prefab: 1
 --- !u!1 &6500057871442631773
 GameObject:
   m_ObjectHideFlags: 0
@@ -9949,6 +9935,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2177493552299207347}
   - component: {fileID: 3023821341992535850}
+  - component: {fileID: 1763350768220820748}
   m_Layer: 9
   m_Name: Collider
   m_TagString: Untagged
@@ -9983,6 +9970,21 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.15
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1763350768220820748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6500057871442631773}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca17bb29228a6e441a6b2b022f22fee1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  missile: {fileID: 5174529388956396895}
+  unit: {fileID: 0}
+  rb: {fileID: 1696344433964705949}
 --- !u!1 &8046118086020601775
 GameObject:
   m_ObjectHideFlags: 0
@@ -10157,7 +10159,7 @@ GameObject:
   - component: {fileID: 9202152960612808610}
   - component: {fileID: 9202152960628049164}
   - component: {fileID: 9202152960628731708}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Projectile - Ice Orb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -14787,7 +14789,7 @@ GameObject:
   - component: {fileID: 9202152960612796288}
   - component: {fileID: 9202152960628049726}
   - component: {fileID: 9202152960628683054}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Sparks
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -19522,7 +19524,7 @@ GameObject:
   - component: {fileID: 9202152960612803408}
   - component: {fileID: 9202152960628005840}
   - component: {fileID: 9202152960628744678}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}

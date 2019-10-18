@@ -6,10 +6,10 @@ using DG.Tweening;
 
 public partial class RegisterPanel : BasePanel
 {
+    public InputField host;
     public InputField userName;
     public InputField password;
     public InputField repeatPw;
-
     public Transform trans;
 
     public override void OnEnter()
@@ -34,9 +34,10 @@ public partial class RegisterPanel : BasePanel
         trans.DOScale(new Vector3(0, 0, 0), 2f);
     }
 
-    public void OnExitClick()
+    public void OnExitClick(AudioSource audioSource)
     {
         UIManager.Instance.PopPanel(PanelType.Register);
+        audioSource.Play();
     }
 
     public void OnButtonClickDown(Transform transform)
@@ -47,5 +48,10 @@ public partial class RegisterPanel : BasePanel
     public void OnButtonClickUp(Transform transform)
     {
         transform.DOScale(new Vector3(1, 1, 1), 0.5f);
+    }
+
+    public void OnHostEdited()
+    {
+        ClientLauncher.Instance.host = host.text;
     }
 }

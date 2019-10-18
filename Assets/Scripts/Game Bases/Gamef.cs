@@ -146,6 +146,26 @@ public static partial class Gamef
     }
 
     /// <summary>
+    /// 创建单位。仅适用于单机。
+    /// </summary>
+    /// <param name="unitName"></param>
+    /// <param name="position"></param>
+    /// <param name="rotation"></param>
+    public static void CreateLocalUnit(UnitName unitName, Vector3 position, Quaternion rotation)
+    {
+        if (GameCtrl.IsOnlineGame)
+            return;
+        UnitData unitData = Gamef.LoadUnitData(unitName);
+        GameObject prefab = unitData.LocalPrefab;
+        GameObject gameObj = Gamef.Instantiate(prefab, position, rotation);
+        if (unitName == UnitName.Player)
+        {
+            CameraGroupController.Instance.ResetTransform(position, rotation);
+            GameCtrl.PlayerUnit = gameObj.GetComponent<Unit>();
+        }
+    }
+
+    /// <summary>
     /// 通过ID获得单位
     /// </summary>
     /// <param name="unitID">单位ID</param>
@@ -243,7 +263,7 @@ public static partial class Gamef
     #endregion
 
     #region 游戏指令
-    
+
     public static void SetHP_UI_Rate(float rate)
     {
         FloatingCanvasRight.Instance.SetRate(rate);

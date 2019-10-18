@@ -24,7 +24,7 @@ MonoBehaviour:
   Cooldown: 0.2
   ManaCost: 3.2
   ManaCostPerSec: 0
-  MissileHP: 5
+  MissileHP: 1
   IsAOE: 0
   InnerBlastRadius: 0
   MiddleBlastRadius: 0

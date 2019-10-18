@@ -12,10 +12,7 @@ public class ClientLauncher : MonoBehaviour
     public string host;
     public int port;
     public bool EnableSending = true;
-    public bool EnableCrc16 = true;
-    public bool EnableCrc8 = true;
     public const uint MAX_CONNECT_TIMES = 3;
-    public bool AutoConnect = false;
     private ClientBase.EventHandler eventHandler;
     private Client client;
     private TimeMgr timeMgr;
@@ -30,6 +27,8 @@ public class ClientLauncher : MonoBehaviour
         }
     }
 
+    public static bool IsConnected => Client.Instance.isConnect;
+    public static int PlayerID => Client.Instance.pl_info.id_game;
 
     public string message = "";
 
@@ -40,6 +39,8 @@ public class ClientLauncher : MonoBehaviour
 
     public void InitClient()
     {
+        if (Client.Instance.isConnect)
+            return;
         Thread t = new Thread(() =>
         {
             Client.Instance.Host = host;
@@ -52,20 +53,24 @@ public class ClientLauncher : MonoBehaviour
             if (i == MAX_CONNECT_TIMES)
             {
                 UnityEngine.Debug.Log("Connect times over max connect times");
+                UnityEngine.Debug.Log("Connect fail");
+                GameCtrl.IsOnlineGame = false;
+            }
+            else
+            {
+                GameCtrl.IsOnlineGame = true;
+                OnConnected.Trigger();
+                UnityEngine.Debug.Log("connection triggered");
             }
         });
         t.Start();
     }
 
+    public MyActionEvent OnConnected = new MyActionEvent();
+
     public void Awake()
     {
         clientLauncher = this;
-    }
-
-    private void Start()
-    {
-        if (AutoConnect)
-            Launch();
     }
 
     bool isLaunched = false;

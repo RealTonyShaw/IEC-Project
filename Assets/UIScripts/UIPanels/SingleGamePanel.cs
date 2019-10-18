@@ -1,18 +1,20 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
 
 public class SingleGamePanel : BasePanel
 {
     public Transform trans;
     public AudioSource audioSource;
+    bool isEnter = false;
 
     public override void OnEnter()
     {
         canvasGroup.DOFade(1, 2f);
         trans.DORotate(new Vector3(0, 0, 0), 2f, RotateMode.FastBeyond360);
         StartCoroutine(DelayEnable());
+        isEnter = true;
     }
 
     IEnumerator DelayEnable()
@@ -26,15 +28,17 @@ public class SingleGamePanel : BasePanel
 
     public override void OnExit()
     {
+        isEnter = false;
         canvasGroup.DOFade(0, 2);
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
         trans.DORotate(new Vector3(0, 180, 0), 2, RotateMode.FastBeyond360);
     }
 
-    public void OnExitClick()
+    public void OnExitClick(AudioSource audioSource)
     {
         UIManager.Instance.PopPanel(PanelType.SingleGame);
+        audioSource.Play();
     }
 
     public void OnButtonClickDown(Transform transform)
@@ -54,9 +58,10 @@ public class SingleGamePanel : BasePanel
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
-        {
-            GameCtrl.Instance.StartSingleGame();
-        }
+        if (isEnter)
+            if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
+            {
+                GameCtrl.Instance.StartSingleGame();
+            }
     }
 }

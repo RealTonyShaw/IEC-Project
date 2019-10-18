@@ -6,6 +6,7 @@ using UnityEngine.UI;
 
 public partial class MultiGamePanel : BasePanel
 {
+    public InputField host;
     public InputField userName;
     public InputField password;
     public Transform trans;
@@ -44,9 +45,10 @@ public partial class MultiGamePanel : BasePanel
         trans.DOScale(new Vector3(1, 1, 1), 2f);
     }
 
-    public void OnExitClick()
+    public void OnExitClick(AudioSource audioSource)
     {
         UIManager.Instance.PopPanel(PanelType.MultiGame);
+        audioSource.Play();
     }
 
     public void OnButtonClickDown(Transform transform)
@@ -59,8 +61,14 @@ public partial class MultiGamePanel : BasePanel
         transform.DOScale(new Vector3(1, 1, 1), 0.5f);
     }
 
-    public void OnRegisterClick()
+    public void OnHostChanged()
+    {
+        ClientLauncher.Instance.host = host.text;
+    }
+
+    public void OnRegisterClick(AudioSource audioSource)
     {
         UIManager.Instance.PushPanel(PanelType.Register);
+        audioSource.Play();
     }
 }

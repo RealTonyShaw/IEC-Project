@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(TrackSystem))]
@@ -189,34 +189,32 @@ public class Missile : MonoBehaviour
     {
         if (!isInit)
             return;
-        if ((collidesWith.value & (0x1 << gameObject.layer)) != 0)
+        if ((collidesWith.value & (0x1 << other.gameObject.layer)) != 0)
         {
-            Rigidbody otherRig = other.attachedRigidbody;
-            // 只有地形没有刚体
-            GameObject otherObj = otherRig == null ? other.gameObject : otherRig.gameObject;
-            switch (otherObj.layer)
+            AttachedComponent com = other.GetComponent<AttachedComponent>();
+            switch (other.gameObject.layer)
             {
                 case Layer.Unit:
-                    if (otherObj != Caster.gameObject)
+                    if (com.unit != Caster)
                     {
-                        missileHitHandler.HitUnit(this, otherObj.GetComponent<Unit>());
+                        missileHitHandler.HitUnit(this, com.unit);
                         specialEffectHandler.CreateDestroyEffect(other, this, deathEffect);
-                        if (!Skill.Data.IsAOE && otherRig != null)
+                        if (!Skill.Data.IsAOE && com.rb != null)
                         {
-                            physicalEffectHandler.CreateImpulse(Skill.Data, transform.position, transform.forward, otherRig);
+                            physicalEffectHandler.CreateImpulse(Skill.Data, transform.position, transform.forward, com.rb);
                         }
                     }
                     break;
                 case Layer.Missile:
-                    missileHitHandler.HitMissile(this, otherObj.GetComponent<Missile>());
+                    missileHitHandler.HitMissile(this, com.missile);
                     specialEffectHandler.CreateDestroyEffect(other, this, deathEffect);
                     break;
                 default:
                     missileHitHandler.HitTerrain(this);
                     specialEffectHandler.CreateDestroyEffect(other, this, deathEffect);
-                    if (!Skill.Data.IsAOE && otherRig != null)
+                    if (!Skill.Data.IsAOE && other.attachedRigidbody != null)
                     {
-                        physicalEffectHandler.CreateImpulse(Skill.Data, transform.position, transform.forward, otherRig);
+                        physicalEffectHandler.CreateImpulse(Skill.Data, transform.position, transform.forward, other.attachedRigidbody);
                     }
                     break;
             }
@@ -265,7 +263,9 @@ public class Missile : MonoBehaviour
     void Move(float dt)
     {
         if (!IsAlive)
+        {
             return;
+        }
         prevPos = transform.position;
         float ds = Skill.Data.Speed * dt;
         // 前方有障碍

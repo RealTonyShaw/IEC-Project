@@ -8,8 +8,6 @@ public class MoveController : MonoBehaviour
         get;
         private set;
     }
-    public bool SendAc = true;
-    public bool SendT = true;
 
     //public SteamVR_Input_Sources handType;
     //public SteamVR_Action_Vector2 PadPos;
@@ -108,8 +106,7 @@ public class MoveController : MonoBehaviour
                 {
                     lastSyncA = instant;
                 }
-                if (SendAc)
-                    DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v), CameraGroupController.Instance.transform.forward);
+                DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v), CameraGroupController.Instance.transform.forward);
             }
             if (instant - lastSyncT >= 300)
             {
@@ -121,9 +118,7 @@ public class MoveController : MonoBehaviour
                 {
                     lastSyncT = instant;
                 }
-                Debug.Log("Send sync transform");
-                if (SendT)
-                    DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.rotation, rb.velocity.magnitude);
+                DataSync.SyncTransform(unit, instant, unit.transform.position, unit.transform.rotation, rb.velocity.magnitude);
             }
         }
     }

@@ -6,15 +6,15 @@ using DG.Tweening;
 
 public class StartPanel : BasePanel
 {
-    public AudioSource audioSource;
-    public float endVolume = 1.0f;
-    private float durationVolume = 10.0f;
+    public Animation anim;
     public Text text;
+    public AudioSource audioSource;
         
     public override void OnEnter()
     {
         base.OnEnter();
-        audioSource.Play();
-        audioSource.DOFade(endVolume, durationVolume);
+        audioSource.DOFade(1, 9);
+        anim.Play();
+        GetComponent<CanvasGroup>().alpha = 1f; 
     }
 }

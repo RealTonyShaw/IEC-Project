@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Reusable Object Pool
   - Missile
+  - FX
   layers:
   - Default
   - TransparentFX
@@ -17,7 +18,7 @@ TagManager:
   - 
   - Unit
   - Missile
-  - 
+  - Ignore Missile
   - 
   - 
   - 

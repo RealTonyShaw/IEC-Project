@@ -24,7 +24,7 @@ MonoBehaviour:
   Cooldown: 0.2
   ManaCost: 2.5
   ManaCostPerSec: 0
-  MissileHP: 5
+  MissileHP: 1
   IsAOE: 0
   InnerBlastRadius: 0
   MiddleBlastRadius: 0
@@ -41,6 +41,6 @@ MonoBehaviour:
   Accuracy: 99
   MinAccuracy: 95
   AccuracyCooldownSpeed: 5
-  AccuracyHeatupSpeed: 5
+  AccuracyHeatupSpeed: 2
   Prefabs:
   - {fileID: 5374365597475199403, guid: a70fabcdce40a414ba812e8670e2626b, type: 3}
