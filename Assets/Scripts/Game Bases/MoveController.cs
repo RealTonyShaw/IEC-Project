@@ -87,11 +87,18 @@ public class MoveController : MonoBehaviour
         //}
         //else
         //{
-        h = InputMgr.GetHorizontalAxis();
-        v = InputMgr.GetVerticalAxis();
+        if (GameCtrl.CursorOnGUI)
+        {
+            h = 0;
+            v = 0;
+        }
+        else
+        {
+            h = InputMgr.GetHorizontalAxis();
+            v = InputMgr.GetVerticalAxis();
+        }
         camFwd = CameraGroupController.Instance.transform.forward;
         //}
-
         mover.V = v;
         mover.H = h;
         mover.CameraForward = camFwd;
