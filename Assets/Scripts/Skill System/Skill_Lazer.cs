@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Skill_Lazer : AbstractStrafeSkill, ITracking
+public class Skill_Lazer : AbstractStrafeSkill
 {
     private GameObject missilePrefab;
     private GameObject tmp;
@@ -11,8 +11,6 @@ public class Skill_Lazer : AbstractStrafeSkill, ITracking
     {
         this.Caster.RuntimeAccuracy += Data.AccuracyCooldownSpeed * dt;
     }
-
-    public Unit Target { get; set; } = null;
 
     protected override void LoadData()
     {
@@ -27,7 +25,7 @@ public class Skill_Lazer : AbstractStrafeSkill, ITracking
         Vector3 dir = Gamef.GenerateRandomDirection(Caster.SpawnTransform.forward, Caster.RuntimeAccuracy, random);
         tmp = Gamef.Instantiate(missilePrefab, SpawnTransform.position, Quaternion.LookRotation(dir));
         Missile missile = tmp.GetComponent<Missile>();
-        missile.Init(Caster, Target, this);
+        missile.Init(Caster, null, this);
         Caster.RuntimeAccuracy -= Data.AccuracyHeatupSpeed;
         return missile;
     }

@@ -47,6 +47,8 @@ public class Mover : MonoBehaviour
     const float param = 0.707106781f;
     private void Update()
     {
+        if (!unit.attributes.isAlive)
+            return;
         int h = Mathf.RoundToInt(H);
         int v = Mathf.RoundToInt(V);
         // 左右只能 0.5 倍速
@@ -60,10 +62,8 @@ public class Mover : MonoBehaviour
 
     private void FixedUpdate()
     {
-        //if (InputMgr.MobileControlKeyEnable)
-        //{
-        //    Turning(Time.fixedDeltaTime);
-        //}
+        if (!unit.attributes.isAlive)
+            return;
         UpdateVelocity(Time.fixedDeltaTime);
 
         transform.forward = Vector3.Slerp(transform.forward, CameraForward, APPROACHING_CONST * Time.fixedDeltaTime);

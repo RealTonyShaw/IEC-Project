@@ -267,7 +267,8 @@ public class ObjectPool<T> : IEnumerable<T>
             Block blk;
             ulong v;
             int ofs;
-
+            if (minID >= pool.MaxLength)
+                return false;
             // try to find in the same blk
             blk = pool.blks[(minID & BLK_MASK) >> 6];
             v = blk.validates;

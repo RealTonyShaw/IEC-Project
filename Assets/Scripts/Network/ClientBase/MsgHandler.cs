@@ -164,8 +164,12 @@ namespace ClientBase
             Unit unit = Gamef.GetUnit(id);
             Vector3 position = ParseVector3(proto, ref start);
             Quaternion rot = ParseQuaternion(proto, ref start);
+            if (unit == null)
+            {
+                Debug.Log(string.Format("NOT EXIST unit {0} recv sync position {1}", unit.attributes.ID, position));
+                return;
+            }
             float speed = proto.GetFloat(start, ref start);
-            Debug.Log(string.Format("unit {0} recv sync position {1}", unit.attributes.ID, position));
             unit.SyncMovement.SyncTransform(instant, position, rot, speed);
         }
         #endregion
@@ -182,7 +186,11 @@ namespace ClientBase
             Vector3 fwd = ParseVector3(proto, ref start);// parse camera forward
 
             Unit unit = Gamef.GetUnit(id);
-            Debug.Log(string.Format("unit {0} recv ac cam = {1} h = {2} v = {3}", unit.attributes.ID, fwd, hv[0], hv[1]));
+            if (unit == null)
+            {
+                Debug.Log(string.Format("NOT EXIST unit {0} recv sync ac", unit.attributes.ID));
+                return;
+            }
             unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1], fwd);
         }
 
@@ -195,7 +203,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             int skillIndex = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
-            unit.SyncPlayerInput.SyncSwitchSkill(instant, skillIndex);
+            unit?.SyncPlayerInput.SyncSwitchSkill(instant, skillIndex);
         }
 
         public static void SyncMouseButton0Down(ProtocolBase protocol)
@@ -207,7 +215,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             Debug.Log(string.Format("unit {0} recv btn down casting at {1}, in fact {2}", unit.attributes.ID, instant, Gamef.SystemTimeInMillisecond));
-            unit.SyncPlayerInput.SyncMouseButton0Down(instant);
+            unit?.SyncPlayerInput.SyncMouseButton0Down(instant);
         }
 
         public static void SyncMouseButton0Up(ProtocolBase protocol)
@@ -219,7 +227,7 @@ namespace ClientBase
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
             Debug.Log(string.Format("unit {0} recv btn up casting at {1}, in fact {2}", unit.attributes.ID, instant, Gamef.SystemTimeInMillisecond));
-            unit.SyncPlayerInput.SyncMouseButton0Up(instant);
+            unit?.SyncPlayerInput.SyncMouseButton0Up(instant);
         }
         #endregion
 
@@ -262,7 +270,7 @@ namespace ClientBase
             }
             Unit unit = Gamef.GetUnit(sourceId);
             Debug.Log(string.Format("Send sync target ID {0} -> ID {1}", sourceId, targetId));
-            unit.SyncPlayerCastingState.SyncTarget(instant, Gamef.GetUnit(targetId));
+            unit?.SyncPlayerCastingState.SyncTarget(instant, Gamef.GetUnit(targetId));
         }
 
         #endregion
