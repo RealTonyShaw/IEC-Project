@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class TrackSystem : MonoBehaviour
 {
+    public const float PRECAST_RATE = 0.2f;
+
     /// <summary>
     /// 需要被追踪的目标（只能是 Unit）
     /// </summary>
@@ -15,6 +17,7 @@ public class TrackSystem : MonoBehaviour
     /// 最远追踪距离（目标与 Missile 距离）
     /// </summary>
     public float focusDistance = 30;
+    float bf;
 
     /// <summary>
     /// 目标的 Transform
@@ -30,13 +33,21 @@ public class TrackSystem : MonoBehaviour
     //bool faceTarget;
     Vector3 tempVector;
 
+    private void Start()
+    {
+        bf = 0.5f / focusDistance;
+    }
 
     public bool IsTracking { get; private set; } = false;
     public void StartTracking(Unit targetEnemy, float trackingAbility)
     {
         enemy = targetEnemy;
         if (enemy != null)
+        {
             target = targetEnemy.transform;
+            lastPos = target.position;
+            lastPosInstant = Gamef.SystemTimeInMillisecond;
+        }
         this.trackingAbility = trackingAbility;
         IsTracking = true;
         Debug.Log(string.Format("Missile {0} starts to track Unit {1}", gameObject.name, enemy.gameObject.name));
@@ -46,8 +57,9 @@ public class TrackSystem : MonoBehaviour
     {
         IsTracking = false;
     }
-
-    private void Update()
+    Vector3 lastPos;
+    long lastPosInstant;
+    private void FixedUpdate()
     {
         if (!IsTracking)
         {
@@ -58,16 +70,34 @@ public class TrackSystem : MonoBehaviour
             StopTracking();
             return;
         }
-        Vector3 targetDirection = target.position - transform.position;
-        if (Vector3.Distance(transform.position, target.position) < focusDistance ||
-            Vector3.Angle(transform.forward, targetDirection) > 90f)
+        float dis = Vector3.Distance(target.position, transform.position);
+        float fix;
+        // fix distance
+        if (dis < focusDistance)
         {
-            // do nothing
+            fix = dis * bf;
         }
         else
         {
+            fix = 1f;
+        }
+        float tmp = trackingAbility * fix;
+        Vector3 pPos = target.position;
+        if (Gamef.SystemTimeInMillisecond - lastPosInstant < 30)
+        {
+            pPos += (target.position - lastPos) * tmp * PRECAST_RATE;
+        }
+        lastPos = target.position;
+        lastPosInstant = Gamef.SystemTimeInMillisecond;
+
+        Vector3 dir = pPos - transform.position;
+
+
+
+        if (Vector3.Angle(transform.forward, dir) < 90f)
+        {
             // 转向目标
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(targetDirection), trackingAbility * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(dir), tmp * Time.fixedDeltaTime);
         }
         
 
