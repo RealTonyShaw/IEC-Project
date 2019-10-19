@@ -17,6 +17,7 @@ public class LogoPanel : MonoBehaviour
     bool startLoading = false;
     private void Start()
     {
+        Cursor.visible = false;
         canvasGroup.alpha = 0f;
         Gamef.DelayedExecution(delegate
         {
@@ -38,6 +39,7 @@ public class LogoPanel : MonoBehaviour
     {
         if (startLoading && ao.isDone)
         {
+            Cursor.visible = true;
             anim.clip = FadeOutClip;
             anim.Play();
             StartCoroutine(DelayDisable(1.8f));
