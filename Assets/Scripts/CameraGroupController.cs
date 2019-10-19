@@ -77,6 +77,8 @@ public class CameraGroupController : MonoBehaviour
 
     private void Update()
     {
+        if (GameCtrl.IsLoading)
+            return;
         if (GameCtrl.PlayerUnit == null)
         {
             return;
@@ -179,6 +181,8 @@ public class CameraGroupController : MonoBehaviour
         }
         else if (Input.GetMouseButtonUp(0) && !lockCursor)
         {
+            if (GameCtrl.CursorOnGUI)
+                return;
             lockCursor = true;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;

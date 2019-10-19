@@ -5,12 +5,14 @@ using UnityEngine.SceneManagement;
 
 public partial class GameCtrl
 {
+    public static bool IsLoading { get; private set; }
     AsyncOperation ao;
     public void StartLoadingGameScene()
     {
         loadingPanel.StartLoading();
         Gamef.DelayedExecution(delegate
         {
+            IsLoading = true;
             ao = SceneManager.LoadSceneAsync("Game");
             EventMgr.UpdateEvent.AddListener(_checkIsDone);
         }, 0.5f);
@@ -49,6 +51,7 @@ public partial class GameCtrl
                 StartCreatePlayer(0);
             }
             loadingPanel.StopLoading();
+            IsLoading = false;
         }
     }
 }
