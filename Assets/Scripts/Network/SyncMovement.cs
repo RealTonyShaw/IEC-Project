@@ -61,7 +61,7 @@ public class SyncMovement : ISyncMovement
         {
             recvT_cnt++;
         }
-        tPos = position + data.v * ((Gamef.SystemTimeInMillisecond - instant) * 1e-3f);
+        tPos = position + data.v * ((Gamef.SystemTimeInMillisecond - instant + GameDB.SYNC_TRANSFORM_INTERVAL >> 1) * 1e-3f);
         // 推测姿态
         Quaternion rot1 = tData.Get(1).rot;
         Quaternion rot2 = rotation;
