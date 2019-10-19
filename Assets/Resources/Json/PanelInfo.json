@@ -27,6 +27,10 @@
     {
       "panelTypeString": "Register",
       "panelPath": "UIPrefabs/RegisterPanel"
+    },
+    {
+      "panelTypeString": "Esc",
+      "panelPath": "UIPrefabs/EscPanel"
     }
   ]
 }
