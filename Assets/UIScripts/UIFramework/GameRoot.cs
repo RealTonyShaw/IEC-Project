@@ -8,6 +8,10 @@ public class GameRoot : MonoBehaviour
     {
         UIManager.Instance.UIStackClean();
         StartCoroutine(DelayPush(PanelType.Start, 2f));
+        Gamef.DelayedExecution(delegate()
+        {
+            isInit = true;
+        }, 2.6f);
     }
 
     IEnumerator DelayPush(PanelType type, float delay)
@@ -16,10 +20,11 @@ public class GameRoot : MonoBehaviour
         UIManager.Instance.PushPanel(type);
     }
 
+    bool isInit = false;
     bool isEnter = false;
     private void Update()
     {
-        if (!isEnter)
+        if (isInit && !isEnter)
             if (Input.GetKeyDown(KeyCode.KeypadEnter) || Input.GetKeyDown(KeyCode.Return))
             {
                 isEnter = true;

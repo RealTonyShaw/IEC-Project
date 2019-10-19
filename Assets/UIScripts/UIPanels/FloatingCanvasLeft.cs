@@ -11,6 +11,14 @@ public class FloatingCanvasLeft : MonoBehaviour
     public float speed = 1f;
     public Image[] fillImages;
     float[] fillRates;
+    [Header("Skill Image Settings")]
+    public AnimationClip fadeInClip;
+    public AnimationClip fadeOutClip;
+    public CanvasGroup[] canvasGroups = new CanvasGroup[3];
+    public Animation[] SkillAnims = new Animation[3];
+    public Image[] SkillImageBgs = new Image[3];
+    public Image[] SkillImages = new Image[3];
+    public int currentIndex = 1;
 
     private void Awake()
     {
@@ -24,6 +32,56 @@ public class FloatingCanvasLeft : MonoBehaviour
         {
             fillRates[i] = 1f;
         }
+    }
+
+    public void SetSkillImage(int skillIndex, Sprite image)
+    {
+        if (image.Equals(SkillImages[skillIndex - 1].sprite))
+            return;
+        SkillImages[skillIndex - 1].sprite = image;
+        SkillImageBgs[skillIndex - 1].sprite = image;
+    }
+    private readonly object switchMutex = new object();
+    public void Switch2Skill(int skillIndex)
+    {
+        lock (switchMutex)
+        {
+            if (skillIndex == currentIndex)
+                return;
+            // fade in
+            canvasGroups[skillIndex - 1].alpha = 1f;
+            SkillAnims[skillIndex - 1].clip = fadeInClip;
+            SkillAnims[skillIndex - 1].Play();
+            // fade out
+            canvasGroups[currentIndex - 1].alpha = 0f;
+            SkillAnims[currentIndex - 1].clip = fadeOutClip;
+            SkillAnims[currentIndex - 1].Play();
+            // update
+            currentIndex = skillIndex;
+        }
+    }
+
+    public void SetCooldown(float cooldown)
+    {
+        lock (switchMutex)
+        {
+            StartCoroutine(Cooling(currentIndex, cooldown));
+        }
+    }
+
+    IEnumerator Cooling(int index, float cooldown)
+    {
+        float rate = 1f / cooldown;
+        float timer = 0f;
+        Image image = SkillImages[index - 1];
+        image.fillAmount = 0f;
+        while (timer < cooldown)
+        {
+            timer += Time.deltaTime;
+            image.fillAmount = timer * rate;
+            yield return new WaitForEndOfFrame();
+        }
+        image.fillAmount = 1f;
     }
 
     public void SetRate(float rate)

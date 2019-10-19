@@ -6,7 +6,6 @@ public enum PanelType
 {
     MainMenu,
     Start,
-    Blank,
     SingleGame,
     MultiGame,
     SetUpGame,
@@ -14,5 +13,5 @@ public enum PanelType
     PlayerInfo,
     ComplaintToUs,
     Register,
-    Loading
+    Esc
 }

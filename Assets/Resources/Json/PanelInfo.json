@@ -9,10 +9,6 @@
       "panelPath": "UIPrefabs/StartPanel"
     },
     {
-      "panelTypeString": "Blank",
-      "panelPath": "UIPrefabs/BlankPanel"
-    },
-    {
       "panelTypeString": "SingleGame",
       "panelPath": "UIPrefabs/SingleGamePanel"
     },
@@ -29,20 +25,12 @@
       "panelPath": "UIPrefabs/AboutUsPanel"
     },
     {
-      "panelTypeString": "PlayerInfo",
-      "panelPath": "UIPrefabs/PlayerInfoPanel"
-    },
-    {
-      "panelTypeString": "ComplaintToUs",
-      "panelPath": "UIPrefabs/ComplaintToUsPanel"
-    },
-    {
       "panelTypeString": "Register",
       "panelPath": "UIPrefabs/RegisterPanel"
     },
     {
-      "panelTypeString": "Loading",
-      "panelPath": "UIPrefabs/LoadingPanel"
+      "panelTypeString": "Esc",
+      "panelPath": "UIPrefabs/EscPanel"
     }
   ]
 }

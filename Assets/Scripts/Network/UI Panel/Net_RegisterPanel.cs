@@ -44,6 +44,6 @@ public partial class RegisterPanel
             ClientLauncher.Instance.OnConnected.RemoveListener(TryReg);
             isListening = false;
         }
-        DataSync.Login(uName, key);
+        DataSync.Register(uName, key);
     }
 }

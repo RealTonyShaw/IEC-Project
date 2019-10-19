@@ -13,6 +13,10 @@ public class Crosshair : MonoBehaviour
     public float resizedSpread = 20f;
     public float resizeSpeed = 3f;
     public float distantConst = 20f;
+    [Header("Animation Settings")]
+    public AnimationClip fadeInClip;
+    public AnimationClip fadeOutClip;
+    public Animation Anim;
 
     float spread;
     bool resizing = true;
@@ -22,9 +26,9 @@ public class Crosshair : MonoBehaviour
         Instance = this;
         //set spread
         spread = defaultSpread;
+        resizedSpread = defaultSpread;
     }
 
-    bool enableDrawing = true;
     //public void Pause()
     //{
     //    enableDrawing = false;
@@ -34,6 +38,34 @@ public class Crosshair : MonoBehaviour
     //{
     //    enableDrawing = true;
     //}
+    bool isEnabled = false;
+    private readonly object stateMutex = new object();
+    /// <summary>
+    /// 设定准心显示状态。
+    /// </summary>
+    /// <param name="flag">True，显示；False，隐藏</param>
+    public static void SetState(bool flag)
+    {
+        lock (Instance.stateMutex)
+        {
+            if (flag && !Instance.isEnabled)
+            {
+                // enable
+                Instance.Anim.clip = Instance.fadeInClip;
+                Instance.color.a = 0.7f;
+                Instance.Anim.Play();
+                Instance.isEnabled = true;
+            }
+            else if(!flag && Instance.isEnabled)
+            {
+                // disable
+                Instance.Anim.clip = Instance.fadeOutClip;
+                Instance.color.a = 0f;
+                Instance.Anim.Play();
+                Instance.isEnabled = false;
+            }
+        }
+    }
 
     public void SetDefaultAccuracy(float accuracy)
     {
@@ -53,9 +85,7 @@ public class Crosshair : MonoBehaviour
     {
         //for demonstration purposes
         //if (Input.GetMouseButton(0)) { resizing = true; } else { resizing = false; }
-
-        if (!enableDrawing)
-            return;
+        
         if (resizeable)
         {
             if (resizing)
@@ -76,8 +106,6 @@ public class Crosshair : MonoBehaviour
 
     void OnGUI()
     {
-        if (!enableDrawing)
-            return;
         Texture2D texture = new Texture2D(1, 1);
         texture.SetPixel(0, 0, color);
         texture.wrapMode = TextureWrapMode.Repeat;

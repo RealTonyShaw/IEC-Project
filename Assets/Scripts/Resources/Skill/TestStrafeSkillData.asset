@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: TestStrafeSkillData
   m_EditorClassIdentifier: 
   Description: "\u8FD9\u91CC\u53EF\u4EE5\u8F93\u5165\u8BF4\u660E"
+  Icon: {fileID: 21300000, guid: 764814a62ebc0074a910cd124fdbed08, type: 3}
   SkillName: 3
   SkillType: 0
   Damage: 4

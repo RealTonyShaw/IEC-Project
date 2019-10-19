@@ -45,9 +45,10 @@ public partial class MultiGamePanel : BasePanel
         trans.DOScale(new Vector3(1, 1, 1), 2f);
     }
 
-    public void OnExitClick()
+    public void OnExitClick(AudioSource audioSource)
     {
         UIManager.Instance.PopPanel(PanelType.MultiGame);
+        audioSource.Play();
     }
 
     public void OnButtonClickDown(Transform transform)
@@ -65,8 +66,9 @@ public partial class MultiGamePanel : BasePanel
         ClientLauncher.Instance.host = host.text;
     }
 
-    public void OnRegisterClick()
+    public void OnRegisterClick(AudioSource audioSource)
     {
         UIManager.Instance.PushPanel(PanelType.Register);
+        audioSource.Play();
     }
 }

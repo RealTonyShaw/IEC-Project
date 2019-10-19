@@ -23,3 +23,23 @@ public class MyActionEvent
         Evt?.Invoke();
     }
 }
+
+public class MyActionEvent<T>
+{
+    private event Action<T> Evt;
+
+    public void AddListener(Action<T> listener)
+    {
+        Evt += listener;
+    }
+
+    public void RemoveListener(Action<T> listener)
+    {
+        Evt -= listener;
+    }
+
+    public void Trigger(T obj)
+    {
+        Evt?.Invoke(obj);
+    }
+}

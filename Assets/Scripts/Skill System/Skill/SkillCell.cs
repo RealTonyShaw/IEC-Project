@@ -123,6 +123,7 @@ public class SkillCell : ISkillCell
         {
             return;
         }
+        Debug.Log(string.Format("ID {0}: is casting now at {1}", caster.attributes.ID, Gamef.SystemTimeInMillisecond));
         // 考虑延迟，当施法时，计时器的值应为 当前值 + deltaT
         if (timer + deltaT > 1e-5f)
         {

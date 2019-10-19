@@ -86,7 +86,11 @@ namespace ClientBase
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
             Client.Instance.pl_info.id_game = proto.GetByte(start, ref start);
-
+            int playerNum = proto.GetByte(start, ref start);
+            for (int i = 0; i < playerNum; i++)
+            {
+                ClientLauncher.Instance.playerNames[i] = proto.GetString(start, ref start);
+            }
             //Loading
             GameCtrl.Instance.StartLoadingGameScene();
         }
@@ -106,6 +110,7 @@ namespace ClientBase
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
+            int playerID = proto.GetByte(start, ref start);
             UnitName unitName = (UnitName)proto.GetByte(start, ref start);
             Vector3 pos = ParseVector3(proto, ref start);
             Quaternion rot = ParseQuaternion(proto, ref start);
@@ -118,10 +123,17 @@ namespace ClientBase
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
             unit.InitAttributes(unitId);
-            if (unitName == UnitName.Player && isLocal)
+            if (unitName == UnitName.Player)
             {
-                CameraGroupController.Instance.ResetTransform(pos, rot);
-                GameCtrl.PlayerUnit = unit;
+                if (isLocal)
+                {
+                    CameraGroupController.Instance.ResetTransform(pos, rot);
+                    GameCtrl.PlayerUnit = unit;
+                }
+                else
+                {
+                    (unit as Player).SetPlayerName(ClientLauncher.GetPlayerName(playerID));
+                }
             }
         }
 
@@ -153,6 +165,7 @@ namespace ClientBase
             Vector3 position = ParseVector3(proto, ref start);
             Quaternion rot = ParseQuaternion(proto, ref start);
             float speed = proto.GetFloat(start, ref start);
+            Debug.Log(string.Format("unit {0} recv sync position {1}", unit.attributes.ID, position));
             unit.SyncMovement.SyncTransform(instant, position, rot, speed);
         }
         #endregion
@@ -169,6 +182,7 @@ namespace ClientBase
             Vector3 fwd = ParseVector3(proto, ref start);// parse camera forward
 
             Unit unit = Gamef.GetUnit(id);
+            Debug.Log(string.Format("unit {0} recv ac cam = {1} h = {2} v = {3}", unit.attributes.ID, fwd, hv[0], hv[1]));
             unit.SyncPlayerInput.SyncMobileControlAxes(instant, hv[0], hv[1], fwd);
         }
 
@@ -192,6 +206,7 @@ namespace ClientBase
             long instant = proto.GetInt(start, ref start);
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
+            Debug.Log(string.Format("unit {0} recv btn down casting at {1}, in fact {2}", unit.attributes.ID, instant, Gamef.SystemTimeInMillisecond));
             unit.SyncPlayerInput.SyncMouseButton0Down(instant);
         }
 
@@ -203,6 +218,7 @@ namespace ClientBase
             long instant = proto.GetInt(start, ref start);
             int id = proto.GetByte(start, ref start);
             Unit unit = Gamef.GetUnit(id);
+            Debug.Log(string.Format("unit {0} recv btn up casting at {1}, in fact {2}", unit.attributes.ID, instant, Gamef.SystemTimeInMillisecond));
             unit.SyncPlayerInput.SyncMouseButton0Up(instant);
         }
         #endregion

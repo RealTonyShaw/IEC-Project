@@ -37,23 +37,26 @@ public class MainMenuPanel : BasePanel
         audioSource.Play();
     }
 
-    public void OnMultiGameClick()
+    public void OnMultiGameClick(AudioSource audioSource)
     {
         UIManager.Instance.PushPanel(PanelType.MultiGame);
+        audioSource.Play();
     }
 
-    public void OnSetUpGameClick()
+    public void OnSetUpGameClick(AudioSource audioSource)
     {
         UIManager.Instance.PushPanel(PanelType.SetUpGame);
+        audioSource.Play();
     }
 
-    public void OnAboutUsClick()
+    public void OnAboutUsClick(AudioSource audioSource)
     {
         UIManager.Instance.PushPanel(PanelType.AboutUs);
+        audioSource.Play();
     }
 
-    public void OnExitGameClick()
+    public void OnExitGameClick(AudioSource audioSource)
     {
-
+        audioSource.Play();
     }
 }

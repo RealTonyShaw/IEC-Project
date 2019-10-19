@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LogoPanel : MonoBehaviour
 {
+    public float startDelay;
     public float delay;
     public string scene;
     public AsyncOperation ao;
@@ -16,11 +17,15 @@ public class LogoPanel : MonoBehaviour
     bool startLoading = false;
     private void Start()
     {
+        Cursor.visible = false;
         canvasGroup.alpha = 0f;
-        anim.clip = FadeInClip;
-        anim.Play();
-        DontDestroyOnLoad(gameObject);
-        StartCoroutine(DelayLoad());
+        Gamef.DelayedExecution(delegate
+        {
+            canvasGroup.alpha = 1f;
+            anim.clip = FadeInClip;
+            anim.Play();
+            StartCoroutine(DelayLoad());
+        }, startDelay);
     }
 
     IEnumerator DelayLoad()
@@ -34,9 +39,10 @@ public class LogoPanel : MonoBehaviour
     {
         if (startLoading && ao.isDone)
         {
+            Cursor.visible = true;
             anim.clip = FadeOutClip;
             anim.Play();
-            StartCoroutine(DelayDisable(FadeOutClip.length + 0.2f));
+            StartCoroutine(DelayDisable(1.8f));
         }
     }
 

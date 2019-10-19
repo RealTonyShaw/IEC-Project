@@ -105,7 +105,9 @@ public class CameraGroupController : MonoBehaviour
         {
             return;
         }
-        if (GameCtrl.PlayerUnit.attributes.isAlive)
+        if (GameCtrl.CursorOnGUI)
+            return;
+        if (lockCursor && GameCtrl.PlayerUnit.attributes.isAlive)
         {
             UpdateCameraRotation(Time.fixedDeltaTime);
             SetAngleAroundZAxis(Time.fixedDeltaTime);
@@ -114,6 +116,10 @@ public class CameraGroupController : MonoBehaviour
 
     public void ResetTransform(Vector3 position, Quaternion rotation)
     {
+        if (PositionParent == null)
+        {
+            Debug.LogError("Position Parent is NULL");
+        }
         PositionParent.position = position;
         PositionParent.rotation = Quaternion.identity;
         RotationParent.localRotation = rotation;
