@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class LogoPanel : MonoBehaviour
 {
+    public float startDelay;
     public float delay;
     public string scene;
     public AsyncOperation ao;
@@ -17,10 +18,13 @@ public class LogoPanel : MonoBehaviour
     private void Start()
     {
         canvasGroup.alpha = 0f;
-        anim.clip = FadeInClip;
-        anim.Play();
-        DontDestroyOnLoad(gameObject);
-        StartCoroutine(DelayLoad());
+        Gamef.DelayedExecution(delegate
+        {
+            canvasGroup.alpha = 1f;
+            anim.clip = FadeInClip;
+            anim.Play();
+            StartCoroutine(DelayLoad());
+        }, startDelay);
     }
 
     IEnumerator DelayLoad()

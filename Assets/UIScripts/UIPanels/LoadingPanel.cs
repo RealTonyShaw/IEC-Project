@@ -1,25 +1,27 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
-public class LoadingPanel : BasePanel
+public class LoadingPanel : MonoBehaviour
 {
-    public Text text;
+    public CanvasGroup canvas;
+    [Header("Animation Settings")]
+    public Animation Anim;
+    public AnimationClip FadeOutClip;
+    public AnimationClip FadeInClip;
 
-    public override void OnEnter()
+    public void StartLoading()
     {
-        base.OnEnter();
+        canvas.blocksRaycasts = true;
+        Anim.clip = FadeInClip;
+        Anim.Play();
     }
-
-    IEnumerator DelayEnable()
+    public void StopLoading()
     {
-        yield return new WaitForSecondsRealtime(3f);
-    }
-
-    public override void OnPause()
-    {
-        base.OnPause();
+        canvas.blocksRaycasts = false;
+        Anim.clip = FadeOutClip;
+        Anim.Play();
     }
 }

@@ -17,6 +17,7 @@ public class ShieldColorController : MonoBehaviour
     private void Start()
     {
         CurrentColor = DefaultColor;
+        TargetColor = DefaultColor;
         magicMaterial = GetComponent<Renderer>().material;
     }
 

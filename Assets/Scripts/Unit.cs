@@ -12,6 +12,7 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public partial class Unit : MonoBehaviour
 {
+    public UnitCanvasController canvas;
     [HideInInspector]
     public Rigidbody rigbody;
     public Transform SpawnTransform;
@@ -310,7 +311,7 @@ public partial class Unit : MonoBehaviour
         if (GameCtrl.IsOnlineGame && IsLocal && attributes.name == UnitName.Player)
         {
             Transform t = GameSceneInfo.Instance.spawnPoints[ClientLauncher.PlayerID].transform;
-            DataSync.CreateObject(UnitName.Player, t.position, t.rotation);
+            DataSync.CreateObject(ClientLauncher.PlayerID, UnitName.Player, t.position, t.rotation);
         }
         else if (!GameCtrl.IsOnlineGame)
         {

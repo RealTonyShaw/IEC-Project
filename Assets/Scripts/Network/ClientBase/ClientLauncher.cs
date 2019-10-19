@@ -18,6 +18,7 @@ public class ClientLauncher : MonoBehaviour
     private TimeMgr timeMgr;
     private int ping = 0;
     private long lastSend = 0;
+    public string Local_Player = "";
     private static ClientLauncher clientLauncher;
     public static ClientLauncher Instance
     {
@@ -27,8 +28,18 @@ public class ClientLauncher : MonoBehaviour
         }
     }
 
+    public string[] playerNames = {
+        "Player 1",
+        "Player 2",
+        "Player 3",
+        "Player 4",
+    };
     public static bool IsConnected => Client.Instance.isConnect;
     public static int PlayerID => Client.Instance.pl_info.id_game;
+    public static string GetPlayerName(int ID)
+    {
+        return Instance.playerNames[ID];
+    }
 
     public string message = "";
 

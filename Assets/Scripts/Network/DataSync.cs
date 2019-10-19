@@ -18,6 +18,7 @@ public static class DataSync
         //MD5 md5p = MD5.Create(password);
         protocol.AddString(username);
         protocol.AddString(GetMd5(password));
+        ClientLauncher.Instance.Local_Player = username;
         Client.Instance.Send(protocol);
     }
 
@@ -118,9 +119,10 @@ public static class DataSync
     /// <param name="isLocal">Is this object local</param>
     /// <param name="position">The position of the unit that would be created at</param>
     /// <param name="rotation">The rotation of the unit</param>
-    public static void CreateObject(UnitName unit, Vector3 position, Quaternion rotation)
+    public static void CreateObject(int playerID, UnitName unit, Vector3 position, Quaternion rotation)
     {
         ProtocolBytes protocol = SF.GetProtocolHead(ProtoName.CreateObject);
+        protocol.AddByte((byte)playerID);// playerID
         protocol.AddByte((byte)unit);//UnitName
         AppendVector3(protocol, position);//Position
         AppendQuaternion(protocol, rotation);//Rotation

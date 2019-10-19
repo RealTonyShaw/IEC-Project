@@ -19,7 +19,8 @@ public partial class GameCtrl : MonoBehaviour
 
     #region 实时公有信息
     public LogoPanel logoPanel;
-    public GameObject loadingPanel;
+    public LoadingPanel loadingPanel;
+    public static bool CursorOnGUI = false;
 
     //private UnitInfo _mainChara;
     private static Unit _playerUnit = null;
@@ -130,7 +131,8 @@ public partial class GameCtrl : MonoBehaviour
     {
         if (PlayerUnit != null)
         {
-            Crosshair.Instance.SetAccuracy(PlayerUnit.RuntimeAccuracy);
+            if (PlayerUnit.RuntimeAccuracy > 9.99f)
+                Crosshair.Instance.SetAccuracy(PlayerUnit.RuntimeAccuracy);
         }
     }
     #endregion

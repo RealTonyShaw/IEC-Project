@@ -86,7 +86,11 @@ namespace ClientBase
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
             Client.Instance.pl_info.id_game = proto.GetByte(start, ref start);
-
+            int playerNum = proto.GetByte(start, ref start);
+            for (int i = 0; i < playerNum; i++)
+            {
+                ClientLauncher.Instance.playerNames[i] = proto.GetString(start, ref start);
+            }
             //Loading
             GameCtrl.Instance.StartLoadingGameScene();
         }
@@ -106,6 +110,7 @@ namespace ClientBase
             int start = 0;
             ProtocolBytes proto = (ProtocolBytes)protocol;
             proto.GetNameX(start, ref start);
+            int playerID = proto.GetByte(start, ref start);
             UnitName unitName = (UnitName)proto.GetByte(start, ref start);
             Vector3 pos = ParseVector3(proto, ref start);
             Quaternion rot = ParseQuaternion(proto, ref start);
@@ -118,10 +123,17 @@ namespace ClientBase
             //set id
             Unit unit = gameObj.GetComponent<Unit>();
             unit.InitAttributes(unitId);
-            if (unitName == UnitName.Player && isLocal)
+            if (unitName == UnitName.Player)
             {
-                CameraGroupController.Instance.ResetTransform(pos, rot);
-                GameCtrl.PlayerUnit = unit;
+                if (isLocal)
+                {
+                    CameraGroupController.Instance.ResetTransform(pos, rot);
+                    GameCtrl.PlayerUnit = unit;
+                }
+                else
+                {
+                    (unit as Player).SetPlayerName(ClientLauncher.GetPlayerName(playerID));
+                }
             }
         }
 

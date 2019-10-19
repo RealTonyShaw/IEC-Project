@@ -22,7 +22,9 @@ public class Player : Unit
 
     void Cooldown()
     {
-        FloatingCanvasLeft.Instance.SetCooldown(SkillTable.CurrentSkill.Data.Cooldown);
+        SkillType type = SkillTable.CurrentSkill.Data.SkillType;
+        if (type == SkillType.BurstfireSkill || type == SkillType.ContinuousSkill)
+            FloatingCanvasLeft.Instance.SetCooldown(SkillTable.CurrentSkill.Data.Cooldown);
     }
 
     void SwitchSkill(int index)
@@ -41,5 +43,13 @@ public class Player : Unit
     {
         base.Death();
         Shield.SetActive(false);
+    }
+
+    public void SetPlayerName(string name)
+    {
+        if (GameCtrl.IsOnlineGame && !IsLocal)
+        {
+            canvas.SetName(name);
+        }
     }
 }

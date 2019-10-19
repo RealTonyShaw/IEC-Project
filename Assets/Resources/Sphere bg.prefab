@@ -18,7 +18,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &6230228204789200022
 Transform:
   m_ObjectHideFlags: 0
@@ -110,6 +110,7 @@ GameObject:
   - component: {fileID: 6230228205759907618}
   - component: {fileID: 6230228205759907621}
   - component: {fileID: 6230228205759907620}
+  - component: {fileID: 8844444202091996381}
   m_Layer: 0
   m_Name: Sphere bg
   m_TagString: Untagged
@@ -194,3 +195,22 @@ Animation:
   m_PlayAutomatically: 1
   m_AnimatePhysics: 0
   m_CullingType: 0
+--- !u!114 &8844444202091996381
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6230228205759907622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 673fc31ec647d7b4c82acc787734abc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  trigger: 0
+  DefaultColor: {r: 0, g: 1, b: 1, a: 1}
+  CurrentColor: {r: 0, g: 0, b: 0, a: 0}
+  TargetColor: {r: 0.1254902, g: 0.69803923, b: 0.7490196, a: 0}
+  TriggerColor: {r: 1, g: 0, b: 0, a: 1}
+  UpdateSpeed: 25
+  TriggerTime: 0.03
