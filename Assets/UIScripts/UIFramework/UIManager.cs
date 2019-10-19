@@ -137,4 +137,12 @@ public class UIManager
             panelObjectDict[keyValuePair.Key] = insPanel;
         }
     }
+
+    public void RestartDictionary(PanelType panel)
+    {
+        string path = panelPathDict[panel];
+        GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(path));
+        panelDict[panel] = insPanel.GetComponent<BasePanel>();
+        panelObjectDict[panel] = insPanel;
+    }
 }

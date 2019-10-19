@@ -23419,7 +23419,7 @@ MonoBehaviour:
   RecvSyncPlayerInput: 1
   lastSyncUnitStateInstant: 0
   Shield: {fileID: 5610208228061917542}
-  shieldColorController: {fileID: 5610208227103769323}
+  shieldColorController: {fileID: 6994237589437682333}
 --- !u!114 &8572677812863099397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23645,13 +23645,13 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1994321830796260928}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &5610208227103769323 stripped
+--- !u!114 &6994237589437682333 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 6230228204789200043, guid: e0abc0457df27b040a30fa1c8d82d923,
+  m_CorrespondingSourceObject: {fileID: 8844444202091996381, guid: e0abc0457df27b040a30fa1c8d82d923,
     type: 3}
   m_PrefabInstance: {fileID: 1994321830796260928}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 5610208228061917542}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 673fc31ec647d7b4c82acc787734abc6, type: 3}

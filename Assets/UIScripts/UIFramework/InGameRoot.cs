@@ -9,18 +9,24 @@ public class InGameRoot : MonoBehaviour
     private void Start()
     {
         UIManager.Instance.UIStackClean();
-        UIManager.Instance.RestartDictionary();
+        UIManager.Instance.RestartDictionary(PanelType.Esc);
     }
 
     private void Update()
     {
-        if(!isEnter)
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (isEnter)
             {
-                isEnter = true;
+                UIManager.Instance.PopPanel(PanelType.Esc);
+            }
+            else
+            {
                 UIManager.Instance.PushPanel(PanelType.Esc);
             }
+            isEnter = !isEnter;
+            GameCtrl.CursorOnGUI = isEnter;
+            Crosshair.SetState(!isEnter);
         }
     }
 }
