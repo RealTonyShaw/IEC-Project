@@ -48,7 +48,7 @@ public class ClientLauncher : MonoBehaviour
         DataSync.Chatting(msg);
     }
 
-    public void InitClient()
+    public void Connect()
     {
         if (Client.Instance.isConnect)
             return;
@@ -77,6 +77,23 @@ public class ClientLauncher : MonoBehaviour
         t.Start();
     }
 
+    public void Disconnect()
+    {
+        if (!Client.Instance.isConnect)
+            return;
+        Thread t = new Thread(() =>
+        {
+            int i = 0;
+            for (i = 0; Client.Instance.isConnect && i < MAX_CONNECT_TIMES; i++)
+            {
+                Client.Instance.Disconnect();
+            }
+            GameCtrl.IsOnlineGame = false;
+        });
+        t.Start();
+    }
+
+
     public MyActionEvent OnConnected = new MyActionEvent();
 
     public void Awake()
@@ -93,7 +110,7 @@ public class ClientLauncher : MonoBehaviour
         client = Client.Instance;
         timeMgr = new TimeMgr();
         timeMgr.StartTimer();
-        InitClient();
+        Connect();
         SendMsg("olleH! revreS");
         isLaunched = true;
     }

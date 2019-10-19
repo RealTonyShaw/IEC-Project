@@ -16,14 +16,14 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 6982b0220a6a34e63b072876a6bc062a, type: 3}
   SkillName: 2
   SkillType: 1
-  Damage: 20
+  Damage: 23
   RPM: 100
   Params: []
   Range: 50
   Speed: 33
   LifeSpan: 6
   Cooldown: 3
-  ManaCost: 35
+  ManaCost: 50
   ManaCostPerSec: 0
   MissileHP: 1
   IsAOE: 1
@@ -34,7 +34,7 @@ MonoBehaviour:
   MiddleDamageCoefficient: 0.5
   OuterDamageCoefficient: 0.2
   IsTracking: 1
-  TrackingConst: 1.8
+  TrackingConst: 2.2
   AimingTime: 2
   IsPassive: 0
   Buffs: 

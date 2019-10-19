@@ -16,8 +16,8 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 8598e3f5e2a756c42b9eba764c6825ec, type: 3}
   SkillName: 5
   SkillType: 0
-  Damage: 3
-  RPM: 450
+  Damage: 2.9
+  RPM: 500
   Params: []
   Range: 50
   Speed: 150
