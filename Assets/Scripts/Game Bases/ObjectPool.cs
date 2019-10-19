@@ -61,6 +61,8 @@ public class ObjectPool<T> : IEnumerable<T>
     private readonly object idQueueMutex = new object();
     //存储已经不被占用的id（即对象被清除）
     Queue<int> idQueue = new Queue<int>();
+    private int res;
+
     /// <summary>
     /// 给对象分配ID
     /// </summary>
@@ -82,15 +84,17 @@ public class ObjectPool<T> : IEnumerable<T>
             {
                 res = MaxLength++;
                 //如果超负荷，则申请一个新的数组
-                if ((res & BLK_MASK) >= blks.Count)
+                Debug.Log(string.Format("m id = {0}, blk {1}, cell {2}", res, (res & BLK_MASK) >> 6, res & OFFSET_MASK));
+                if (((res & BLK_MASK) >> 6)>= blks.Count)
                 {
+                    Debug.Log("Expand");
                     ExtendPool();
                 }
             }
         }
 
         int ofs = res & OFFSET_MASK;
-        Block blk = blks[res & BLK_MASK];
+        Block blk = blks[((res & BLK_MASK) >> 6)];
         lock (blk.mutex)
         {
             blk.validates = blk.validates | OFFSET[ofs];
@@ -126,7 +130,7 @@ public class ObjectPool<T> : IEnumerable<T>
             {
                 prevLen = MaxLength;
                 MaxLength = id + 1;
-                while ((id & BLK_MASK) >= blks.Count)
+                while (((id & BLK_MASK) >> 6) >= blks.Count)
                 {
                     ExtendPool();
                 }
@@ -141,7 +145,7 @@ public class ObjectPool<T> : IEnumerable<T>
         }
 
         int ofs = id & OFFSET_MASK;
-        Block blk = blks[id & BLK_MASK];
+        Block blk = blks[((id & BLK_MASK) >> 6)];
         lock (blk.mutex)
         {
             blk.validates = blk.validates | OFFSET[ofs];
@@ -162,7 +166,7 @@ public class ObjectPool<T> : IEnumerable<T>
     /// <returns>对象</returns>
     public T GetObject(int id)
     {
-        return id == -1 ? default : blks[id & BLK_MASK].cells[id & OFFSET_MASK].content;
+        return id == -1 ? default : blks[(id & BLK_MASK) >> 6].cells[id & OFFSET_MASK].content;
     }
     /// <summary>
     /// 检查ID是否被占用
@@ -172,7 +176,7 @@ public class ObjectPool<T> : IEnumerable<T>
     public bool CheckID(int id)
     {
         //return blks[id & BLK_MASK].cells[id & OFFSET_MASK].isValid;
-        return (blks[id & BLK_MASK].validates & OFFSET[id & OFFSET_MASK]) != 0;
+        return (blks[(id & BLK_MASK) >> 6].validates & OFFSET[id & OFFSET_MASK]) != 0;
     }
     /// <summary>
     /// 移除对象
@@ -181,7 +185,7 @@ public class ObjectPool<T> : IEnumerable<T>
     public void RemoveObject(int id)
     {
         int ofs = id & OFFSET_MASK;
-        Block blk = blks[id & BLK_MASK];
+        Block blk = blks[(id & BLK_MASK) >> 6];
         lock (blk.mutex)
         {
             blk.validates = blk.validates ^ OFFSET[ofs];
@@ -265,7 +269,7 @@ public class ObjectPool<T> : IEnumerable<T>
             int ofs;
 
             // try to find in the same blk
-            blk = pool.blks[minID & BLK_MASK];
+            blk = pool.blks[(minID & BLK_MASK) >> 6];
             v = blk.validates;
             ofs = minID & OFFSET_MASK;
             // if not empty
@@ -276,7 +280,7 @@ public class ObjectPool<T> : IEnumerable<T>
             }
 
             // find from next blk
-            for (int i = (minID & BLK_MASK) + 1; i < maxBlkIndex; i++)
+            for (int i = ((minID & BLK_MASK) >> 6) + 1; i < maxBlkIndex; i++)
             {
                 blk = pool.blks[i];
                 v = blk.validates;

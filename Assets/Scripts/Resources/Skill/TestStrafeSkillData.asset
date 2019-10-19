@@ -16,14 +16,14 @@ MonoBehaviour:
   Icon: {fileID: 21300000, guid: 764814a62ebc0074a910cd124fdbed08, type: 3}
   SkillName: 3
   SkillType: 0
-  Damage: 4
-  RPM: 500
+  Damage: 4.2
+  RPM: 400
   Params: []
   Range: 50
   Speed: 85
   LifeSpan: 3
   Cooldown: 0.2
-  ManaCost: 3.2
+  ManaCost: 3.5
   ManaCostPerSec: 0
   MissileHP: 1
   IsAOE: 0

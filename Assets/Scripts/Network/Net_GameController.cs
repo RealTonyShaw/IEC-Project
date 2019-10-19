@@ -9,12 +9,27 @@ public partial class GameCtrl
     AsyncOperation ao;
     public void StartLoadingGameScene()
     {
+        if (IsLoading)
+            return;
+        IsLoading = true;
         loadingPanel.StartLoading();
         Gamef.DelayedExecution(delegate
         {
-            IsLoading = true;
             ao = SceneManager.LoadSceneAsync("Game");
-            EventMgr.UpdateEvent.AddListener(_checkIsDone);
+            EventMgr.UpdateEvent.AddListener(afterLoadGame);
+        }, 0.5f);
+    }
+
+    public void Back2Menu()
+    {
+        if (IsLoading)
+            return;
+        IsLoading = true;
+        loadingPanel.StartLoading();
+        Gamef.DelayedExecution(delegate
+        {
+            ao = SceneManager.LoadSceneAsync("Menu Scene");
+            EventMgr.UpdateEvent.AddListener(afterLoadMenu);
         }, 0.5f);
     }
 
@@ -39,17 +54,30 @@ public partial class GameCtrl
         }
     }
 
-    private void _checkIsDone()
+    private void afterLoadGame()
     {
         if (ao.isDone)
         {
-            EventMgr.UpdateEvent.RemoveListener(_checkIsDone);
+            EventMgr.UpdateEvent.RemoveListener(afterLoadGame);
             if (IsOnlineGame)
                 DataSync.CanControll();
             else
             {
                 StartCreatePlayer(0);
             }
+            loadingPanel.StopLoading();
+            IsLoading = false;
+        }
+    }
+
+
+    private void afterLoadMenu()
+    {
+        if (ao.isDone)
+        {
+            EventMgr.UpdateEvent.RemoveListener(afterLoadMenu);
+            if (IsOnlineGame)
+                ClientLauncher.Instance.Disconnect();
             loadingPanel.StopLoading();
             IsLoading = false;
         }
