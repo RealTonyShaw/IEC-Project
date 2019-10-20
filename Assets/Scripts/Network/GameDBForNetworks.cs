@@ -12,8 +12,8 @@ using System.Threading.Tasks;
 public partial class GameDB
 {
     // 摄像机正方向同步间隔
-    public const int SYNC_CAMERA_FWD_INTERVAL = 50;
+    public const int SYNC_AC_INTERVAL = 33;
     // 位置转向同步间隔
-    public const int SYNC_TRANSFORM_INTERVAL = 500;
+    public const int SYNC_TRANSFORM_INTERVAL = 300;
     public const int SYNC_UNIT_STATE_INTERVAL = 100;
 }

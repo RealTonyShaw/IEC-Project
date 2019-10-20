@@ -20,9 +20,9 @@ MonoBehaviour:
     player: 0
     elf: 0
     devil: 0
-  MaxVelocity: 0
+  MaxVelocity: 10
   MaxTurningVelocity: 0
-  MaxSheildPoint: 50
+  MaxSheildPoint: 5000
   ShieldPointRegenerationRate: 5
   ArmorType: 0
   MaxManaPoint: 100

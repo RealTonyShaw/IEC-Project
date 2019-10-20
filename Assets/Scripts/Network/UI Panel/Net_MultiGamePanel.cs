@@ -28,7 +28,7 @@ public partial class MultiGamePanel
         {
             ClientLauncher.Instance.OnConnected.AddListener(TryLogIn);
             isListening = true;
-            ClientLauncher.Instance.Launch();
+            ClientLauncher.Instance.Connect();
         }
     }
 

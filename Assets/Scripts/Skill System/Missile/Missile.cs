@@ -96,14 +96,14 @@ public class Missile : MonoBehaviour
 
             this.Caster = caster;
             this.Enemy = enemy;
-            this.enemyTrans = enemy == null ? null : enemy.transform;
+            this.enemyTrans = enemy?.transform;
             this.Skill = skill;
             this.Damage = skill.Data.Damage;
             this.HP = skill.Data.MissileHP;
             this.missileHitHandler = missileHitHandler;
             this.specialEffectHandler = specialEffectHandler;
             ID = Gamef.MissileBirth(this);
-            if (enemy != null)
+            if (skill.Data.IsTracking && enemy != null)
                 trackSystem?.StartTracking(enemy, skill.Data.TrackingConst);
 
             isInit = true;

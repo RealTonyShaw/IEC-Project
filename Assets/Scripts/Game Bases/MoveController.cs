@@ -106,11 +106,11 @@ public class MoveController : MonoBehaviour
         {
             Unit unit = GameCtrl.PlayerUnit;
             instant = Gamef.SystemTimeInMillisecond;
-            if (instant - lastSyncA >= 33)
+            if (instant - lastSyncA >= GameDB.SYNC_AC_INTERVAL)
             {
-                if (instant - lastSyncA <= 40)
+                if (instant - lastSyncA <= GameDB.SYNC_AC_INTERVAL + 8)
                 {
-                    lastSyncA += 33;
+                    lastSyncA += GameDB.SYNC_AC_INTERVAL;
                 }
                 else
                 {
@@ -118,11 +118,11 @@ public class MoveController : MonoBehaviour
                 }
                 DataSync.SyncMobileControlAxes(unit, instant, Mathf.RoundToInt(h), Mathf.RoundToInt(v), CameraGroupController.Instance.transform.forward);
             }
-            if (instant - lastSyncT >= 300)
+            if (instant - lastSyncT >= GameDB.SYNC_TRANSFORM_INTERVAL)
             {
-                if (instant - lastSyncT <= 350)
+                if (instant - lastSyncT <= GameDB.SYNC_TRANSFORM_INTERVAL + 30)
                 {
-                    lastSyncT += 300;
+                    lastSyncT += GameDB.SYNC_TRANSFORM_INTERVAL;
                 }
                 else
                 {

@@ -4,7 +4,12 @@ using UnityEngine;
 
 public class InGameRoot : MonoBehaviour
 {
-    private bool isEnter = false;
+    public static InGameRoot Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {
@@ -14,9 +19,9 @@ public class InGameRoot : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyUp(KeyCode.Escape))
         {
-            if (isEnter)
+            if (EscPanel.IsEnter)
             {
                 UIManager.Instance.PopPanel(PanelType.Esc);
             }
@@ -24,9 +29,6 @@ public class InGameRoot : MonoBehaviour
             {
                 UIManager.Instance.PushPanel(PanelType.Esc);
             }
-            isEnter = !isEnter;
-            GameCtrl.CursorOnGUI = isEnter;
-            Crosshair.SetState(!isEnter);
         }
     }
 }

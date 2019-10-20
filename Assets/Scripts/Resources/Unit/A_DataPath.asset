@@ -16,3 +16,4 @@ MonoBehaviour:
   - Unit/UnsetData
   - Unit/PlayerData
   - Unit/CapsuleData
+  - Unit/FakerData

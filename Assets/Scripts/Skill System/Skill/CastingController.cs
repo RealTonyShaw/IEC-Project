@@ -175,7 +175,7 @@ public class CastingController : MonoBehaviour
             // 为技能设置目标
             if (skillTable.CurrentSkill.Data.IsTracking && skillTable.CurrentSkill is ITracking it)
             {
-                it.Target = AimController.Instance.TargetForStrafeSkill;
+                it.Target = AimController.Instance.Target;
             }
             skillTable.CurrentCell.Start();
         }

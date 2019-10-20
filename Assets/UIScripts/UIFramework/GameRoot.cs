@@ -4,9 +4,17 @@ using UnityEngine;
 
 public class GameRoot : MonoBehaviour
 {
+    public static GameRoot Instance { get; private set; }
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     private void Start()
     {
         UIManager.Instance.UIStackClean();
+        UIManager.Instance.RestartDictionaryExcept(PanelType.Esc);
         StartCoroutine(DelayPush(PanelType.Start, 2f));
         Gamef.DelayedExecution(delegate()
         {

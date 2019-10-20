@@ -33,7 +33,7 @@ public partial class RegisterPanel
         {
             ClientLauncher.Instance.OnConnected.AddListener(TryReg);
             isListening = true;
-            ClientLauncher.Instance.Launch();
+            ClientLauncher.Instance.Connect();
         }
     }
 
