@@ -24,7 +24,7 @@ public class UIManager
         {
             if (canvasTransform == null)
             {
-                canvasTransform = GameObject.Find("Canvas").transform;
+                canvasTransform = GameRoot.Instance == null ? InGameRoot.Instance.transform : GameRoot.Instance.transform;
             }
             return canvasTransform;
         }
@@ -112,7 +112,7 @@ public class UIManager
 
     private void ParseBasePanelInfo()
     {
-        foreach(KeyValuePair<PanelType, string> keyValuePair in panelPathDict)
+        foreach (KeyValuePair<PanelType, string> keyValuePair in panelPathDict)
         {
             GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(keyValuePair.Value));
             panelDict.Add(keyValuePair.Key, insPanel.GetComponent<BasePanel>());
@@ -138,11 +138,35 @@ public class UIManager
         }
     }
 
-    public void RestartDictionary(PanelType panel)
+    public void RestartDictionary(params PanelType[] panels)
     {
-        string path = panelPathDict[panel];
-        GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(path));
-        panelDict[panel] = insPanel.GetComponent<BasePanel>();
-        panelObjectDict[panel] = insPanel;
+        foreach (var panel in panels)
+        {
+            string path = panelPathDict[panel];
+            GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(path));
+            panelDict[panel] = insPanel.GetComponent<BasePanel>();
+            panelObjectDict[panel] = insPanel;
+        }
+    }
+
+    public void RestartDictionaryExcept(params PanelType[] panels)
+    {
+        foreach (KeyValuePair<PanelType, string> keyValuePair in panelPathDict)
+        {
+            bool flag = false;
+            foreach (var panel in panels)
+            {
+                if (keyValuePair.Key == panel)
+                {
+                    flag = true;
+                    break;
+                }
+            }
+            if (flag)
+                continue;
+            GameObject insPanel = GameObject.Instantiate(Resources.Load<GameObject>(keyValuePair.Value));
+            panelDict[keyValuePair.Key] = insPanel.GetComponent<BasePanel>();
+            panelObjectDict[keyValuePair.Key] = insPanel;
+        }
     }
 }

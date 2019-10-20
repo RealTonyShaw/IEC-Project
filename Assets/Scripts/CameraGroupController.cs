@@ -75,6 +75,11 @@ public class CameraGroupController : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        GameCtrl.PlayerUnitChangeEvent.RemoveListener(OnPlayerChanged);
+    }
+
     private void Update()
     {
         if (GameCtrl.IsLoading)

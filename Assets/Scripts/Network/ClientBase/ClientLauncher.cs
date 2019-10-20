@@ -50,6 +50,8 @@ public class ClientLauncher : MonoBehaviour
 
     public void Connect()
     {
+        if (!isLaunched)
+            Launch();
         if (Client.Instance.isConnect)
             return;
         Thread t = new Thread(() =>
@@ -110,8 +112,6 @@ public class ClientLauncher : MonoBehaviour
         client = Client.Instance;
         timeMgr = new TimeMgr();
         timeMgr.StartTimer();
-        Connect();
-        SendMsg("olleH! revreS");
         isLaunched = true;
     }
 

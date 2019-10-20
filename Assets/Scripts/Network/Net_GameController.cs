@@ -25,6 +25,7 @@ public partial class GameCtrl
         if (IsLoading)
             return;
         IsLoading = true;
+        Crosshair.SetState(false);
         loadingPanel.StartLoading();
         Gamef.DelayedExecution(delegate
         {
@@ -45,7 +46,6 @@ public partial class GameCtrl
             Debug.Log("Null spawnPoint");
         }
         Transform t = GameSceneInfo.Instance.spawnPoints[playerID].transform;
-        Crosshair.SetState(true);
         if (GameCtrl.IsOnlineGame)
             DataSync.CreateObject(ClientLauncher.PlayerID, UnitName.Player, t.position, t.rotation);
         else
@@ -64,8 +64,9 @@ public partial class GameCtrl
             else
             {
                 StartCreatePlayer(0);
+                Gamef.DelayedExecution(delegate { Crosshair.SetState(false); }, 0.7f);
+                Gamef.DelayedExecution(loadingPanel.StopLoading, 0.2f);
             }
-            loadingPanel.StopLoading();
             IsLoading = false;
         }
     }
@@ -78,7 +79,9 @@ public partial class GameCtrl
             EventMgr.UpdateEvent.RemoveListener(afterLoadMenu);
             if (IsOnlineGame)
                 ClientLauncher.Instance.Disconnect();
-            loadingPanel.StopLoading();
+            Gamef.DelayedExecution(loadingPanel.StopLoading, 0.2f);
+            GameDB.unitPool.Clear();
+            GameDB.missilePool.Clear();
             IsLoading = false;
         }
     }

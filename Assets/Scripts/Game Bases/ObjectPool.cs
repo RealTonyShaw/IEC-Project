@@ -199,6 +199,15 @@ public class ObjectPool<T> : IEnumerable<T>
             idQueue.Enqueue(id);
     }
 
+    public void Clear()
+    {
+        lock (listMutex)
+        {
+            blks.Clear();
+            ExtendPool();
+        }
+    }
+
     public ObjectPool()
     {
         ExtendPool();

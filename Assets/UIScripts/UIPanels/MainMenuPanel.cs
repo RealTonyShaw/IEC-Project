@@ -58,5 +58,6 @@ public class MainMenuPanel : BasePanel
     public void OnExitGameClick(AudioSource audioSource)
     {
         audioSource.Play();
+        Gamef.DelayedExecution(Application.Quit, 0.5f);
     }
 }

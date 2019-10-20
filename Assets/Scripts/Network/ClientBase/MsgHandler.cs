@@ -99,6 +99,8 @@ namespace ClientBase
         {
             //...
             GameCtrl.Instance.StartCreatePlayer(Client.Instance.pl_info.id_game);
+            Gamef.DelayedExecution(GameCtrl.Instance.loadingPanel.StopLoading, 0.2f);
+            Gamef.DelayedExecution(delegate{ Crosshair.SetState(true); }, 0.7f);
         }
 
         #endregion
